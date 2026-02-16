@@ -1,154 +1,44 @@
-name: Update Matches Every 5 Hours
+name: Auto-update matches from Google Sheets
 
 on:
   schedule:
-    - cron: '0 */5 * * *'  # Каждые 5 часов
-  workflow_dispatch:  # Ручной запуск
+    # Каждые 3 часа: 00:00, 03:00, 06:00, 09:00, 12:00, 15:00, 18:00, 21:00 UTC
+    - cron: '0 */3 * * *'
+  workflow_dispatch: # Ручной запуск из GitHub UI
 
 jobs:
-  sync-from-sheets:
+  sync:
     runs-on: ubuntu-latest
-    
+    timeout-minutes: 5
+
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
-      
+        uses: actions/checkout@v4
+
       - name: Setup Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      
+
       - name: Sync from Google Sheets
-        run: |
-          python << 'EOF'
-          import json
-          import datetime
-          import re
-          import csv
-          import urllib.request
-          
-          SHEET_ID = "1QkVj51WMKSd6-LU4vZK3dYPk6QLQIO014ydpACtThNk"
-          CSV_URL = f"https://docs.google.com/spreadsheets/d/{SHEET_ID}/export?format=csv&gid=0"
-          
-          SPORT_MAPPING = {
-              'Лига чемпионов УЕФА': 'football',
-              'Лига Европы УЕФА': 'football',
-              'Англия. Премьер-лига': 'football',
-              'Россия. Премьер-лига': 'football',
-              'Россия. Кубок': 'football',
-              'КХЛ': 'hockey',
-              'НХЛ': 'hockey',
-              'NHL': 'hockey',
-              'NBA': 'basket',
-              'Евролига': 'basket',
-              'Dota 2': 'esports',
-              'CS2': 'esports',
-          }
-          
-          def norm(s):
-              return (s or "").strip()
-          
-          def detect_sport(league):
-              league_lower = league.lower()
-              for key, sport in SPORT_MAPPING.items():
-                  if league.startswith(key):
-                      return sport
-              if any(k in league_lower for k in ['футбол', 'лига', 'премьер', 'кубок', 'uefa', 'уефа']):
-                  return 'football'
-              if any(k in league_lower for k in ['хоккей', 'кхл', 'нхл', 'hockey']):
-                  return 'hockey'
-              if any(k in league_lower for k in ['баскет', 'nba', 'евролига']):
-                  return 'basket'
-              if any(k in league_lower for k in ['dota', 'cs', 'киберспорт', 'esports']):
-                  return 'esports'
-              return 'football'
-          
-          print("📥 Loading data from Google Sheets...")
-          with urllib.request.urlopen(CSV_URL) as response:
-              content = response.read().decode('utf-8')
-          
-          print("🔄 Processing data...")
-          matches = []
-          lines = content.strip().split('\n')
-          reader = csv.reader(lines)
-          next(reader, None)
-          
-          for row in reader:
-              if len(row) < 12:
-                  continue
-              
-              league = norm(row[0])
-              match_id = norm(row[1])
-              date = norm(row[2])
-              time = norm(row[3])
-              team1 = norm(row[4])
-              team2 = norm(row[5])
-              
-              if not league or not team1 or not team2:
-                  continue
-              
-              team1_clean = re.sub(r'\d{1,2}\s+\w{3}\s+\d{1,2}:\d{2}', '', team1).strip()
-              team2_clean = re.sub(r'\d{1,2}\s+\w{3}\s+\d{1,2}:\d{2}', '', team2).strip()
-              
-              p1 = norm(row[6]) or "0.00"
-              x = norm(row[7]) or "0.00"
-              p2 = norm(row[8]) or "0.00"
-              p1x = norm(row[9]) or "0.00"
-              p12 = norm(row[10]) or "0.00"
-              px2 = norm(row[11]) or "0.00"
-              
-              sport = detect_sport(league)
-              
-              match = {
-                  "sport": sport,
-                  "league": league,
-                  "id": match_id,
-                  "date": date,
-                  "time": time,
-                  "team1": team1_clean or team1,
-                  "team2": team2_clean or team2,
-                  "p1": p1,
-                  "x": x,
-                  "p2": p2,
-                  "p1x": p1x,
-                  "p12": p12,
-                  "px2": px2
-              }
-              matches.append(match)
-          
-          data = {
-              "last_update": datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
-              "matches": matches
-          }
-          
-          with open('matches.json', 'w', encoding='utf-8') as f:
-              json.dump(data, f, ensure_ascii=False, indent=2)
-          
-          print(f"✅ Processed {len(matches)} matches")
-          EOF
-      
-      - name: Check changes
+        run: python update_matches.py
+
+      - name: Check for changes
         id: check
         run: |
-          if git diff --quiet matches.json; then
+          if git diff --quiet matches.json 2>/dev/null; then
             echo "changed=false" >> $GITHUB_OUTPUT
+            echo "No changes in matches.json"
           else
             echo "changed=true" >> $GITHUB_OUTPUT
+            echo "matches.json has been updated"
           fi
-      
+
       - name: Commit and push
         if: steps.check.outputs.changed == 'true'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add matches.json
-          git commit -m "🔄 Auto-update matches [$(date +'%Y-%m-%d %H:%M:%S UTC')]"
+          git commit -m "auto-update matches [$(date -u +'%Y-%m-%d %H:%M UTC')]"
           git push
-      
-      - name: Summary
-        run: |
-          if [ "${{ steps.check.outputs.changed }}" == "true" ]; then
-            echo "✅ Matches updated"
-          else
-            echo "ℹ️ No changes"
-          fi

@@ -1,8 +1,17 @@
+[build]
+  publish = "."
+  functions = "netlify/functions"
+
+[functions]
+  node_bundler = "esbuild"
+
+# SPA fallback
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
 
+# Безопасность
 [[headers]]
   for = "/*"
   [headers.values]
@@ -11,16 +20,19 @@
     Referrer-Policy = "no-referrer"
     Permissions-Policy = "geolocation=(), microphone=(), camera=()"
 
+# matches.json — кэш 5 минут
 [[headers]]
   for = "/matches.json"
   [headers.values]
     Cache-Control = "public, max-age=300, must-revalidate"
 
+# HTML — без кэша
 [[headers]]
   for = "*.html"
   [headers.values]
     Cache-Control = "public, max-age=0, must-revalidate"
 
+# Статика — кэш на год
 [[headers]]
   for = "*.js"
   [headers.values]

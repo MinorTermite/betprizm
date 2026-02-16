@@ -1,163 +1,167 @@
-const fetch = require('node-fetch');
-const { writeFileSync } = require('fs');
-const { join } = require('path');
+// Netlify serverless function: получает данные из Google Sheets CSV
+// Вызов: GET /.netlify/functions/update-matches
 
-// Популярные лиги для парсинга
-const POPULAR_LEAGUES = [
-  { sport: 'football', name: 'Англия. Премьер-лига', url: 'https://www.marathonbet.ru/su/popular/Football/England/Premier+League+-+21520' },
-  { sport: 'football', name: 'Испания. Ла Лига', url: 'https://www.marathonbet.ru/su/popular/Football/Spain/Primera+Division+-+8736' },
-  { sport: 'football', name: 'Лига чемпионов УЕФА', url: 'https://www.marathonbet.ru/su/popular/Football/UEFA+Champions+League/UEFA+Champions+League+-+97179' },
-  { sport: 'football', name: 'Лига Европы УЕФА', url: 'https://www.marathonbet.ru/su/popular/Football/UEFA+Europa+League/UEFA+Europa+League+-+97180' },
-  { sport: 'hockey', name: 'КХЛ', url: 'https://www.marathonbet.ru/su/popular/Ice+Hockey/KHL+-+52309' },
-  { sport: 'basket', name: 'NBA', url: 'https://www.marathonbet.ru/su/popular/Basketball/NBA+-+69367' },
-  { sport: 'esports', name: 'Dota 2', url: 'https://www.marathonbet.ru/su/popular/e-Sports/Dota+2/' },
-  { sport: 'esports', name: 'CS2', url: 'https://www.marathonbet.ru/su/popular/e-Sports/Counter-Strike/' }
-];
+const SHEET_ID = process.env.SHEET_ID || '1QkVj51WMKSd6-LU4vZK3dYPk6QLQIO014ydpACtThNk';
+const GID = process.env.SHEET_GID || '0';
+const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${GID}`;
 
-async function parseMarathon() {
+// Маппинг спортов
+const SPORT_MAP = {
+  'Лига чемпионов УЕФА': 'football',
+  'Лига Европы УЕФА': 'football',
+  'Лига конференций УЕФА': 'football',
+  'Англия. Премьер-лига': 'football',
+  'Англия. Кубок': 'football',
+  'Испания. Ла Лига': 'football',
+  'Италия. Серия A': 'football',
+  'Германия. Бундеслига': 'football',
+  'Франция. Лига 1': 'football',
+  'Россия. Премьер-лига': 'football',
+  'Россия. Кубок': 'football',
+  'КХЛ': 'hockey',
+  'НХЛ': 'hockey',
+  'NHL': 'hockey',
+  'NBA': 'basket',
+  'Евролига': 'basket',
+  'Dota 2': 'esports',
+  'CS2': 'esports',
+};
+
+function detectSport(league) {
+  for (const [key, sport] of Object.entries(SPORT_MAP)) {
+    if (league.startsWith(key)) return sport;
+  }
+  const ll = league.toLowerCase();
+  if (/футбол|лига|премьер|кубок|uefa|уефа/.test(ll)) return 'football';
+  if (/хоккей|кхл|нхл|hockey|nhl/.test(ll)) return 'hockey';
+  if (/баскет|nba|евролига/.test(ll)) return 'basket';
+  if (/dota|cs2|counter-strike|киберспорт|esports/.test(ll)) return 'esports';
+  return 'football';
+}
+
+function parseCSV(text) {
+  const lines = text.trim().split('\n');
   const matches = [];
-  
-  for (const league of POPULAR_LEAGUES) {
-    try {
-      console.log(`Парсинг: ${league.name}`);
-      
-      // Здесь будет реальный парсинг
-      // Пока создаём mock данные
-      const mockMatches = generateMockMatches(league);
-      matches.push(...mockMatches);
-      
-    } catch (error) {
-      console.error(`Ошибка парсинга ${league.name}:`, error);
+
+  // Пропускаем заголовок
+  for (let i = 1; i < lines.length; i++) {
+    const row = parseCSVLine(lines[i]);
+    if (row.length < 12) continue;
+
+    const league = (row[0] || '').trim();
+    const id = (row[1] || '').trim();
+    const date = (row[2] || '').trim();
+    const time = (row[3] || '').trim();
+    let team1 = (row[4] || '').trim();
+    let team2 = (row[5] || '').trim();
+
+    if (!league || !team1 || !team2) continue;
+
+    // Очистка команд от встроенных дат
+    team1 = team1.replace(/\d{1,2}\s+\w{3}\s+\d{1,2}:\d{2}/g, '').trim();
+    team2 = team2.replace(/\d{1,2}\s+\w{3}\s+\d{1,2}:\d{2}/g, '').trim();
+    if (!team1 || !team2) continue;
+
+    matches.push({
+      sport: detectSport(league),
+      league,
+      id,
+      date,
+      time,
+      team1,
+      team2,
+      p1: (row[6] || '0.00').trim(),
+      x: (row[7] || '0.00').trim(),
+      p2: (row[8] || '0.00').trim(),
+      p1x: (row[9] || '0.00').trim(),
+      p12: (row[10] || '0.00').trim(),
+      px2: (row[11] || '0.00').trim(),
+    });
+  }
+
+  return matches;
+}
+
+// Простой CSV парсер с поддержкой кавычек
+function parseCSVLine(line) {
+  const result = [];
+  let current = '';
+  let inQuotes = false;
+
+  for (let i = 0; i < line.length; i++) {
+    const ch = line[i];
+    if (inQuotes) {
+      if (ch === '"' && line[i + 1] === '"') {
+        current += '"';
+        i++;
+      } else if (ch === '"') {
+        inQuotes = false;
+      } else {
+        current += ch;
+      }
+    } else {
+      if (ch === '"') {
+        inQuotes = true;
+      } else if (ch === ',') {
+        result.push(current);
+        current = '';
+      } else {
+        current += ch;
+      }
     }
   }
-  
-  return matches;
+  result.push(current);
+  return result;
 }
 
-function generateMockMatches(league) {
-  const now = new Date();
-  const matches = [];
-  
-  // Генерируем 3-5 матчей для каждой лиги
-  const count = Math.floor(Math.random() * 3) + 3;
-  
-  for (let i = 0; i < count; i++) {
-    const date = new Date(now.getTime() + (i * 24 * 60 * 60 * 1000));
-    const dateStr = date.toLocaleDateString('ru-RU', { day: '2-digit', month: 'short' });
-    
-    const teams = getRandomTeams(league.sport);
-    
-    const match = {
-      sport: league.sport,
-      league: league.name,
-      id: `${Date.now()}_${i}_${Math.random().toString(36).substr(2, 9)}`,
-      date: dateStr,
-      time: `${String(Math.floor(Math.random() * 6) + 17).padStart(2, '0')}:${['00', '30'][Math.floor(Math.random() * 2)]}`,
-      team1: teams[0],
-      team2: teams[1],
-      p1: (Math.random() * 3 + 1.5).toFixed(2),
-      x: league.sport === 'football' ? (Math.random() * 2 + 2.5).toFixed(2) : '0.00',
-      p2: (Math.random() * 3 + 1.5).toFixed(2),
-      p1x: league.sport === 'football' ? (Math.random() * 0.5 + 1.2).toFixed(2) : '0.00',
-      p12: league.sport === 'football' ? (Math.random() * 0.3 + 1.1).toFixed(2) : '0.00',
-      px2: league.sport === 'football' ? (Math.random() * 0.5 + 1.3).toFixed(2) : '0.00'
-    };
-    
-    matches.push(match);
-  }
-  
-  return matches;
-}
-
-function getRandomTeams(sport) {
-  const teams = {
-    football: [
-      ['Манчестер Сити', 'Ливерпуль'],
-      ['Арсенал', 'Челси'],
-      ['Барселона', 'Реал Мадрид'],
-      ['Бавария', 'Боруссия Д'],
-      ['ПСЖ', 'Марсель'],
-      ['Интер', 'Милан'],
-      ['Атлетико', 'Севилья']
-    ],
-    hockey: [
-      ['СКА', 'ЦСКА'],
-      ['Ак Барс', 'Авангард'],
-      ['Металлург Мг', 'Трактор'],
-      ['Динамо М', 'Спартак']
-    ],
-    basket: [
-      ['Лейкерс', 'Уорриорз'],
-      ['Селтикс', 'Хит'],
-      ['Наггетс', 'Санз'],
-      ['Баксс', 'Сиксерс']
-    ],
-    esports: [
-      ['Team Spirit', 'OG'],
-      ['Liquid', 'Secret'],
-      ['Navi', 'G2'],
-      ['Vitality', 'FaZe']
-    ]
+exports.handler = async (event) => {
+  const headers = {
+    'Content-Type': 'application/json; charset=utf-8',
+    'Access-Control-Allow-Origin': '*',
+    'Cache-Control': 'public, max-age=300',
   };
-  
-  const sportTeams = teams[sport] || teams.football;
-  return sportTeams[Math.floor(Math.random() * sportTeams.length)];
-}
 
-exports.handler = async (event, context) => {
-  // Проверка авторизации (опционально)
-  const authHeader = event.headers.authorization;
-  const expectedToken = process.env.UPDATE_TOKEN || 'prizmbet-secret-2026';
-  
-  if (event.httpMethod === 'GET' && event.queryStringParameters?.token !== expectedToken) {
-    // Разрешаем GET без токена для просмотра статуса
-    if (!event.queryStringParameters?.status) {
-      return {
-        statusCode: 403,
-        body: JSON.stringify({ error: 'Unauthorized' })
-      };
-    }
-  }
-  
   try {
-    console.log('Начало парсинга...');
-    const matches = await parseMarathon();
-    
+    console.log('Fetching CSV from Google Sheets...');
+    const response = await fetch(CSV_URL, {
+      headers: { 'User-Agent': 'PRIZMBET-Netlify/1.0' },
+      signal: AbortSignal.timeout(15000),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Google Sheets HTTP ${response.status}`);
+    }
+
+    const csvText = await response.text();
+    if (!csvText.trim()) {
+      throw new Error('Empty response from Google Sheets');
+    }
+
+    const matches = parseCSV(csvText);
+    console.log(`Parsed ${matches.length} matches`);
+
     const data = {
-      last_update: new Date().toLocaleString('ru-RU'),
-      matches: matches
+      last_update: new Date().toISOString().replace('T', ' ').slice(0, 19),
+      matches,
     };
-    
-    // В продакшене данные нужно сохранять в облачное хранилище
-    // Например, в AWS S3, Netlify Blobs, или другой сервис
-    
-    console.log(`Парсинг завершён. Найдено матчей: ${matches.length}`);
-    
+
     return {
       statusCode: 200,
-      headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*'
-      },
-      body: JSON.stringify({
-        success: true,
-        data: data,
-        stats: {
-          total_matches: matches.length,
-          leagues: [...new Set(matches.map(m => m.league))].length
-        }
-      })
+      headers,
+      body: JSON.stringify(data),
     };
-    
+
   } catch (error) {
-    console.error('Ошибка парсинга:', error);
-    
+    console.error('Error:', error.message);
     return {
-      statusCode: 500,
+      statusCode: 502,
+      headers,
       body: JSON.stringify({
-        success: false,
-        error: error.message
-      })
+        error: 'Failed to fetch data',
+        message: error.message,
+        last_update: null,
+        matches: [],
+      }),
     };
   }
 };
