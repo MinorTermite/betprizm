@@ -8,7 +8,8 @@
     <title>PRIZMBET — Криптобукмекер</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Только нужные веса - быстрее загружается -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=JetBrains+Mono:wght@600&display=swap" rel="stylesheet">
 
     <style>
         *, *::before, *::after {
@@ -843,6 +844,8 @@
 
         .rule-image {
             width: 100%;
+            height: auto;
+            display: block;
             border-radius: var(--radius-lg);
             border: 1px solid var(--border);
             cursor: pointer;
@@ -1031,10 +1034,10 @@
             <div class="logo-wrapper">
                 <div class="logo-ring"></div>
                 <div class="logo-container">
-                    <video class="logo-video" autoplay loop muted playsinline>
+                    <video class="logo-video" autoplay loop muted playsinline preload="none">
                         <source src="prizmbet-logo.mp4" type="video/mp4">
                     </video>
-                    <img src="prizmbet-logo.gif" alt="PRIZMBET" class="logo-fallback">
+                    <img src="prizmbet-logo.gif" alt="PRIZMBET" class="logo-fallback" decoding="async">
                 </div>
             </div>
             <h1 class="brand-name">PRIZMBET</h1>
@@ -1068,15 +1071,15 @@
         <div class="section">
             <h2 class="section-title">📋 Правила PRIZMBET</h2>
             <div class="rule-images">
-                <img src="prizmbet-info-2.png" alt="Правила PRIZMBET" class="rule-image" onclick="openImage(this.src)">
-                <img src="prizmbet-info-1.png" alt="Правила PRIZMBET 2" class="rule-image" onclick="openImage(this.src)">
+                <img src="prizmbet-info-2.png" alt="Правила PRIZMBET" class="rule-image" loading="lazy" decoding="async" onclick="openImage(this.src)">
+                <img src="prizmbet-info-1.png" alt="Правила PRIZMBET 2" class="rule-image" loading="lazy" decoding="async" onclick="openImage(this.src)">
             </div>
         </div>
 
         <!-- КОШЕЛЁК -->
         <div class="wallet-section">
             <h2 class="section-title" style="justify-content:center;">💎 Кошелёк для ставок</h2>
-            <img src="qr_wallet.png" alt="QR-код кошелька" class="qr-code">
+            <img src="qr_wallet.png" alt="QR-код кошелька" class="qr-code" loading="lazy" decoding="async" width="300" height="300">
             <div class="wallet-box">
                 <div class="wallet-label">Адрес кошелька</div>
                 <div class="wallet-address" id="walletAddress">PRIZM-4N7T-L2A7-RQZA-5BETW</div>
@@ -1117,8 +1120,20 @@
     <script>
         // ===== КОНФИГУРАЦИЯ =====
         const AUTO_REFRESH_MS = 5 * 60 * 1000;
-        const DATA_STALE_HOURS = 6;
+        const DATA_STALE_HOURS = 48;
         const NETLIFY_FN_URL = '/.netlify/functions/update-matches';
+        const LS_CACHE_KEY = 'prizmbet_matches_cache';
+
+        // ===== Кэш матчей в localStorage для мгновенного показа =====
+        function getCachedMatches() {
+            try {
+                const raw = localStorage.getItem(LS_CACHE_KEY);
+                return raw ? JSON.parse(raw) : null;
+            } catch { return null; }
+        }
+        function setCachedMatches(data) {
+            try { localStorage.setItem(LS_CACHE_KEY, JSON.stringify(data)); } catch {}
+        }
 
         // ===== LocalStorage для избранного =====
         function getFavorites() {
@@ -1429,11 +1444,20 @@
         }
 
         async function loadData() {
+            // 1. Сразу показываем кэш из localStorage (если есть) — мгновенно
+            const cached = getCachedMatches();
+            if (cached?.matches?.length) {
+                renderMatches(cached.matches);
+                showStatus(cached.last_update, 'cache');
+            }
+
             let data = null, source = 'static';
+            // 2. Пробуем статичный matches.json
             try {
                 const r = await fetch('matches.json?t=' + Date.now());
                 if (r.ok) data = await r.json();
             } catch (e) { console.warn('static fail:', e.message); }
+            // 3. Если устаревший — пробуем Netlify функцию (Google Sheets)
             if (!data?.matches?.length || isDataStale(data.last_update)) {
                 try {
                     const r = await fetch(NETLIFY_FN_URL);
@@ -1444,9 +1468,10 @@
                 } catch (e) { console.warn('fn fail:', e.message); }
             }
             if (data?.matches?.length) {
+                setCachedMatches(data); // сохраняем в кэш
                 renderMatches(data.matches);
                 showStatus(data.last_update, source);
-            } else {
+            } else if (!cached?.matches?.length) {
                 document.getElementById('content').innerHTML = '<div class="section"><p style="text-align:center;color:var(--text-secondary);">Ошибка загрузки. Обновите страницу.</p></div>';
                 document.getElementById('lastUpdate').textContent = 'Ошибка загрузки';
             }
