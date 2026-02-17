@@ -642,6 +642,37 @@
             letter-spacing: 0.5px;
             white-space: nowrap;
             box-shadow: 0 2px 8px rgba(139, 92, 246, 0.25);
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            transition: box-shadow 0.2s, transform 0.2s;
+        }
+        .match-id:hover {
+            box-shadow: 0 0 16px var(--accent-glow);
+            transform: scale(1.05);
+        }
+        /* target highlight when jumping to anchor */
+        .match-card:target {
+            box-shadow: 0 0 0 2px var(--accent), var(--shadow-md);
+            animation: highlightCard 1.5s ease-out forwards;
+        }
+        @keyframes highlightCard {
+            0% { box-shadow: 0 0 0 3px var(--accent-bright), 0 0 40px var(--accent-glow); }
+            100% { box-shadow: 0 0 0 1px var(--border); }
+        }
+        .share-btn {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            font-size: 0.9rem;
+            padding: 4px 6px;
+            color: var(--text-tertiary);
+            transition: color 0.2s, transform 0.2s;
+            line-height: 1;
+        }
+        .share-btn:hover { color: var(--accent-bright); transform: scale(1.2); }
+        .highlight-pulse {
+            animation: highlightCard 1.5s ease-out forwards !important;
         }
 
         .favorite-btn {
@@ -1493,12 +1524,16 @@
                         </div>`;
                     }
 
+                    card.id = `match-${eid}`;
                     card.innerHTML = `
                         <div class="match-header">
-                            <span class="match-id">${eid}</span>
-                            <button class="favorite-btn ${isFavorite ? 'active' : ''}" onclick="toggleFavorite('${eid}')">
-                                ${isFavorite ? '⭐' : '☆'}
-                            </button>
+                            <a class="match-id" href="#match-${eid}" onclick="shareMatch('${eid}','${teams.replace(/'/g,"\\'")}','${escapeHtml((match.date||'')+' '+(match.time||''))}'); return false;" title="Скопировать ссылку на матч">#${eid}</a>
+                            <div style="display:flex;align-items:center;gap:4px;margin-left:auto;">
+                                <button class="share-btn" onclick="shareMatch('${eid}','${teams.replace(/'/g,"\\'")}','${escapeHtml((match.date||'')+' '+(match.time||''))}')" title="Поделиться матчем">🔗</button>
+                                <button class="favorite-btn ${isFavorite ? 'active' : ''}" onclick="toggleFavorite('${eid}')">
+                                    ${isFavorite ? '⭐' : '☆'}
+                                </button>
+                            </div>
                         </div>
                         <div class="match-time">
                             ${escapeHtml(match.date||'')} ${escapeHtml(match.time||'')}
@@ -1592,6 +1627,23 @@
             }
         }
 
+        function shareMatch(id, teams, datetime) {
+            const url = window.location.origin + window.location.pathname + '#match-' + id;
+            navigator.clipboard.writeText(url).then(() => {
+                showToast('Ссылка на матч скопирована!');
+                if (navigator.vibrate) navigator.vibrate(30);
+                // Подсвечиваем карточку
+                const el = document.getElementById('match-' + id);
+                if (el) {
+                    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    el.classList.add('highlight-pulse');
+                    setTimeout(() => el.classList.remove('highlight-pulse'), 1500);
+                }
+            }).catch(() => {
+                showToast('#' + id + ' — ' + teams + ' ' + datetime);
+            });
+        }
+
         function copyBet(id, teams, betType, coef, datetime, league) {
             const msg = `📋 Ставка PRIZMBET\n🏆 ${league}\n⚽ ${teams}\n📅 ${datetime}\n🎯 Ставка: ${betType}\n📊 Коэффициент: ${coef}\n🆔 ID события: ${id}`;
             navigator.clipboard.writeText(msg).then(() => {
@@ -1622,7 +1674,24 @@
         setInterval(() => { if (window.__ALL_MATCHES__) renderMatches(window.__ALL_MATCHES__); }, 60000);
 
         window.addEventListener('load', () => {
-            loadData();
+            loadData().then(() => {
+                // После загрузки — проверяем якорь в URL
+                if (window.location.hash && window.location.hash.startsWith('#match-')) {
+                    setTimeout(() => {
+                        const el = document.querySelector(window.location.hash);
+                        if (el) {
+                            el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        }
+                    }, 400);
+                }
+            }).catch(() => {
+                if (window.location.hash && window.location.hash.startsWith('#match-')) {
+                    setTimeout(() => {
+                        const el = document.querySelector(window.location.hash);
+                        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }, 800);
+                }
+            });
             wireFilters();
         });
     </script>
