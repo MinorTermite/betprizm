@@ -7,46 +7,60 @@ const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?forma
 
 // Маппинг спортов (ключ — начало названия лиги)
 const SPORT_MAP = {
-  // Футбол
-  'Лига чемпионов УЕФА': 'football',
-  'Лига Европы УЕФА': 'football',
-  'Лига конференций УЕФА': 'football',
-  'Англия. Премьер-лига': 'football',
-  'Англия. Кубок': 'football',
-  'Испания. Ла Лига': 'football',
-  'Италия. Серия A': 'football',
-  'Германия. Бундеслига': 'football',
-  'Франция. Лига 1': 'football',
-  'Россия. Премьер-лига': 'football',
+  // FOOTBALL
+  'Лига чемпионов УЕФА': 'football', 'Лига Европы УЕФА': 'football',
+  'Лига конференций УЕФА': 'football', 'УЕФА': 'football', 'UEFA': 'football',
+  'Англия. Премьер-лига': 'football', 'Англия. Чемпионшип': 'football',
+  'Англия. Кубок': 'football', 'Англия. Кубок Лиги': 'football',
+  'Испания. Ла Лига': 'football', 'Испания. Сегунда': 'football',
+  'Испания. Кубок Короля': 'football',
+  'Германия. Бундеслига': 'football', 'Германия. 2. Бундеслига': 'football',
+  'Германия. Кубок': 'football',
+  'Италия. Серия A': 'football', 'Италия. Серия B': 'football',
+  'Итальянский. Кубок': 'football',
+  'Франция. Лига 1': 'football', 'Франция. Лига 2': 'football',
+  'Россия. Премьер-лига': 'football', 'Россия. ФНЛ': 'football',
   'Россия. Кубок': 'football',
-  'MLS': 'football',
-  'Бразилия': 'football',
-  'Аргентина': 'football',
-  'Нидерланды': 'football',
-  'Португалия': 'football',
-  'Турция': 'football',
-  // Хоккей
-  'КХЛ': 'hockey',
-  'НХЛ': 'hockey',
-  'NHL': 'hockey',
-  'ВХЛ': 'hockey',
-  'MHL': 'hockey',
-  'AHL': 'hockey',
-  // Баскетбол
-  'NBA': 'basket',
-  'НБА': 'basket',
-  'Евролига': 'basket',
-  'Единая лига ВТБ': 'basket',
-  'EuroLeague': 'basket',
-  // Киберспорт
-  'Dota 2': 'esports',
-  'CS2': 'esports',
-  'Counter-Strike': 'esports',
-  'Valorant': 'esports',
-  'League of Legends': 'esports',
-  'LoL': 'esports',
-  'Overwatch': 'esports',
-  'Rocket League': 'esports',
+  'Нидерланды. Эредивизие': 'football', 'Португалия. Примейра Лига': 'football',
+  'Турция. Суперлига': 'football', 'Шотландия. Премьершип': 'football',
+  'Бельгия. Про Лига': 'football', 'Бразилия. Серия A': 'football',
+  'Аргентина. Примера Дивисьон': 'football',
+  'США. MLS': 'football', 'MLS': 'football', 'Мексика. Лига MX': 'football',
+  'КОНМЕБОЛ. Копа Либертадорес': 'football', 'КОНКАКАФ': 'football',
+  'Саудовская Аравия. Про Лига': 'football',
+  'Япония. Джей-Лига': 'football', 'Южная Корея. К-Лига': 'football',
+  'Греция. Суперлига': 'football', 'Украина. Премьер-лига': 'football',
+  'Польша. Экстракласа': 'football', 'Австрия. Бундеслига': 'football',
+  'Швейцария. Суперлига': 'football', 'Дания. Суперлига': 'football',
+  'Норвегия. Элитесерия': 'football', 'Швеция. Алльсвенскан': 'football',
+  // HOCKEY
+  'КХЛ': 'hockey', 'НХЛ': 'hockey', 'NHL': 'hockey',
+  'ВХЛ': 'hockey', 'МХЛ': 'hockey', 'AHL': 'hockey', 'ECHL': 'hockey',
+  'Швеция. SHL': 'hockey', 'Финляндия. Liiga': 'hockey',
+  'Чехия. Extraliga': 'hockey', 'Германия. DEL': 'hockey',
+  'Швейцария. National League': 'hockey', 'Беларусь. Экстралига': 'hockey',
+  'Казахстан. ЧРК': 'hockey', 'Австрия. ICEHL': 'hockey',
+  // BASKETBALL
+  'NBA': 'basket', 'НБА': 'basket', 'Евролига': 'basket',
+  'EuroLeague': 'basket', 'EuroCup': 'basket',
+  'Единая лига ВТБ': 'basket', 'Испания. ACB': 'basket',
+  'Турция. BSL': 'basket', 'Германия. BBL': 'basket',
+  'Греция. HEBA A1': 'basket', 'Австралия. NBL': 'basket',
+  'Китай. CBA': 'basket', 'ФИБА': 'basket', 'FIBA': 'basket',
+  // ESPORTS
+  'CS2': 'esports', 'Counter-Strike': 'esports', 'Dota 2': 'esports',
+  'Valorant': 'esports', 'League of Legends': 'esports', 'LoL': 'esports',
+  'Rocket League': 'esports', 'RLCS': 'esports', 'PUBG': 'esports',
+  'Apex Legends': 'esports', 'Rainbow Six': 'esports', 'Overwatch': 'esports',
+  // TENNIS
+  'ATP': 'tennis', 'WTA': 'tennis', 'ITF': 'tennis', 'Теннис': 'tennis',
+  // VOLLEYBALL
+  'CEV': 'volleyball', 'ВНЛ': 'volleyball', 'VNL': 'volleyball',
+  'Россия. Суперлига': 'volleyball', 'Польша. PlusLiga': 'volleyball',
+  'Италия. SuperLega': 'volleyball', 'Волейбол': 'volleyball',
+  // MMA
+  'UFC': 'mma', 'Bellator': 'mma', 'ONE Championship': 'mma',
+  'ONE FC': 'mma', 'ACB MMA': 'mma', 'PFL': 'mma', 'M-1': 'mma',
 };
 
 function detectSport(league) {
@@ -54,10 +68,13 @@ function detectSport(league) {
     if (league.startsWith(key)) return sport;
   }
   const ll = league.toLowerCase();
-  if (/футбол|лига|премьер|кубок|uefa|уефа/.test(ll)) return 'football';
-  if (/хоккей|кхл|нхл|hockey|nhl/.test(ll)) return 'hockey';
-  if (/баскет|nba|евролига/.test(ll)) return 'basket';
-  if (/dota|cs2|counter-strike|киберспорт|esports/.test(ll)) return 'esports';
+  if (/футбол|лига|премьер|кубок|уефа|серия|бундес|ла лига|копа|mls/.test(ll)) return 'football';
+  if (/хоккей|кхл|нхл|hockey|nhl|ahl|shl|liiga|del/.test(ll)) return 'hockey';
+  if (/баскет|nba|евролига|basketball|vtb|acb/.test(ll)) return 'basket';
+  if (/dota|cs2|counter-strike|valorant|esports|rlcs|pubg|apex/.test(ll)) return 'esports';
+  if (/теннис|atp|wta|itf|уимблдон|ролан/.test(ll)) return 'tennis';
+  if (/волейбол|volleyball|cev|vnl|plusliga|superlega/.test(ll)) return 'volleyball';
+  if (/ufc|bellator|mma|one championship|pfl/.test(ll)) return 'mma';
   return 'football';
 }
 

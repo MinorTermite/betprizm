@@ -1006,6 +1006,9 @@
                 <button class="tab" data-sport="hockey">🏒 Хоккей</button>
                 <button class="tab" data-sport="basket">🏀 Баскетбол</button>
                 <button class="tab" data-sport="esports">🎮 Киберспорт</button>
+                <button class="tab" data-sport="tennis">🎾 Теннис</button>
+                <button class="tab" data-sport="volleyball">🏐 Волейбол</button>
+                <button class="tab" data-sport="mma">🥊 MMA</button>
             </div>
             <div class="filters">
                 <select id="gameFilter" class="select">
@@ -1176,24 +1179,93 @@
 
         function inferSport(m) {
             const t = ((m.league || '') + ' ' + (m.team1 || '') + ' ' + (m.team2 || '')).toLowerCase();
-            if (/dota|counter-strike|cs2|valorant|league of legends|lol/.test(t)) return 'esports';
-            if (/кхл|нхл|hockey|nhl/.test(t)) return 'hockey';
-            if (/nba|баскет|euroleague/.test(t)) return 'basket';
+            if (/dota|counter-strike|cs2|valorant|league of legends|lol|rocket league|rlcs|pubg|apex|rainbow six|overwatch/.test(t)) return 'esports';
+            if (/кхл|нхл|hockey|nhl|ahl|shl|liiga|del|хоккей/.test(t)) return 'hockey';
+            if (/nba|нба|баскет|euroleague|евролига|vtb|acb|bbl/.test(t)) return 'basket';
+            if (/теннис|atp|wta|itf|уимблдон|ролан гаррос|tennis/.test(t)) return 'tennis';
+            if (/волейбол|volleyball|cev|vnl|суперлига|plusliga|superlega/.test(t)) return 'volleyball';
+            if (/ufc|bellator|mma|one championship|pfl|acb mma/.test(t)) return 'mma';
             return 'football';
         }
 
         function getMatchGame(m) {
             if (m.game) return String(m.game);
             const l = (m.league || '').toLowerCase();
-            if (l.includes('премьер-лига') && l.includes('англия')) return 'Англия. Премьер-лига';
-            if (l.includes('кубок') && l.includes('англия')) return 'Англия. Кубок';
-            if (l.includes('лига чемпионов') || l.includes('champions league')) return 'ЛЧ УЕФА';
+            // Football
+            if (l.includes('лига чемпионов') || l.includes('champions league') || l.startsWith('лч')) return 'ЛЧ УЕФА';
             if (l.includes('лига европы') || l.includes('europa league')) return 'ЛЕ УЕФА';
-            if (l.includes('россия')) return 'Россия';
-            if (l.includes('nba')) return 'NBA';
+            if (l.includes('лига конференций') || l.includes('conference league')) return 'ЛК УЕФА';
+            if (l.includes('премьер-лига') && l.includes('англия')) return 'Англия. Премьер-лига';
+            if (l.includes('чемпионшип') && l.includes('англия')) return 'Англия. Чемпионшип';
+            if (l.includes('кубок') && (l.includes('англия') || l.includes('england'))) return 'Англия. Кубок';
+            if (l.includes('ла лига') || l.includes('la liga')) return 'Испания. Ла Лига';
+            if (l.includes('кубок короля')) return 'Испания. Кубок Короля';
+            if (l.includes('бундеслига') && !l.includes('2.')) return 'Германия. Бундеслига';
+            if (l.includes('2. бундеслига')) return 'Германия. 2. Бундеслига';
+            if (l.includes('серия a') || l.includes('serie a')) return 'Италия. Серия A';
+            if (l.includes('серия b') || l.includes('serie b')) return 'Италия. Серия B';
+            if (l.includes('лига 1') && (l.includes('франция') || l.includes('france'))) return 'Франция. Лига 1';
+            if (l.includes('эредивизие')) return 'Нидерланды. Эредивизие';
+            if (l.includes('примейра') || l.includes('primeira')) return 'Португалия. Примейра Лига';
+            if (l.includes('суперлига') && l.includes('турция')) return 'Турция. Суперлига';
+            if (l.includes('премьершип') && l.includes('шотл')) return 'Шотландия. Премьершип';
+            if (l.includes('про лига') && l.includes('бельг')) return 'Бельгия. Про Лига';
+            if (l.includes('премьер-лига') && l.includes('россия')) return 'Россия. Премьер-лига';
+            if (l.includes('фнл')) return 'Россия. ФНЛ';
+            if (l.includes('кубок') && l.includes('россия')) return 'Россия. Кубок';
+            if (l.includes('серия a') && l.includes('бразилия')) return 'Бразилия. Серия A';
+            if (l.includes('примера') && l.includes('аргент')) return 'Аргентина. Примера';
+            if (l.includes('mls') || l.includes('сша')) return 'США. MLS';
+            if (l.includes('лига mx') || l.includes('мексик')) return 'Мексика. Лига MX';
+            if (l.includes('копа либертадорес')) return 'Копа Либертадорес';
+            if (l.includes('саудовская арав')) return 'Саудовская Аравия';
+            if (l.includes('джей-лига') || l.includes('яп')) return 'Япония. Джей-Лига';
+            if (l.includes('к-лига') || l.includes('корея')) return 'Южная Корея. К-Лига';
+            // Hockey
             if (l.includes('кхл')) return 'КХЛ';
-            if (l.includes('dota')) return 'Dota 2';
+            if (l.includes('нхл') || l.includes('nhl')) return 'НХЛ';
+            if (l.includes('вхл')) return 'ВХЛ';
+            if (l.includes('shl')) return 'Швеция. SHL';
+            if (l.includes('liiga')) return 'Финляндия. Liiga';
+            if (l.includes('extraliga') && l.includes('чех')) return 'Чехия. Extraliga';
+            if (l.includes('del') && l.includes('герм')) return 'Германия. DEL';
+            if (l.includes('экстралига') && l.includes('белар')) return 'Беларусь. Экстралига';
+            // Basketball
+            if (l.includes('nba') || l.includes('нба')) return 'NBA';
+            if (l.includes('евролига') || l.includes('euroleague')) return 'Евролига';
+            if (l.includes('втб')) return 'Единая лига ВТБ';
+            if (l.includes('acb')) return 'Испания. ACB';
+            if (l.includes('bsl') && l.includes('турц')) return 'Турция. BSL';
+            if (l.includes('nbl') && l.includes('австрал')) return 'Австралия. NBL';
+            if (l.includes('cba') && l.includes('китай')) return 'Китай. CBA';
+            // Esports
+            if (l.includes('dota 2')) return 'Dota 2';
             if (l.includes('counter-strike') || l.includes('cs2')) return 'CS2';
+            if (l.includes('valorant')) return 'Valorant';
+            if (l.includes('league of legends') || l.includes('lck') || l.includes('lpl') || l.includes('lec')) return 'League of Legends';
+            if (l.includes('rocket league') || l.includes('rlcs')) return 'Rocket League';
+            if (l.includes('pubg')) return 'PUBG';
+            if (l.includes('apex')) return 'Apex Legends';
+            // Tennis
+            if (l.includes('atp') && l.includes('мадрид')) return 'ATP. Мадрид';
+            if (l.includes('atp') && l.includes('рим')) return 'ATP. Рим';
+            if (l.includes('atp') && l.includes('roland') || l.includes('ролан')) return 'ATP. Roland Garros';
+            if (l.includes('уимблдон') || l.includes('wimbledon')) return 'Уимблдон';
+            if (l.includes('us open')) return 'US Open';
+            if (l.startsWith('atp')) return 'ATP Tour';
+            if (l.startsWith('wta')) return 'WTA Tour';
+            // Volleyball
+            if (l.includes('cev')) return 'CEV. Лига чемпионов';
+            if (l.includes('внл') || l.includes('vnl')) return 'Лига наций ВНЛ';
+            if (l.includes('суперлига') && !l.includes('турц') && !l.includes('баск')) return 'Россия. Суперлига Волейбол';
+            if (l.includes('plusliga') || l.includes('польша')) return 'Польша. PlusLiga';
+            if (l.includes('superlega') || l.includes('итал')) return 'Италия. SuperLega';
+            // MMA
+            if (l.includes('ufc')) return 'UFC';
+            if (l.includes('bellator')) return 'Bellator MMA';
+            if (l.includes('one championship') || l.includes('one fc')) return 'ONE Championship';
+            if (l.includes('acb mma')) return 'ACB MMA';
+            if (l.includes('pfl')) return 'PFL';
             return m.league || 'Другое';
         }
 
@@ -1269,7 +1341,7 @@
                 if (currentGameFilter !== 'all' && game !== currentGameFilter) return false;
                 if (popularOnly) {
                     const combined = ((game || '') + ' ' + (m.league || '')).toLowerCase();
-                    if (!/премьер|лига|уефа|россия|nba|кхл|dota|cs2|англия/.test(combined)) return false;
+                    if (!/премьер|лига чемп|лига европы|россия|nba|кхл|нхл|dota|cs2|valorant|atp|wta|ufc|евролига|бундеслига|серия a|ла лига|лига 1/.test(combined)) return false;
                 }
                 if (favoritesOnly && !favorites.includes(m.id)) return false;
                 if (q) {

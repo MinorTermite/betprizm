@@ -22,27 +22,131 @@ OUTPUT_FILE = "matches.json"
 
 # Маппинг спортов по началу названия лиги
 SPORT_MAPPING = {
+    # ── FOOTBALL ──────────────────────────────────────────────
     'Лига чемпионов УЕФА': 'football',
     'Лига Европы УЕФА': 'football',
     'Лига конференций УЕФА': 'football',
+    'УЕФА': 'football',
+    'UEFA': 'football',
     'Англия. Премьер-лига': 'football',
+    'Англия. Чемпионшип': 'football',
+    'Англия. Лига 1': 'football',
+    'Англия. Лига 2': 'football',
     'Англия. Кубок': 'football',
+    'Англия. Кубок Лиги': 'football',
     'Испания. Ла Лига': 'football',
-    'Италия. Серия A': 'football',
+    'Испания. Сегунда': 'football',
+    'Испания. Кубок Короля': 'football',
     'Германия. Бундеслига': 'football',
+    'Германия. 2. Бундеслига': 'football',
+    'Германия. Кубок': 'football',
+    'Италия. Серия A': 'football',
+    'Италия. Серия B': 'football',
+    'Итальянский. Кубок': 'football',
     'Франция. Лига 1': 'football',
+    'Франция. Лига 2': 'football',
     'Россия. Премьер-лига': 'football',
+    'Россия. ФНЛ': 'football',
     'Россия. Кубок': 'football',
+    'Нидерланды. Эредивизие': 'football',
+    'Португалия. Примейра Лига': 'football',
+    'Турция. Суперлига': 'football',
+    'Шотландия. Премьершип': 'football',
+    'Бельгия. Про Лига': 'football',
+    'Бразилия. Серия A': 'football',
+    'Аргентина. Примера Дивисьон': 'football',
+    'США. MLS': 'football',
+    'MLS': 'football',
+    'Мексика. Лига MX': 'football',
+    'КОНМЕБОЛ. Копа Либертадорес': 'football',
+    'КОНКАКАФ': 'football',
+    'Саудовская Аравия. Про Лига': 'football',
+    'Япония. Джей-Лига': 'football',
+    'Южная Корея. К-Лига': 'football',
+    'Австралия. A-League': 'football',
+    'Африка. КАФ': 'football',
+    'Азия. AFC': 'football',
+    'Греция. Суперлига': 'football',
+    'Украина. Премьер-лига': 'football',
+    'Польша. Экстракласа': 'football',
+    'Чехия. Первая лига': 'football',
+    'Австрия. Бундеслига': 'football',
+    'Швейцария. Суперлига': 'football',
+    'Дания. Суперлига': 'football',
+    'Норвегия. Элитесерия': 'football',
+    'Швеция. Алльсвенскан': 'football',
+    # ── HOCKEY ────────────────────────────────────────────────
     'КХЛ': 'hockey',
     'НХЛ': 'hockey',
     'NHL': 'hockey',
+    'ВХЛ': 'hockey',
+    'МХЛ': 'hockey',
+    'AHL': 'hockey',
+    'ECHL': 'hockey',
+    'Швеция. SHL': 'hockey',
+    'Финляндия. Liiga': 'hockey',
+    'Чехия. Extraliga': 'hockey',
+    'Германия. DEL': 'hockey',
+    'Швейцария. National League': 'hockey',
+    'Беларусь. Экстралига': 'hockey',
+    'Казахстан. ЧРК': 'hockey',
+    'Австрия. ICEHL': 'hockey',
+    'Словакия. Extraliga': 'hockey',
+    # ── BASKETBALL ────────────────────────────────────────────
     'NBA': 'basket',
+    'НБА': 'basket',
     'Евролига': 'basket',
-    'Dota 2': 'esports',
+    'EuroLeague': 'basket',
+    'EuroCup': 'basket',
+    'Единая лига ВТБ': 'basket',
+    'Испания. ACB': 'basket',
+    'Турция. BSL': 'basket',
+    'Италия. LBA': 'basket',
+    'Франция. Про A': 'basket',
+    'Германия. BBL': 'basket',
+    'Греция. HEBA A1': 'basket',
+    'Израиль. Winner League': 'basket',
+    'Австралия. NBL': 'basket',
+    'Китай. CBA': 'basket',
+    'ФИБА': 'basket',
+    'FIBA': 'basket',
+    # ── ESPORTS ───────────────────────────────────────────────
     'CS2': 'esports',
     'Counter-Strike': 'esports',
+    'Dota 2': 'esports',
     'Valorant': 'esports',
     'League of Legends': 'esports',
+    'LoL': 'esports',
+    'Rocket League': 'esports',
+    'RLCS': 'esports',
+    'Overwatch': 'esports',
+    'PUBG': 'esports',
+    'Apex Legends': 'esports',
+    'Rainbow Six': 'esports',
+    'Hearthstone': 'esports',
+    'StarCraft': 'esports',
+    # ── TENNIS ────────────────────────────────────────────────
+    'ATP': 'tennis',
+    'WTA': 'tennis',
+    'ITF': 'tennis',
+    'Теннис': 'tennis',
+    # ── VOLLEYBALL ────────────────────────────────────────────
+    'CEV': 'volleyball',
+    'ВНЛ': 'volleyball',
+    'VNL': 'volleyball',
+    'Россия. Суперлига': 'volleyball',
+    'Польша. PlusLiga': 'volleyball',
+    'Италия. SuperLega': 'volleyball',
+    'Волейбол': 'volleyball',
+    # ── MMA ───────────────────────────────────────────────────
+    'UFC': 'mma',
+    'Bellator': 'mma',
+    'ONE Championship': 'mma',
+    'ONE FC': 'mma',
+    'ACB MMA': 'mma',
+    'PFL': 'mma',
+    'M-1': 'mma',
+    'Absolute Championship': 'mma',
 }
 
 def norm(s):
@@ -55,14 +159,20 @@ def detect_sport(league):
         if league.startswith(key):
             return sport
     ll = league.lower()
-    if any(k in ll for k in ['футбол', 'лига', 'премьер', 'кубок', 'uefa', 'уефа', 'серия', 'бундес', 'ла лига']):
+    if any(k in ll for k in ['футбол', 'лига', 'премьер', 'кубок', 'уефа', 'серия', 'бундес', 'ла лига', 'копа', 'mls']):
         return 'football'
-    if any(k in ll for k in ['хоккей', 'кхл', 'нхл', 'hockey', 'nhl']):
+    if any(k in ll for k in ['хоккей', 'кхл', 'нхл', 'hockey', 'nhl', 'ahl', 'shl', 'liiga', 'del']):
         return 'hockey'
-    if any(k in ll for k in ['баскет', 'nba', 'евролига', 'basketball']):
+    if any(k in ll for k in ['баскет', 'nba', 'евролига', 'basketball', 'vtb', 'acb', 'bbl']):
         return 'basket'
-    if any(k in ll for k in ['dota', 'cs2', 'counter-strike', 'киберспорт', 'esports', 'valorant']):
+    if any(k in ll for k in ['dota', 'cs2', 'counter-strike', 'valorant', 'esports', 'rlcs', 'pubg', 'apex']):
         return 'esports'
+    if any(k in ll for k in ['теннис', 'atp', 'wta', 'itf', 'уимблдон', 'ролан гаррос', 'открытый чемпионат']):
+        return 'tennis'
+    if any(k in ll for k in ['волейбол', 'volleyball', 'суперлига', 'cev', 'vnl', 'plusliga', 'superlega']):
+        return 'volleyball'
+    if any(k in ll for k in ['ufc', 'bellator', 'mma', 'one championship', 'pfl', 'acb']):
+        return 'mma'
     return 'football'
 
 def download_csv():
