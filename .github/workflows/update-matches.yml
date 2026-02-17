@@ -1,27 +1,36 @@
-name: Auto-update matches from Google Sheets
+name: Auto-update matches
 
 on:
   schedule:
-    # Каждые 3 часа: 00:00, 03:00, 06:00, 09:00, 12:00, 15:00, 18:00, 21:00 UTC
-    - cron: '0 */3 * * *'
+    # Каждые 2 часа
+    - cron: '0 */2 * * *'
   workflow_dispatch: # Ручной запуск из GitHub UI
 
+permissions:
+  contents: write
+
 jobs:
-  sync:
+  update:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 10
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
-      - name: Sync from Google Sheets
+      - name: Install dependencies
+        run: pip install requests 2>/dev/null || true
+
+      - name: Sync matches from Google Sheets
         run: python update_matches.py
+        continue-on-error: true
 
       - name: Check for changes
         id: check
