@@ -78,14 +78,50 @@ function detectSport(league) {
   return 'football';
 }
 
+function isValidOdd(oddStr, allowDash = false) {
+  const s = (oddStr || '').trim();
+  if (!s || s === '0.00') return false;
+  if (allowDash && s === '—') return true;
+  const val = parseFloat(s);
+  return !isNaN(val) && val >= 1.01 && val <= 999.99;
+}
+
+function isValidMatch(row) {
+  const league = (row[0] || '').trim();
+  const team1 = (row[4] || '').trim();
+  const team2 = (row[5] || '').trim();
+  
+  if (!league || !team1 || !team2) return false;
+  
+  const [p1, x, p2] = [row[6], row[7], row[8]];
+  const ll = league.toLowerCase();
+  const isTennisMma = /atp|wta|теннис|ufc|bellator|mma|one championship/.test(ll);
+  
+  if (isTennisMma) {
+    if (!isValidOdd(p1) || !isValidOdd(p2, true)) return false;
+  } else {
+    if (!isValidOdd(p1) || !isValidOdd(x) || !isValidOdd(p2)) return false;
+  }
+  
+  // Проверка дополнительных коэффициентов
+  const [p1x, p12, px2] = [row[9], row[10], row[11]];
+  if (!isTennisMma) {
+    const validCombo = [p1x, p12, px2].filter(c => isValidOdd(c)).length;
+    if (validCombo < 2) return false;
+  }
+  
+  return true;
+}
+
 function parseCSV(text) {
   const lines = text.trim().split('\n');
   const matches = [];
+  let skipped = 0;
 
   // Пропускаем заголовок
   for (let i = 1; i < lines.length; i++) {
     const row = parseCSVLine(lines[i]);
-    if (row.length < 12) continue;
+    if (row.length < 12) { skipped++; continue; }
 
     const league = (row[0] || '').trim();
     const id = (row[1] || '').trim();
@@ -94,13 +130,16 @@ function parseCSV(text) {
     let team1 = (row[4] || '').trim();
     let team2 = (row[5] || '').trim();
 
-    if (!league || !team1 || !team2) continue;
+    if (!league || !team1 || !team2) { skipped++; continue; }
 
     // Очистка команд от встроенных дат (кириллица: "17 фев 20:45", "1 янв 10:00")
     const dateTimeRx = /\d{1,2}\s+[а-яёА-ЯЁa-zA-Z]{2,4}\s+\d{1,2}:\d{2}/g;
     team1 = team1.replace(dateTimeRx, '').trim();
     team2 = team2.replace(dateTimeRx, '').trim();
-    if (!team1 || !team2) continue;
+    if (!team1 || !team2) { skipped++; continue; }
+    
+    // Строгая валидация матча
+    if (!isValidMatch(row)) { skipped++; continue; }
 
     matches.push({
       sport: detectSport(league),
@@ -118,7 +157,8 @@ function parseCSV(text) {
       px2: (row[11] || '0.00').trim(),
     });
   }
-
+  
+  console.log(`Parsed ${matches.length} matches (skipped ${skipped} invalid)`);
   return matches;
 }
 

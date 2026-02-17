@@ -198,6 +198,67 @@ def download_csv():
             time.sleep(5 * attempt)
     return None
 
+def is_valid_odd(odd_str, allow_dash=False):
+    """
+    Проверка валидности коэффициента.
+    Valid: 1.01-999.99, "—" для тенниса/MMA (если allow_dash=True)
+    """
+    s = norm(odd_str)
+    if not s or s == "0.00":
+        return False
+    if allow_dash and s == "—":
+        return True
+    try:
+        val = float(s)
+        return 1.01 <= val <= 999.99
+    except ValueError:
+        return False
+
+def is_valid_match(row):
+    """
+    Строгая валидация матча.
+    Только реальные данные с корректными коэффициентами.
+    """
+    league = norm(row[0])
+    team1 = norm(row[4])
+    team2 = norm(row[5])
+    
+    # Обязательные поля
+    if not league or not team1 or not team2:
+        return False, "Empty league/teams"
+    
+    # Проверка на "выдуманные" названия (признак тестовых данных)
+    fake_indicators = ['team', 'команда', 'test', 'тест', 'fake', 'спартак', 'динамо']
+    # Но пропускаем реальные команды типа "Спартак Москва", "Динамо Киев"
+    full_team1 = f"{team1} {team2}".lower()
+    
+    # Коэффициенты
+    p1, x, p2 = row[6], row[7], row[8]
+    
+    # Для тенниса/MMA ничьей нет (x = "—")
+    ll = league.lower()
+    is_tennis_mma = any(k in ll for k in ['atp', 'wta', 'теннис', 'ufc', 'bellator', 'mma', 'one championship'])
+    
+    if is_tennis_mma:
+        if not (is_valid_odd(p1) and is_valid_odd(p2, allow_dash=True) and (x == "—" or not is_valid_odd(x))):
+            return False, f"Invalid tennis/MMA odds: {p1}/{x}/{p2}"
+    else:
+        if not (is_valid_odd(p1) and is_valid_odd(x) and is_valid_odd(p2)):
+            return False, f"Invalid odds: {p1}/{x}/{p2}"
+    
+    # Дополнительные коэффициенты (опционально)
+    p1x, p12, px2 = row[9], row[10], row[11]
+    if is_tennis_mma:
+        # Для тенниса/MMA дополнительные коэффициенты могут быть "—"
+        pass
+    else:
+        # Проверяем, что хотя бы некоторые дополнительные коэффициенты валидны
+        valid_combo = sum(1 for c in [p1x, p12, px2] if is_valid_odd(c))
+        if valid_combo < 2:
+            return False, f"Invalid combo odds: {p1x}/{p12}/{px2}"
+    
+    return True, "OK"
+
 def parse_csv_content(csv_content):
     """Парсинг CSV и создание списка матчей"""
     matches = []
@@ -210,6 +271,7 @@ def parse_csv_content(csv_content):
 
     row_num = 0
     skipped = 0
+    skip_reasons = {}
 
     for row in reader:
         row_num += 1
@@ -238,12 +300,19 @@ def parse_csv_content(csv_content):
             skipped += 1
             continue
 
-        p1 = norm(row[6]) or "0.00"
-        x = norm(row[7]) or "0.00"
-        p2 = norm(row[8]) or "0.00"
-        p1x = norm(row[9]) or "0.00"
-        p12 = norm(row[10]) or "0.00"
-        px2 = norm(row[11]) or "0.00"
+        # Строгая валидация матча
+        is_valid, reason = is_valid_match(row)
+        if not is_valid:
+            skipped += 1
+            skip_reasons[reason] = skip_reasons.get(reason, 0) + 1
+            continue
+
+        p1 = norm(row[6])
+        x = norm(row[7])
+        p2 = norm(row[8])
+        p1x = norm(row[9])
+        p12 = norm(row[10])
+        px2 = norm(row[11])
 
         sport = detect_sport(league)
 
@@ -264,6 +333,10 @@ def parse_csv_content(csv_content):
         })
 
     print(f"Parsed {len(matches)} matches from {row_num} rows (skipped {skipped})")
+    if skip_reasons:
+        print("Skip reasons:")
+        for reason, count in sorted(skip_reasons.items(), key=lambda x: -x[1])[:10]:
+            print(f"  - {reason}: {count}")
     return matches
 
 def save_matches(matches):
@@ -277,11 +350,16 @@ def save_matches(matches):
     with open(tmp_file, 'w', encoding='utf-8') as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
 
-    # Атомарная замена
-    if os.path.exists(OUTPUT_FILE):
-        os.replace(tmp_file, OUTPUT_FILE)
-    else:
+    # Атомарная замена (кроссплатформенная)
+    try:
+        if os.path.exists(OUTPUT_FILE):
+            os.remove(OUTPUT_FILE)  # Сначала удаляем старый файл
         os.rename(tmp_file, OUTPUT_FILE)
+    except PermissionError:
+        # Windows: если не удалось удалить, пробуем copy+delete
+        import shutil
+        shutil.copy2(tmp_file, OUTPUT_FILE)
+        os.remove(tmp_file)
 
     size_kb = os.path.getsize(OUTPUT_FILE) / 1024
     print(f"Saved {OUTPUT_FILE} ({size_kb:.1f} KB)")

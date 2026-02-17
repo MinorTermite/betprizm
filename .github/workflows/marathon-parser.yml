@@ -1,0 +1,76 @@
+name: Parse Marathon Bet and update Google Sheets
+
+on:
+  schedule:
+    # Каждый час с 8:00 до 23:00 UTC
+    - cron: '0 8-23 * * *'
+  workflow_dispatch:
+    inputs:
+      full_scan:
+        description: 'Полный скан всех лиг (вместо popular)'
+        required: false
+        default: 'false'
+
+jobs:
+  parse-marathon:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Parse Marathon Bet
+        env:
+          WRITE_SHEETS: ${{ secrets.WRITE_SHEETS || 1 }}
+          SPREADSHEET_ID: ${{ secrets.SPREADSHEET_ID }}
+          SHEET_NAME: ${{ secrets.SHEET_NAME || Matches }}
+        run: |
+          # Создаём credentials из секрета
+          if [ -n "${{ secrets.GOOGLE_CREDENTIALS }}" ]; then
+            echo '${{ secrets.GOOGLE_CREDENTIALS }}' > credentials.json
+          fi
+          
+          python marathon_parser.py
+
+      - name: Upload matches.json as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: matches-json
+          path: matches.json
+          retention-days: 7
+
+      - name: Summary
+        run: |
+          echo "## Marathon Parser Summary" >> $GITHUB_STEP_SUMMARY
+          echo "- Status: **Completed**" >> $GITHUB_STEP_SUMMARY
+          echo "- Timestamp: $(date -u +'%Y-%m-%d %H:%M:%S UTC')" >> $GITHUB_STEP_SUMMARY
+          if [ -f matches.json ]; then
+            python -c "
+            import json
+            with open('matches.json') as f:
+                data = json.load(f)
+            matches = data.get('matches', [])
+            sports = {}
+            for m in matches:
+                sports[m['sport']] = sports.get(m['sport'], 0) + 1
+            print(f'- Total matches: {len(matches)}')
+            print('- By sport:')
+            for sport, count in sorted(sports.items()):
+                print(f'  - {sport}: {count}')
+            " >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: Cleanup credentials
+        run: rm -f credentials.json

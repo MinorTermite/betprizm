@@ -1,9 +1,11 @@
 # 💎 PRIZMBET — Криптобукмекер на PRIZM
 
-![GitHub last commit](https://img.shields.io/github/last-commit/YOUR_USERNAME/prizmbet-final)
+![GitHub last commit](https://img.shields.io/github/last-commit/GravMix/prizmbet-final)
 ![Netlify Status](https://img.shields.io/badge/netlify-deployed-brightgreen)
 
-Современный криптобукмекер на монетах PRIZM. Статический сайт с автоматическим обновлением линии матчей через Google Sheets + Netlify Functions.
+Современный криптобукмекер на монетах PRIZM. **Автоматический парсинг реальных матчей** с Marathon Bet через Google Sheets.
+
+**Только реальные матчи** — все данные проходят строгую валидацию коэффициентов.
 
 ---
 
@@ -16,30 +18,66 @@
 ## 🏗 Архитектура
 
 ```
-GitHub репозиторий
-├── index.html              # Фронтенд (один файл, весь JS внутри)
-├── matches.json            # Актуальная линия (авто-обновляется через CI)
-├── netlify/
-│   └── functions/
-│       └── update-matches.js   # Serverless-функция: CSV → JSON
-├── .github/
-│   └── workflows/
-│       └── update-matches.yml  # GitHub Actions: синхронизация каждые 3 часа
-└── update_matches.py       # Python-скрипт синхронизации (используется в CI)
+Marathon Bet (marathonbet.ru)
+         ↓ (автоматический парсинг каждый час)
+   marathon_parser.py
+         ↓
+Google Sheets (линия матчей)
+         ↓ CSV export / API
+Netlify Function / GitHub Actions
+         ↓ парсинг + маппинг спорта + валидация
+matches.json  →  index.html (фронтенд)
 ```
 
-**Поток данных:**
+### Файлы проекта
+
 ```
-Google Sheets (линия матчей)
-    ↓ CSV export
-Netlify Function / GitHub Actions
-    ↓ парсинг + маппинг спорта
-matches.json  →  index.html (фронтенд)
+GitHub репозиторий
+├── index.html                  # Фронтенд (один файл, весь JS внутри)
+├── matches.json                # Актуальная линия (авто-обновляется)
+├── marathon_parser.py          # Парсер Marathon Bet → Google Sheets
+├── update_matches.py           # Синхронизация Google Sheets → matches.json
+├── netlify/
+│   └── functions/
+│       └── update-matches.js   # Serverless-функция: CSV → JSON (live)
+├── .github/
+│   └── workflows/
+│       ├── marathon-parser.yml    # Парсинг Marathon Bet (каждый час)
+│       └── update-matches.yml     # Синхронизация Sheets (каждые 2 часа)
+└── GOOGLE_SHEETS_SETUP.md    # Инструкция по настройке API
 ```
 
 ---
 
 ## ⚙️ Настройка
+
+### 🚀 Быстрый старт (Автоматический парсинг)
+
+Для автоматического парсинга матчей с Marathon Bet:
+
+1. **Настройте Google Sheets API** — см. [`GOOGLE_SHEETS_SETUP.md`](GOOGLE_SHEETS_SETUP.md)
+
+2. **Добавьте секреты GitHub** (Settings → Secrets and variables → Actions):
+   ```
+   SPREADSHEET_ID=ваш_ID_таблицы
+   GOOGLE_CREDENTIALS={содержимое credentials.json}
+   WRITE_SHEETS=1
+   ```
+
+3. **Запустите парсер**:
+   - Автоматически: каждый час с 8:00 до 23:00 UTC
+   - Вручную: Actions → Parse Marathon Bet → Run workflow
+
+4. **Готово!** Матчи автоматически:
+   - Парсятся с Marathon Bet
+   - Записываются в Google Sheets
+   - Обновляются на сайте
+
+---
+
+### 📖 Ручное управление Google Sheets
+
+Если вы хотите заполнять таблицу вручную:
 
 ### 1. Google Sheets
 
@@ -83,19 +121,34 @@ SHEET_GID=0
 
 ## 🔄 Автообновление
 
-### GitHub Actions (каждые 3 часа)
-Workflow `.github/workflows/update-matches.yml` запускается автоматически и:
-1. Скачивает CSV из Google Sheets
-2. Парсит матчи (`update_matches.py`)
-3. Коммитит обновлённый `matches.json` в репозиторий
-4. Netlify автоматически деплоит новую версию
+### 📡 Поток данных
+
+```
+Marathon Bet
+    ↓ (каждый час, 8:00-23:00 UTC)
+marathon_parser.py → Google Sheets
+    ↓ (каждые 2 часа)
+update_matches.py → matches.json → Netlify → Сайт
+```
+
+### GitHub Actions
+
+| Workflow | Расписание | Описание |
+|----------|------------|----------|
+| `marathon-parser.yml` | Каждый час (8:00-23:00 UTC) | Парсит Marathon Bet → Google Sheets |
+| `update-matches.yml` | Каждые 2 часа | Google Sheets → matches.json → деплой |
 
 ### Ручной запуск
+
 ```bash
-# Локально
+# Парсинг Marathon Bet → Google Sheets
+python marathon_parser.py
+
+# Синхронизация Google Sheets → matches.json
 python update_matches.py
 
 # Через GitHub Actions UI
+# Actions → Parse Marathon Bet → Run workflow
 # Actions → Auto-update matches → Run workflow
 ```
 
@@ -109,6 +162,9 @@ python update_matches.py
 | 🏒 Хоккей | КХЛ, НХЛ |
 | 🏀 Баскетбол | NBA, Евролига |
 | 🎮 Киберспорт | CS2, Dota 2, Valorant и др. |
+| 🎾 Теннис | ATP, WTA, ITF |
+| 🏐 Волейбол | CEV, ВНЛ, Суперлига |
+| 🥊 MMA | UFC, Bellator, ONE Championship |
 
 ---
 
@@ -135,7 +191,7 @@ python update_matches.py
 
 ```bash
 # Клонировать
-git clone https://github.com/YOUR_USERNAME/prizmbet-final.git
+git clone https://github.com/GravMix/prizmbet-final.git
 cd prizmbet-final
 
 # Запустить локальный сервер
@@ -150,3 +206,34 @@ python update_matches.py
 ---
 
 *© 2026 PRIZMBET — Ответственная игра*
+
+---
+
+## 🔧 Разработка и правки
+
+### Ветки
+- `master` — продакшн (деплоится на Netlify автоматически)
+- `dev` — разработка (рекомендуется создать для правок)
+
+### Рабочий процесс
+```bash
+# Создать ветку для правок
+git checkout -b dev
+
+# Внести изменения...
+
+# Закоммитить
+git add .
+git commit -m "feat: описание изменений"
+
+# Влить в master для деплоя
+git checkout master
+git merge dev
+git push origin master
+```
+
+### Структура index.html
+Весь фронтенд — один файл `index.html`. Основные секции:
+- `<style>` — CSS стили (~600 строк)  
+- `<body>` — HTML разметка
+- `<script>` — JavaScript логика (~400 строк): загрузка матчей, фильтры, поиск, модалки
