@@ -1,4 +1,4 @@
-# Python
+# ─── Python ───────────────────────────────────────────────
 __pycache__/
 *.py[cod]
 *$py.class
@@ -6,47 +6,47 @@ __pycache__/
 .Python
 env/
 venv/
+.venv/
 ENV/
 build/
-develop-eggs/
 dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
 *.egg-info/
 .installed.cfg
 *.egg
 
-# Logs
+# ─── Логи и временные файлы ───────────────────────────────
 *.log
 update_log.txt
+*.tmp
+*.bak
+matches.json.tmp
 
-# IDEs
+# ─── IDE ──────────────────────────────────────────────────
 .vscode/
 .idea/
 *.swp
 *.swo
 *~
 
-# OS
+# ─── OS ───────────────────────────────────────────────────
 .DS_Store
 Thumbs.db
 desktop.ini
+ehthumbs.db
 
-# Credentials
+# ─── Секреты и ключи ──────────────────────────────────────
 credentials.json
 *.pem
 *.key
+.env
+.env.local
+.env.*.local
+secrets.json
 
-# Local test data
+# ─── Netlify ──────────────────────────────────────────────
+.netlify/
+node_modules/
+
+# ─── Тестовые данные ──────────────────────────────────────
 test_*.json
 temp_*.json
-
-# Netlify
-.netlify/

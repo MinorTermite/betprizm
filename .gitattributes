@@ -1,0 +1,20 @@
+# Нормализация окончаний строк
+* text=auto eol=lf
+
+# Явно текстовые файлы
+*.html text eol=lf
+*.js text eol=lf
+*.json text eol=lf
+*.py text eol=lf
+*.md text eol=lf
+*.yml text eol=lf
+*.toml text eol=lf
+*.txt text eol=lf
+*.bat text eol=crlf
+
+# Бинарные файлы
+*.png binary
+*.jpg binary
+*.gif binary
+*.mp4 binary
+*.ico binary

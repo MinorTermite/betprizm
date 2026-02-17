@@ -119,8 +119,10 @@ def parse_csv_content(csv_content):
             continue
 
         # Очистка: иногда дата/время попадает в имя команды
-        team1 = re.sub(r'\d{1,2}\s+\w{3}\s+\d{1,2}:\d{2}', '', team1).strip()
-        team2 = re.sub(r'\d{1,2}\s+\w{3}\s+\d{1,2}:\d{2}', '', team2).strip()
+        # Regex поддерживает кириллические месяцы: "17 фев 20:45", "1 янв 10:00"
+        DATE_TIME_RX = r'\d{1,2}\s+[а-яёА-ЯЁa-zA-Z]{2,4}\s+\d{1,2}:\d{2}'
+        team1 = re.sub(DATE_TIME_RX, '', team1).strip()
+        team2 = re.sub(DATE_TIME_RX, '', team2).strip()
 
         if not team1 or not team2:
             skipped += 1

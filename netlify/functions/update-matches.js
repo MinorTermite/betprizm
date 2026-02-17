@@ -5,8 +5,9 @@ const SHEET_ID = process.env.SHEET_ID || '1QkVj51WMKSd6-LU4vZK3dYPk6QLQIO014ydpA
 const GID = process.env.SHEET_GID || '0';
 const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${GID}`;
 
-// Маппинг спортов
+// Маппинг спортов (ключ — начало названия лиги)
 const SPORT_MAP = {
+  // Футбол
   'Лига чемпионов УЕФА': 'football',
   'Лига Европы УЕФА': 'football',
   'Лига конференций УЕФА': 'football',
@@ -18,13 +19,34 @@ const SPORT_MAP = {
   'Франция. Лига 1': 'football',
   'Россия. Премьер-лига': 'football',
   'Россия. Кубок': 'football',
+  'MLS': 'football',
+  'Бразилия': 'football',
+  'Аргентина': 'football',
+  'Нидерланды': 'football',
+  'Португалия': 'football',
+  'Турция': 'football',
+  // Хоккей
   'КХЛ': 'hockey',
   'НХЛ': 'hockey',
   'NHL': 'hockey',
+  'ВХЛ': 'hockey',
+  'MHL': 'hockey',
+  'AHL': 'hockey',
+  // Баскетбол
   'NBA': 'basket',
+  'НБА': 'basket',
   'Евролига': 'basket',
+  'Единая лига ВТБ': 'basket',
+  'EuroLeague': 'basket',
+  // Киберспорт
   'Dota 2': 'esports',
   'CS2': 'esports',
+  'Counter-Strike': 'esports',
+  'Valorant': 'esports',
+  'League of Legends': 'esports',
+  'LoL': 'esports',
+  'Overwatch': 'esports',
+  'Rocket League': 'esports',
 };
 
 function detectSport(league) {
@@ -57,9 +79,10 @@ function parseCSV(text) {
 
     if (!league || !team1 || !team2) continue;
 
-    // Очистка команд от встроенных дат
-    team1 = team1.replace(/\d{1,2}\s+\w{3}\s+\d{1,2}:\d{2}/g, '').trim();
-    team2 = team2.replace(/\d{1,2}\s+\w{3}\s+\d{1,2}:\d{2}/g, '').trim();
+    // Очистка команд от встроенных дат (кириллица: "17 фев 20:45", "1 янв 10:00")
+    const dateTimeRx = /\d{1,2}\s+[а-яёА-ЯЁa-zA-Z]{2,4}\s+\d{1,2}:\d{2}/g;
+    team1 = team1.replace(dateTimeRx, '').trim();
+    team2 = team2.replace(dateTimeRx, '').trim();
     if (!team1 || !team2) continue;
 
     matches.push({
