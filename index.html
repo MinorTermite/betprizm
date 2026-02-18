@@ -688,6 +688,7 @@
         .favorite-btn:hover { transform: scale(1.2); filter: grayscale(50%) brightness(0.8); }
         .favorite-btn.active { filter: grayscale(0%) brightness(1); }
 
+
         .match-time {
             font-size: 0.8rem;
             color: var(--text-secondary);
@@ -769,6 +770,16 @@
         }
 
         .odd-item:active { transform: translateY(0) scale(0.95); }
+
+        .odd-item--na {
+            background: rgba(0, 0, 0, 0.12);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: var(--radius-md);
+            padding: 10px 4px;
+            text-align: center;
+            cursor: default;
+            opacity: 0.4;
+        }
 
         .odd-label {
             font-size: 0.68rem;
@@ -1008,6 +1019,95 @@
             color: var(--text-tertiary);
         }
 
+        /* ===== БК SOURCE BADGE ===== */
+        .bk-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 3px 10px;
+            border-radius: var(--radius-pill);
+            font-size: 0.68rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            text-decoration: none;
+            transition: all 0.25s;
+            cursor: pointer;
+        }
+        .bk-badge:hover {
+            transform: translateY(-1px);
+            filter: brightness(1.2);
+        }
+        .bk-badge--winline {
+            background: rgba(0, 128, 55, 0.15);
+            border: 1px solid rgba(0, 128, 55, 0.4);
+            color: #34d399;
+        }
+        .bk-badge--marathon {
+            background: rgba(0, 100, 200, 0.15);
+            border: 1px solid rgba(0, 100, 200, 0.4);
+            color: #60a5fa;
+        }
+        .bk-badge--fonbet {
+            background: rgba(255, 165, 0, 0.15);
+            border: 1px solid rgba(255, 165, 0, 0.4);
+            color: #fbbf24;
+        }
+        .match-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 3px 10px;
+            border-radius: var(--radius-pill);
+            font-size: 0.68rem;
+            font-weight: 600;
+            text-decoration: none;
+            color: var(--accent-bright);
+            background: var(--accent-soft);
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            transition: all 0.25s;
+        }
+        .match-link:hover {
+            background: rgba(139, 92, 246, 0.2);
+            border-color: var(--accent);
+            transform: translateY(-1px);
+        }
+        /* ===== БК PAGES NAV ===== */
+        .bk-nav {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 14px 0;
+        }
+        .bk-nav-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 20px;
+            border-radius: var(--radius-pill);
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-decoration: none;
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+            background: var(--bg-card);
+            backdrop-filter: blur(16px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .bk-nav-link:hover {
+            border-color: var(--border-hover);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+        .bk-nav-link--winline { border-color: rgba(0, 128, 55, 0.3); }
+        .bk-nav-link--winline:hover { border-color: #34d399; box-shadow: 0 4px 20px rgba(0, 128, 55, 0.2); }
+        .bk-nav-link--marathon { border-color: rgba(0, 100, 200, 0.3); }
+        .bk-nav-link--marathon:hover { border-color: #60a5fa; box-shadow: 0 4px 20px rgba(0, 100, 200, 0.2); }
+        .bk-nav-link--fonbet { border-color: rgba(255, 165, 0, 0.3); }
+        .bk-nav-link--fonbet:hover { border-color: #fbbf24; box-shadow: 0 4px 20px rgba(255, 165, 0, 0.2); }
+
         /* ===== RESPONSIVE ===== */
         @media (min-width: 768px) {
             .container { padding: 20px; }
@@ -1105,6 +1205,13 @@
             </div>
         </header>
 
+        <!-- БК НАВИГАЦИЯ -->
+        <nav class="bk-nav">
+            <a href="winline.html" class="bk-nav-link bk-nav-link--winline">🟢 Winline</a>
+            <a href="marathon.html" class="bk-nav-link bk-nav-link--marathon">🔵 Marathonbet</a>
+            <a href="fonbet.html" class="bk-nav-link bk-nav-link--fonbet">🟠 Fonbet</a>
+        </nav>
+
         <!-- STATS -->
         <div class="stats-bar">
             <div class="stat-card">
@@ -1179,7 +1286,8 @@
         // ===== КОНФИГУРАЦИЯ =====
         const AUTO_REFRESH_MS = 5 * 60 * 1000;
         const DATA_STALE_HOURS = 48;
-        const NETLIFY_FN_URL = '/.netlify/functions/update-matches';
+        const SITE_BASE = 'https://minortermite.github.io/betprizm';
+        const NETLIFY_FN_URL = SITE_BASE + '/matches.json';
         const LS_CACHE_KEY = 'prizmbet_matches_cache';
 
         // ===== Кэш матчей в localStorage для мгновенного показа =====
@@ -1515,20 +1623,50 @@
                     const countdown = getCountdownText(match);
 
                     function oddBtn(label, value) {
-                        const val = escapeHtml(value || '0.00');
+                        const raw = value || '';
+                        const unavail = !raw || raw === '—' || raw === '-' || raw === '0.00';
+                        const val = escapeHtml(unavail ? '—' : raw);
                         const dt = escapeHtml((match.date||'') + ' ' + (match.time||''));
                         const lg = escapeHtml(match.league||'');
+                        if (unavail) {
+                            return `<div class="odd-item odd-item--na">
+                                <div class="odd-label">${label}</div>
+                                <div class="odd-value">${val}</div>
+                            </div>`;
+                        }
                         return `<div class="odd-item" onclick="copyBet('${eid}','${teams.replace(/'/g,"\\'")}','${label}','${val}','${dt}','${lg}')">
                             <div class="odd-label">${label}</div>
                             <div class="odd-value">${val}</div>
                         </div>`;
                     }
 
+                    // Определяем БК-источник и ссылку для проверки
+                    const matchUrl = match.match_url || '';
+                    const source = (match.source || '').toLowerCase();
+                    let bkBadge = '';
+                    let verifyLink = '';
+                    if (matchUrl) {
+                        if (matchUrl.includes('winline')) {
+                            bkBadge = `<span class="bk-badge bk-badge--winline">Winline</span>`;
+                        } else if (matchUrl.includes('marathon')) {
+                            bkBadge = `<span class="bk-badge bk-badge--marathon">Marathon</span>`;
+                        } else if (matchUrl.includes('fonbet')) {
+                            bkBadge = `<span class="bk-badge bk-badge--fonbet">Fonbet</span>`;
+                        }
+                        verifyLink = `<a href="${escapeHtml(matchUrl)}" target="_blank" rel="noopener" class="match-link" title="Проверить коэффициент на сайте БК">🔍 Проверить</a>`;
+                    } else if (source === 'winline' && eid) {
+                        const wUrl = 'https://winline.ru/stavki/event/' + eid;
+                        bkBadge = `<span class="bk-badge bk-badge--winline">Winline</span>`;
+                        verifyLink = `<a href="${wUrl}" target="_blank" rel="noopener" class="match-link" title="Проверить коэффициент на Winline">🔍 Проверить</a>`;
+                    }
+
                     card.id = `match-${eid}`;
                     card.innerHTML = `
                         <div class="match-header">
                             <a class="match-id" href="#match-${eid}" onclick="shareMatch('${eid}','${teams.replace(/'/g,"\\'")}','${escapeHtml((match.date||'')+' '+(match.time||''))}'); return false;" title="Скопировать ссылку на матч">#${eid}</a>
+                            ${bkBadge}
                             <div style="display:flex;align-items:center;gap:4px;margin-left:auto;">
+                                ${verifyLink}
                                 <button class="share-btn" onclick="shareMatch('${eid}','${teams.replace(/'/g,"\\'")}','${escapeHtml((match.date||'')+' '+(match.time||''))}')" title="Поделиться матчем">🔗</button>
                                 <button class="favorite-btn ${isFavorite ? 'active' : ''}" onclick="toggleFavorite('${eid}')">
                                     ${isFavorite ? '⭐' : '☆'}
@@ -1549,7 +1687,8 @@
                             ${oddBtn('1X', match.p1x)}
                             ${oddBtn('12', match.p12)}
                             ${oddBtn('X2', match.px2)}
-                        </div>`;
+                        </div>
+                        `;
                     section.appendChild(card);
                 });
                 content.appendChild(section);
@@ -1585,20 +1724,20 @@
             }
 
             let data = null, source = 'static';
-            // 2. Пробуем статичный matches.json
+            // 2. Пробуем статичный matches.json (основной источник на GitHub Pages)
             try {
                 const r = await fetch('matches.json?t=' + Date.now());
                 if (r.ok) data = await r.json();
             } catch (e) { console.warn('static fail:', e.message); }
-            // 3. Если устаревший — пробуем Netlify функцию (Google Sheets)
-            if (!data?.matches?.length || isDataStale(data.last_update)) {
+            // 3. Fallback — пробуем абсолютный URL (GitHub Pages)
+            if (!data?.matches?.length) {
                 try {
-                    const r = await fetch(NETLIFY_FN_URL);
+                    const r = await fetch(NETLIFY_FN_URL + '?t=' + Date.now());
                     if (r.ok) {
                         const live = await r.json();
                         if (live?.matches?.length) { data = live; source = 'live'; }
                     }
-                } catch (e) { console.warn('fn fail:', e.message); }
+                } catch (e) { console.warn('fallback fail:', e.message); }
             }
             if (data?.matches?.length) {
                 setCachedMatches(data); // сохраняем в кэш
@@ -1614,10 +1753,11 @@
             document.getElementById('lastUpdate').innerHTML = '<span class="loading"></span> Обновление...';
             let data = null;
             try {
-                const r = await fetch(NETLIFY_FN_URL);
+                const r = await fetch('matches.json?t=' + Date.now());
                 if (r.ok) data = await r.json();
             } catch (e) {}
             if (data?.matches?.length) {
+                setCachedMatches(data);
                 renderMatches(data.matches);
                 showStatus(data.last_update, 'live');
                 showToast('Линия обновлена!');

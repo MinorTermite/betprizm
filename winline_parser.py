@@ -239,8 +239,9 @@ def process_raw(raw: dict, sport: str) -> dict | None:
     DATE_RX = r'\d{1,2}\s+[а-яёА-ЯЁa-zA-Z]{2,3}\s+\d{1,2}:\d{2}'
     team1 = re.sub(DATE_RX, '', team1).strip()
     team2 = re.sub(DATE_RX, '', team2).strip()
-    team1 = re.sub(r'^\W+|\W+$', '', team1).strip()
-    team2 = re.sub(r'^\W+|\W+$', '', team2).strip()
+    # Убираем мусорные символы в начале/конце, но сохраняем скобки ()
+    team1 = re.sub(r'^[^\w(]+|[^\w)]+$', '', team1).strip()
+    team2 = re.sub(r'^[^\w(]+|[^\w)]+$', '', team2).strip()
 
     if not team1 or not team2 or team1 == team2:
         return None
@@ -268,6 +269,7 @@ def process_raw(raw: dict, sport: str) -> dict | None:
         "p1x":       "—",
         "p12":       "—",
         "px2":       "—",
+        "source":    "winline",
     }
 
 
@@ -402,10 +404,22 @@ def save_matches(matches: List[dict]) -> None:
 
     unique.sort(key=sort_key)
 
+    # Убираем матчи без коэффициентов И без дат (бесполезные)
+    valid = [m for m in unique if not (
+        m.get('p1') == '—' and m.get('x') == '—' and m.get('p2') == '—'
+        and not m.get('date')
+    )]
+
+    # Добавляем source к каждому матчу
+    for m in valid:
+        if 'source' not in m:
+            m['source'] = 'winline'
+
     data = {
         "last_update": datetime.datetime.now(datetime.timezone.utc).strftime('%Y-%m-%d %H:%M:%S'),
         "source": "winline.ru",
-        "matches": unique,
+        "total": len(valid),
+        "matches": valid,
     }
 
     tmp = OUTPUT_FILE + ".tmp"

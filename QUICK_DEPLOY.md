@@ -75,7 +75,7 @@ https://app.netlify.com
 ```
 Netlify → Site settings → Change site name
 → prizmbet → Сохранить
-→ Получите: https://prizmbet.netlify.app
+→ Получите: https://minortermite.github.io/betprizm
 ```
 
 ---

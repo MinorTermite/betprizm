@@ -1,40 +1,45 @@
 # 💎 PRIZMBET — Криптобукмекер на PRIZM
 
-![GitHub last commit](https://img.shields.io/github/last-commit/YOUR_USERNAME/prizmbet-final)
-![Netlify Status](https://img.shields.io/badge/netlify-deployed-brightgreen)
+![GitHub last commit](https://img.shields.io/github/last-commit/MinorTermite/betprizm)
+![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-deployed-brightgreen)
 
-Современный криптобукмекер на монетах PRIZM. Статический сайт с автоматическим обновлением линии матчей через Google Sheets + Netlify Functions.
+Современный криптобукмекер на монетах PRIZM. Статический сайт с автоматическим обновлением линии матчей через парсинг реальных букмекеров (Winline, Marathon) + GitHub Actions + GitHub Pages.
 
 ---
 
 ## 🌐 Демо
 
-**[betprizm.netlify.app](https://betprizm.netlify.app)**
+**[minortermite.github.io/betprizm](https://minortermite.github.io/betprizm)**
 
 ---
 
 ## 🏗 Архитектура
 
 ```
-GitHub репозиторий
-├── index.html              # Фронтенд (один файл, весь JS внутри)
+GitHub репозиторий (MinorTermite/betprizm)
+├── index.html              # Главный фронтенд (все виды спорта)
+├── winline.html            # Страница БК Winline
+├── marathon.html           # Страница БК Marathonbet
+├── fonbet.html             # Страница БК Fonbet
 ├── matches.json            # Актуальная линия (авто-обновляется через CI)
-├── netlify/
-│   └── functions/
-│       └── update-matches.js   # Serverless-функция: CSV → JSON
+├── winline_parser.py       # Парсер Winline.ru (Playwright)
+├── marathon_parser.py      # Парсер Marathonbet.ru
+├── parse_all_real.py       # Агрегатор парсеров с дедупликацией
 ├── .github/
 │   └── workflows/
-│       └── update-matches.yml  # GitHub Actions: синхронизация каждые 3 часа
-└── update_matches.py       # Python-скрипт синхронизации (используется в CI)
+│       └── update-matches.yml  # GitHub Actions: парсинг каждые 2 часа
+└── update_matches.py       # Python-скрипт синхронизации
 ```
 
 **Поток данных:**
 ```
-Google Sheets (линия матчей)
-    ↓ CSV export
-Netlify Function / GitHub Actions
-    ↓ парсинг + маппинг спорта
-matches.json  →  index.html (фронтенд)
+Winline.ru + Marathonbet.ru (реальные букмекеры)
+    ↓ Playwright парсинг (headless browser)
+Python парсеры (дедупликация, нормализация)
+    ↓
+matches.json → GitHub Pages
+    ↓
+index.html / winline.html / marathon.html / fonbet.html
 ```
 
 ---
@@ -70,25 +75,22 @@ SHEET_ID=1QkVj51WMKSd6-LU4vZK3dYPk6QLQIO014ydpACtThNk
 SHEET_GID=0
 ```
 
-### 3. Деплой на Netlify
+### 3. Деплой на GitHub Pages
 
-1. Подключите репозиторий на [app.netlify.com](https://app.netlify.com)
-2. Настройки сборки:
-   - **Build command**: _(оставить пустым)_
-   - **Publish directory**: `.`
-3. Добавьте переменные окружения (шаг 2)
-4. Deploy!
+1. Подключите репозиторий: `https://github.com/MinorTermite/betprizm`
+2. В настройках: Settings → Pages → Source: **Deploy from a branch** → `master` / `root`
+3. Сайт будет доступен по адресу: `https://minortermite.github.io/betprizm/`
 
 ---
 
 ## 🔄 Автообновление
 
-### GitHub Actions (каждые 3 часа)
+### GitHub Actions (каждые 2 часа)
 Workflow `.github/workflows/update-matches.yml` запускается автоматически и:
-1. Скачивает CSV из Google Sheets
-2. Парсит матчи (`update_matches.py`)
+1. Парсит реальные матчи с Winline.ru + Marathonbet.ru (Playwright)
+2. Дедуплицирует и нормализует данные
 3. Коммитит обновлённый `matches.json` в репозиторий
-4. Netlify автоматически деплоит новую версию
+4. GitHub Pages автоматически обновляет сайт
 
 ### Ручной запуск
 ```bash
@@ -135,8 +137,8 @@ python update_matches.py
 
 ```bash
 # Клонировать
-git clone https://github.com/YOUR_USERNAME/prizmbet-final.git
-cd prizmbet-final
+git clone https://github.com/MinorTermite/betprizm.git
+cd betprizm
 
 # Запустить локальный сервер
 python -m http.server 8000
@@ -150,3 +152,34 @@ python update_matches.py
 ---
 
 *© 2026 PRIZMBET — Ответственная игра*
+
+---
+
+## 🔧 Разработка и правки
+
+### Ветки
+- `master` — продакшн (деплоится на Netlify автоматически)
+- `dev` — разработка (рекомендуется создать для правок)
+
+### Рабочий процесс
+```bash
+# Создать ветку для правок
+git checkout -b dev
+
+# Внести изменения...
+
+# Закоммитить
+git add .
+git commit -m "feat: описание изменений"
+
+# Влить в master для деплоя
+git checkout master
+git merge dev
+git push origin master
+```
+
+### Структура index.html
+Весь фронтенд — один файл `index.html`. Основные секции:
+- `<style>` — CSS стили (~600 строк)  
+- `<body>` — HTML разметка
+- `<script>` — JavaScript логика (~400 строк): загрузка матчей, фильтры, поиск, модалки

@@ -134,7 +134,7 @@ git push -u origin master
 
 6. **Нажмите "Deploy site"**
    - Первый деплой займёт 1-2 минуты
-   - Вы получите URL: `https://your-site-name.netlify.app`
+   - Вы получите URL: `https://minortermite.github.io/betprizm`
 
 ### Шаг 4: Настройка автообновления
 
@@ -163,7 +163,7 @@ GitHub Actions уже настроен! Он автоматически:
 
 1. Site settings → General → Site details
 2. Change site name
-3. Введите своё имя: `prizmbet` → `prizmbet.netlify.app`
+3. Введите своё имя: `prizmbet` → `minortermite.github.io/betprizm`
 
 ### Подключить свой домен
 
@@ -183,7 +183,7 @@ GitHub Actions уже настроен! Он автоматически:
    
    Type: CNAME
    Name: www
-   Value: your-site.netlify.app
+   Value: minortermite.github.io/betprizm
    ```
 
 4. **SSL сертификат:**
@@ -195,7 +195,7 @@ GitHub Actions уже настроен! Он автоматически:
 ## ✅ Проверка работы
 
 ### 1. Проверить основной сайт
-- Откройте: `https://your-site.netlify.app`
+- Откройте: `https://minortermite.github.io/betprizm`
 - Должны загрузиться матчи
 - Проверьте фильтры по спортам
 - Проверьте поиск
@@ -203,7 +203,7 @@ GitHub Actions уже настроен! Он автоматически:
 ### 2. Проверить Netlify Function
 ```bash
 # Откройте в браузере:
-https://your-site.netlify.app/.netlify/functions/update-matches
+https://minortermite.github.io/betprizm/.netlify/functions/update-matches
 ```
 
 Должен вернуть JSON:
@@ -313,6 +313,6 @@ Netlify пересобирает сайт
 - ✅ Работать быстро (Netlify CDN)
 - ✅ Адаптирован под мобильные
 
-**Ссылка на сайт:** `https://your-site.netlify.app`
+**Ссылка на сайт:** `https://minortermite.github.io/betprizm`
 
 Удачи! 💎🚀

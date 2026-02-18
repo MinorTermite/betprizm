@@ -5,7 +5,22 @@
 [functions]
   node_bundler = "esbuild"
 
-# SPA fallback
+# SPA fallback (excludes БК pages)
+[[redirects]]
+  from = "/winline.html"
+  to = "/winline.html"
+  status = 200
+
+[[redirects]]
+  from = "/marathon.html"
+  to = "/marathon.html"
+  status = 200
+
+[[redirects]]
+  from = "/fonbet.html"
+  to = "/fonbet.html"
+  status = 200
+
 [[redirects]]
   from = "/*"
   to = "/index.html"
