@@ -47,6 +47,11 @@ secrets.json
 .netlify/
 node_modules/
 
-# ─── Тестовые данные ──────────────────────────────────────
+# ─── Тестовые / резервные данные ──────────────────────────
 test_*.json
 temp_*.json
+matches_*.json
+*_backup*.json
+
+# ─── Временный файл Marathon (промежуточный) ──────────────
+matches_marathon.json

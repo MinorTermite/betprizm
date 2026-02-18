@@ -4,7 +4,7 @@ on:
   schedule:
     # Каждые 2 часа
     - cron: '0 */2 * * *'
-  workflow_dispatch: # Ручной запуск из GitHub UI
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -12,7 +12,7 @@ permissions:
 jobs:
   update:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
 
     steps:
       - name: Checkout
@@ -20,22 +20,24 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Setup Python
+      - name: Setup Python 3.11
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
-      - name: Install dependencies
+      - name: Install Python dependencies
         run: |
+          pip install --upgrade pip
           pip install -r requirements.txt
-          playwright install chromium --with-deps
 
-      # --- Шаг 1: парсим реальные матчи (Winline + Fonbet) ---
-      - name: Parse matches from Winline + Fonbet
+      - name: Install Playwright browsers
+        run: playwright install chromium --with-deps
+
+      # ── Шаг 1: парсим реальные матчи (Winline + Marathon) ──────────
+      - name: Parse real matches (Winline + Marathon, dedup by teams)
         run: python parse_all_real.py
-        continue-on-error: false
 
-      # --- Шаг 2: загружаем в Google Sheets (через service account) ---
+      # ── Шаг 2: загружаем в Google Sheets ───────────────────────────
       - name: Upload to Google Sheets
         if: success()
         env:
@@ -46,23 +48,22 @@ jobs:
           rm -f credentials.json
         continue-on-error: true
 
-      # --- Шаг 3: коммитим обновлённый matches.json ---
+      # ── Шаг 3: коммитим matches.json если изменился ─────────────────
       - name: Check for changes
         id: check
         run: |
           if git diff --quiet matches.json 2>/dev/null; then
             echo "changed=false" >> $GITHUB_OUTPUT
-            echo "No changes in matches.json"
           else
             echo "changed=true" >> $GITHUB_OUTPUT
-            echo "matches.json has been updated"
+            echo "matches.json updated"
           fi
 
-      - name: Commit and push
+      - name: Commit and push updated matches.json
         if: steps.check.outputs.changed == 'true'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add matches.json
-          git commit -m "auto-update matches [$(date -u +'%Y-%m-%d %H:%M UTC')]"
+          git commit -m "chore: auto-update matches [$(date -u +'%Y-%m-%d %H:%M UTC')]"
           git push
