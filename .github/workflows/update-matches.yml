@@ -12,7 +12,7 @@ permissions:
 jobs:
   update:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
 
     steps:
       - name: Checkout
@@ -26,12 +26,27 @@ jobs:
           python-version: '3.11'
 
       - name: Install dependencies
-        run: pip install requests 2>/dev/null || true
+        run: |
+          pip install -r requirements.txt
+          playwright install chromium --with-deps
 
-      - name: Sync matches from Google Sheets
-        run: python update_matches.py
+      # --- Шаг 1: парсим реальные матчи (Winline + Fonbet) ---
+      - name: Parse matches from Winline + Fonbet
+        run: python parse_all_real.py
+        continue-on-error: false
+
+      # --- Шаг 2: загружаем в Google Sheets (через service account) ---
+      - name: Upload to Google Sheets
+        if: success()
+        env:
+          GOOGLE_CREDENTIALS_JSON: ${{ secrets.GOOGLE_CREDENTIALS_JSON }}
+        run: |
+          echo "$GOOGLE_CREDENTIALS_JSON" > credentials.json
+          python upload_to_sheets.py
+          rm -f credentials.json
         continue-on-error: true
 
+      # --- Шаг 3: коммитим обновлённый matches.json ---
       - name: Check for changes
         id: check
         run: |
