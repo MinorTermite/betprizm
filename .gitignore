@@ -55,3 +55,5 @@ matches_*.json
 
 # ─── Временный файл Marathon (промежуточный) ──────────────
 matches_marathon.json
+"credentials.json"  
+"github_secret.json"  
