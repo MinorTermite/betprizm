@@ -117,6 +117,12 @@ EXTRACT_JS = r"""
             const p1 = mainBtns[0] ? (mainBtns[0].innerText || '').trim() : '—';
             const x  = mainBtns[1] ? (mainBtns[1].innerText || '').trim() : '—';
             const p2 = mainBtns[2] ? (mainBtns[2].innerText || '').trim() : '—';
+            
+            // Двойной шанс — следующие 3 кнопки (1X, 12, X2)
+            const doubleChanceBtns = card.querySelectorAll('[class*="coefficient-button_generic3"]');
+            const p1x = doubleChanceBtns[3] ? (doubleChanceBtns[3].innerText || '').trim() : '—';
+            const p12 = doubleChanceBtns[4] ? (doubleChanceBtns[4].innerText || '').trim() : '—';
+            const px2 = doubleChanceBtns[5] ? (doubleChanceBtns[5].innerText || '').trim() : '—';
 
             // Дата / время — из innerText карточки
             const cardText = (card.innerText || '').replace(/\s+/g, ' ').trim();
@@ -151,7 +157,7 @@ EXTRACT_JS = r"""
                 league: league || 'Линия',
                 dateStr,
                 timeStr,
-                p1, x, p2,
+                p1, x, p2, p1x, p12, px2,
                 cardText: cardText.substring(0, 300)
             });
         });
@@ -183,6 +189,11 @@ EXTRACT_JS = r"""
             const p1 = mainBtns[0] ? (mainBtns[0].innerText || '').trim() : '—';
             const x  = mainBtns[1] ? (mainBtns[1].innerText || '').trim() : '—';
             const p2 = mainBtns[2] ? (mainBtns[2].innerText || '').trim() : '—';
+            
+            // Двойной шанс
+            const p1x = mainBtns[3] ? (mainBtns[3].innerText || '').trim() : '—';
+            const p12 = mainBtns[4] ? (mainBtns[4].innerText || '').trim() : '—';
+            const px2 = mainBtns[5] ? (mainBtns[5].innerText || '').trim() : '—';
 
             const cardText = (card.innerText || '').replace(/\s+/g, ' ').trim();
             let dateStr = '', timeStr = '';
@@ -200,7 +211,7 @@ EXTRACT_JS = r"""
                 }
             }
 
-            results.push({ eventId, href, team1, team2, league: 'Линия', dateStr, timeStr, p1, x, p2, cardText: cardText.substring(0, 200) });
+            results.push({ eventId, href, team1, team2, league: 'Линия', dateStr, timeStr, p1, x, p2, p1x, p12, px2, cardText: cardText.substring(0, 200) });
         });
     }
 
@@ -266,9 +277,9 @@ def process_raw(raw: dict, sport: str) -> dict | None:
         "p1":        fmt_coef(raw.get('p1', '')),
         "x":         fmt_coef(raw.get('x', '')),
         "p2":        fmt_coef(raw.get('p2', '')),
-        "p1x":       "—",
-        "p12":       "—",
-        "px2":       "—",
+        "p1x":       fmt_coef(raw.get('p1x', '')),
+        "p12":       fmt_coef(raw.get('p12', '')),
+        "px2":       fmt_coef(raw.get('px2', '')),
         "source":    "winline",
     }
 
