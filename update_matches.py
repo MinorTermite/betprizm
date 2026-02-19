@@ -266,6 +266,14 @@ def parse_csv_content(csv_content):
         }
         if match_url:
             entry["match_url"] = match_url
+            # Определяем source по URL
+            url_lower = match_url.lower()
+            if 'winline' in url_lower:
+                entry["source"] = "winline"
+            elif 'marathon' in url_lower:
+                entry["source"] = "marathon"
+            elif 'fonbet' in url_lower or 'bkfon' in url_lower:
+                entry["source"] = "fonbet"
         matches.append(entry)
 
     print(f"Parsed {len(matches)} matches from {row_num} rows (skipped {skipped})")
