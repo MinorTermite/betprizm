@@ -32,27 +32,36 @@ jobs:
 
       - name: Install Playwright browsers
         run: playwright install chromium --with-deps
+        continue-on-error: true
 
       # ── Шаг 1: парсим реальные матчи (Winline + Marathon) ──────────
       - name: Parse real matches (Winline + Marathon, dedup by teams)
         run: python parse_all_real.py
+        continue-on-error: true
 
-      # ── Шаг 2: загружаем в Google Sheets ───────────────────────────
+      # ── Шаг 2: загружаем в Google Sheets (если есть credentials) ───
       - name: Upload to Google Sheets
-        if: success()
         env:
           GOOGLE_CREDENTIALS_JSON: ${{ secrets.GOOGLE_CREDENTIALS_JSON }}
         run: |
-          echo "$GOOGLE_CREDENTIALS_JSON" > credentials.json
-          python upload_to_sheets.py
-          rm -f credentials.json
+          if [ -n "$GOOGLE_CREDENTIALS_JSON" ]; then
+            echo "$GOOGLE_CREDENTIALS_JSON" > credentials.json
+            python upload_to_sheets.py || true
+            rm -f credentials.json
+          else
+            echo "GOOGLE_CREDENTIALS_JSON is empty, skip upload"
+          fi
         continue-on-error: true
 
-      # ── Шаг 3: генерируем JSON файлы по БК ─────────────────────────
+      # ── Шаг 3: обновляем matches.json ИЗ Google Sheets (источник истины) ──
+      - name: Sync matches.json from Google Sheets
+        run: python update_matches.py
+
+      # ── Шаг 4: генерируем JSON файлы по БК ─────────────────────────
       - name: Generate bookmaker JSON files
         run: python -c "import json,os; d=json.load(open('matches.json')); [json.dump({'last_update':d['last_update'],'source':s,'total':len(m),'matches':m}, open(f'{s}.json','w',encoding='utf-8'), ensure_ascii=False, indent=2) for s,m in [('winline',[x for x in d['matches'] if x.get('source')=='winline']),('marathon',[x for x in d['matches'] if x.get('source')=='marathon']),('fonbet',[x for x in d['matches'] if x.get('source')=='fonbet'])]]"
 
-      # ── Шаг 4: коммитим matches.json и JSON файлы если изменились ────
+      # ── Шаг 5: коммитим matches.json и JSON файлы если изменились ────
       - name: Check for changes
         id: check
         run: |

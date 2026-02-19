@@ -14,6 +14,13 @@ import sys
 import io
 import os
 
+try:
+    import gspread
+    from google.oauth2.service_account import Credentials
+except Exception:
+    gspread = None
+    Credentials = None
+
 # КОНФИГУРАЦИЯ
 SHEET_ID = os.getenv("SHEET_ID", "1QkVj51WMKSd6-LU4vZK3dYPk6QLQIO014ydpACtThNk")
 GID = os.getenv("SHEET_GID", "0")
@@ -153,6 +160,13 @@ def norm(s):
     """Нормализация строки"""
     return (s or "").strip()
 
+def _norm_header_token(text):
+    t = (text or '').strip().lower()
+    t = t.replace('﻿', '')
+    t = re.sub(r'\s+', ' ', t)
+    return t
+
+
 def detect_sport(league):
     """Определение спорта по названию лиги"""
     for key, sport in SPORT_MAPPING.items():
@@ -174,6 +188,46 @@ def detect_sport(league):
     if any(k in ll for k in ['ufc', 'bellator', 'mma', 'one championship', 'pfl', 'acb']):
         return 'mma'
     return 'football'
+
+def load_rows_from_google_api():
+    """Читает строки из Google Sheets через сервисный аккаунт (если есть secret)."""
+    creds_json = os.getenv("GOOGLE_CREDENTIALS_JSON", "").strip()
+    if not creds_json:
+        return None
+    if gspread is None or Credentials is None:
+        print("WARNING: gspread/google-auth недоступны, пропускаю API-чтение")
+        return None
+
+    try:
+        import json as _json
+        info = _json.loads(creds_json)
+        creds = Credentials.from_service_account_info(
+            info,
+            scopes=[
+                'https://www.googleapis.com/auth/spreadsheets.readonly',
+                'https://www.googleapis.com/auth/drive.readonly',
+            ]
+        )
+        gc = gspread.authorize(creds)
+        ws = gc.open_by_key(SHEET_ID).get_worksheet(int(GID))
+        rows = ws.get_all_values()
+        if not rows:
+            print("WARNING: Google API вернул пустой лист")
+            return None
+
+        # Конвертация в CSV-текст для совместимого парсинга
+        out = io.StringIO()
+        writer = csv.writer(out)
+        writer.writerows(rows)
+        csv_text = out.getvalue()
+        if not csv_text.strip():
+            return None
+        print(f"OK: loaded {len(rows)-1} rows from Google API")
+        return csv_text
+    except Exception as e:
+        print(f"WARNING: Google API read failed: {e}")
+        return None
+
 
 def download_csv():
     """Скачивание CSV из Google Sheets с retry"""
@@ -198,6 +252,63 @@ def download_csv():
             time.sleep(5 * attempt)
     return None
 
+
+
+def _header_index(header):
+    """Определяет индексы колонок для разных форматов таблицы."""
+    if not header:
+        return None
+
+    normalized = [_norm_header_token(c) for c in header]
+
+    def find_idx(candidates):
+        for cand in candidates:
+            cand_n = _norm_header_token(cand)
+            for i, val in enumerate(normalized):
+                if val == cand_n:
+                    return i
+        return None
+
+    col = {
+        'sport': find_idx(['спорт', 'sport']),
+        'league': find_idx(['лига', 'league', 'турнир', 'чемпионат']),
+        'id': find_idx(['id', '#id', 'матч id']),
+        'date': find_idx(['дата', 'date']),
+        'time': find_idx(['время', 'time']),
+        'team1': find_idx(['команда 1', 'команда1', 'team 1', 'team1', 'хозяева']),
+        'team2': find_idx(['команда 2', 'команда2', 'team 2', 'team2', 'гости']),
+        'p1': find_idx(['к1', 'п1', '1', 'p1']),
+        'x': find_idx(['x', 'х', 'ничья', 'f', 'draw']),
+        'p2': find_idx(['к2', 'п2', '2', 'p2']),
+        'p1x': find_idx(['1x', '1х']),
+        'p12': find_idx(['12']),
+        'px2': find_idx(['x2', 'х2']),
+        'match_url': find_idx(['ссылка', 'url', 'match_url', 'winline (ссылка)', 'marathon (ссылка)', 'fonbet (ссылка)']),
+    }
+
+    # Если часть полей не найдена — пробуем legacy-позиции
+    if col['league'] is None and len(header) >= 12:
+        # Формат legacy: Лига | ID | Дата | Время | Команда 1 | Команда 2 | ...
+        return {
+            'sport': None,
+            'league': 0,
+            'id': 1,
+            'date': 2,
+            'time': 3,
+            'team1': 4,
+            'team2': 5,
+            'p1': 6,
+            'x': 7,
+            'p2': 8,
+            'p1x': 9,
+            'p12': 10,
+            'px2': 11,
+            'match_url': 12 if len(header) > 12 else None,
+        }
+
+    return col
+
+
 def parse_csv_content(csv_content):
     """Парсинг CSV и создание списка матчей"""
     matches = []
@@ -208,6 +319,8 @@ def parse_csv_content(csv_content):
     if header:
         print(f"Columns: {len(header)} -> {header[:6]}...")
 
+    col = _header_index(header)
+
     row_num = 0
     skipped = 0
 
@@ -217,12 +330,18 @@ def parse_csv_content(csv_content):
             skipped += 1
             continue
 
-        league = norm(row[0])
-        match_id = norm(row[1])
-        date = norm(row[2])
-        time_val = norm(row[3])
-        team1 = norm(row[4])
-        team2 = norm(row[5])
+        def gv(key, default=''):
+            idx = col.get(key) if col else None
+            if idx is None or idx >= len(row):
+                return default
+            return norm(row[idx])
+
+        league = gv('league')
+        match_id = gv('id')
+        date = gv('date')
+        time_val = gv('time')
+        team1 = gv('team1')
+        team2 = gv('team2')
 
         if not league or not team1 or not team2:
             skipped += 1
@@ -238,16 +357,24 @@ def parse_csv_content(csv_content):
             skipped += 1
             continue
 
-        p1 = norm(row[6]) or "0.00"
-        x = norm(row[7]) or "0.00"
-        p2 = norm(row[8]) or "0.00"
-        p1x = norm(row[9]) or "0.00"
-        p12 = norm(row[10]) or "0.00"
-        px2 = norm(row[11]) or "0.00"
-        # Необязательное поле match_url (колонка 12, если есть)
-        match_url = norm(row[12]) if len(row) > 12 else ""
+        p1 = gv('p1', "0.00") or "0.00"
+        x = gv('x', "0.00") or "0.00"
+        p2 = gv('p2', "0.00") or "0.00"
+        p1x = gv('p1x', "0.00") or "0.00"
+        p12 = gv('p12', "0.00") or "0.00"
+        px2 = gv('px2', "0.00") or "0.00"
+        match_url = gv('match_url')
 
-        sport = detect_sport(league)
+        sport = gv('sport') or detect_sport(league)
+
+        source = ''
+        murl = match_url.lower()
+        if 'winline' in murl:
+            source = 'winline'
+        elif 'marathon' in murl:
+            source = 'marathon'
+        elif 'fonbet' in murl or 'bkfon' in murl:
+            source = 'fonbet'
 
         entry = {
             "sport": sport,
@@ -266,6 +393,8 @@ def parse_csv_content(csv_content):
         }
         if match_url:
             entry["match_url"] = match_url
+        if source:
+            entry["source"] = source
         matches.append(entry)
 
     print(f"Parsed {len(matches)} matches from {row_num} rows (skipped {skipped})")
@@ -311,7 +440,9 @@ def main():
     print("PRIZMBET - Google Sheets Sync")
     print("=" * 60)
 
-    csv_content = download_csv()
+    csv_content = load_rows_from_google_api()
+    if not csv_content:
+        csv_content = download_csv()
     if not csv_content:
         print("FATAL: Could not download data from Google Sheets")
         sys.exit(1)

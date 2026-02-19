@@ -22,11 +22,15 @@ import os
 import sys
 import io
 import re
+import subprocess
 import datetime
 from typing import List
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 OUTPUT_FILE = os.path.join(SCRIPT_DIR, "matches.json")
+
+_PLAYWRIGHT_READY = False
+_PLAYWRIGHT_INSTALL_ATTEMPTED = False
 
 
 # =============================================================================
@@ -219,6 +223,17 @@ def run_winline() -> List[dict]:
         print(f"  Winline: {len(matches)} матчей")
         return matches
     except Exception as e:
+        if should_install_playwright_browser(e) and ensure_playwright_browser():
+            try:
+                from winline_parser import run_parser
+                matches = run_parser()
+                for m in matches:
+                    m.setdefault('source', 'winline')
+                print(f"  Winline (после авто-установки браузера): {len(matches)} матчей")
+                return matches
+            except Exception as retry_error:
+                print(f"  Winline ОШИБКА (после retry): {retry_error}")
+                return []
         print(f"  Winline ОШИБКА: {e}")
         return []
 
@@ -235,8 +250,81 @@ def run_marathon() -> List[dict]:
         print(f"  Marathon: {len(matches)} матчей")
         return matches
     except Exception as e:
+        if should_install_playwright_browser(e) and ensure_playwright_browser():
+            try:
+                from marathon_parser import run_parser
+                matches = run_parser()
+                for m in matches:
+                    m.setdefault('source', 'marathon')
+                print(f"  Marathon (после авто-установки браузера): {len(matches)} матчей")
+                return matches
+            except Exception as retry_error:
+                print(f"  Marathon ОШИБКА (после retry): {retry_error}")
+                return []
         print(f"  Marathon ОШИБКА: {e}")
         return []
+
+
+def run_fonbet_fallback() -> List[dict]:
+    """Резервный источник без Playwright (HTTP API)."""
+    print("\n" + "=" * 60)
+    print("[fallback] Fonbet API")
+    print("=" * 60)
+    try:
+        from fonbet_parser import run_parser
+        matches = run_parser()
+        for m in matches:
+            m.setdefault('source', 'fonbet')
+        print(f"  Fonbet fallback: {len(matches)} матчей")
+        return matches
+    except Exception as e:
+        print(f"  Fonbet fallback ОШИБКА: {e}")
+        return []
+
+
+def should_install_playwright_browser(err: Exception) -> bool:
+    text = str(err).lower()
+    return (
+        'playwright' in text
+        and ('executable doesn\'t exist' in text or 'browserType.launch' in text.lower())
+    )
+
+
+def ensure_playwright_browser() -> bool:
+    """Автоматически ставит Chromium для Playwright (один раз за запуск)."""
+    global _PLAYWRIGHT_READY, _PLAYWRIGHT_INSTALL_ATTEMPTED
+    if _PLAYWRIGHT_READY:
+        return True
+    if _PLAYWRIGHT_INSTALL_ATTEMPTED:
+        return False
+
+    _PLAYWRIGHT_INSTALL_ATTEMPTED = True
+    print("  ⚙️  Chromium для Playwright не найден — запускаю авто-установку...")
+
+    attempts = [
+        [sys.executable, '-m', 'playwright', 'install', 'chromium'],
+    ]
+
+    proc = None
+    for idx, cmd in enumerate(attempts, start=1):
+        try:
+            proc = subprocess.run(cmd, check=False)
+        except Exception as e:
+            print(f"  ❌ Не удалось запустить установку Playwright (попытка {idx}): {e}")
+            continue
+
+        if proc.returncode == 0:
+            _PLAYWRIGHT_READY = True
+            print("  ✅ Chromium для Playwright установлен")
+            return True
+
+        print(f"  ⚠️ Попытка {idx} завершилась с кодом {proc.returncode}")
+
+    if proc is not None:
+        print(f"  ❌ Установка Playwright завершилась с кодом {proc.returncode}")
+    else:
+        print("  ❌ Установка Playwright не была запущена")
+    return False
 
 
 def print_stats(matches: List[dict]) -> None:
@@ -272,7 +360,22 @@ def main():
     marathon_matches = run_marathon()
 
     if not winline_matches and not marathon_matches:
-        print("\nFATAL: оба источника не вернули матчи")
+        print("\n⚠️ Winline и Marathon недоступны, пробую резервный источник...")
+        fonbet_matches = run_fonbet_fallback()
+        if fonbet_matches:
+            save_matches(fonbet_matches, ["fonbet.ru (fallback)"])
+            print_stats(fonbet_matches)
+            print("\n" + "=" * 60)
+            print("✅ ГОТОВО (fallback mode)")
+            return
+
+        # Крайний безопасный режим: не затираем рабочий matches.json пустыми данными
+        if os.path.exists(OUTPUT_FILE):
+            print("\n⚠️ Все источники недоступны, сохраняю предыдущий matches.json без изменений")
+            print("✅ ГОТОВО (using cached data)")
+            return
+
+        print("\nFATAL: все источники не вернули матчи и нет кэшированного matches.json")
         sys.exit(1)
 
     # Объединяем: winline приоритетен, marathon дополняет
