@@ -433,6 +433,7 @@ def save_matches(matches: List[dict]) -> None:
         "matches": valid,
     }
 
+    # Сохраняем в matches.json (общий файл)
     tmp = OUTPUT_FILE + ".tmp"
     with open(tmp, 'w', encoding='utf-8') as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
@@ -441,8 +442,14 @@ def save_matches(matches: List[dict]) -> None:
     else:
         os.rename(tmp, OUTPUT_FILE)
 
+    # Сохраняем также в winline.json (для страницы БК)
+    winline_file = os.path.join(SCRIPT_DIR, 'winline.json')
+    with open(winline_file, 'w', encoding='utf-8') as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)
+
     kb = os.path.getsize(OUTPUT_FILE) / 1024
     print(f"\n✓ Сохранено: {OUTPUT_FILE} ({kb:.1f} KB)")
+    print(f"✓ Сохранено: {winline_file} ({kb:.1f} KB)")
     print(f"✓ Всего матчей: {len(unique)}")
 
 

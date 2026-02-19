@@ -95,19 +95,15 @@
         async function loadData() {
             let data = null;
             try {
-                const r = await fetch('matches.json?t=' + Date.now());
+                // Загружаем ТОЛЬКО winline.json
+                const r = await fetch('winline.json?t=' + Date.now());
                 if (r.ok) data = await r.json();
             } catch(e) { console.warn(e); }
             if (!data?.matches?.length) {
-                document.getElementById('content').innerHTML = '<div class="section"><p style="text-align:center;color:var(--text-secondary);">Не удалось загрузить данные</p></div>';
+                document.getElementById('content').innerHTML = '<div class="section"><p style="text-align:center;color:var(--text-secondary);">Нет матчей Winline. Запустите парсер.</p></div>';
                 return;
             }
-            // Фильтруем только матчи от Winline
-            const winlineMatches = data.matches.filter(m =>
-                (m.source || '').toLowerCase() === 'winline' ||
-                (m.match_url || '').includes('winline')
-            );
-            renderMatches(winlineMatches);
+            renderMatches(data.matches);
         }
 
         function renderMatches(matches) {

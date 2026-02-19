@@ -97,20 +97,16 @@
 
         async function loadData() {
             let data = null;
-            try { const r = await fetch('matches.json?t=' + Date.now()); if (r.ok) data = await r.json(); } catch(e) {}
+            try {
+                // Загружаем ТОЛЬКО fonbet.json
+                const r = await fetch('fonbet.json?t=' + Date.now());
+                if (r.ok) data = await r.json();
+            } catch(e) { console.warn(e); }
             if (!data?.matches?.length) {
-                document.getElementById('content').innerHTML = '<div class="section"><p style="text-align:center;color:var(--text-secondary);">Не удалось загрузить данные</p></div>';
+                document.getElementById('content').innerHTML = '<div class="section"><p style="text-align:center;color:var(--text-secondary);">Нет матчей Fonbet. Парсер в разработке.</p></div>';
                 return;
             }
-            const fonbetMatches = data.matches.filter(m =>
-                (m.source || '').toLowerCase() === 'fonbet' ||
-                (m.match_url || '').includes('fonbet')
-            );
-            if (!fonbetMatches.length) {
-                document.getElementById('content').innerHTML = `<div class="section"><div class="empty-state"><p>Матчей от Fonbet пока нет</p><small>Парсер Fonbet будет активирован в следующих обновлениях. Сейчас все матчи идут из Winline.</small></div></div>`;
-                return;
-            }
-            renderMatches(fonbetMatches);
+            renderMatches(data.matches);
         }
 
         function renderMatches(matches) {

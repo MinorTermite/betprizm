@@ -413,7 +413,7 @@ def run_parser() -> List[dict]:
 
 
 # =============================================================================
-# СОХРАНЕНИЕ (во временный файл, merge делает parse_all_real.py)
+# СОХРАНЕНИЕ
 # =============================================================================
 
 def save_matches(matches: List[dict]) -> None:
@@ -427,9 +427,11 @@ def save_matches(matches: List[dict]) -> None:
     data = {
         "last_update": datetime.datetime.now(datetime.timezone.utc).strftime('%Y-%m-%d %H:%M:%S'),
         "source": "marathonbet.ru",
+        "total": len(unique),
         "matches": unique,
     }
 
+    # Сохраняем в matches_marathon.json (временный файл для merge)
     tmp = OUTPUT_FILE + ".tmp"
     with open(tmp, 'w', encoding='utf-8') as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
@@ -438,8 +440,14 @@ def save_matches(matches: List[dict]) -> None:
     else:
         os.rename(tmp, OUTPUT_FILE)
 
+    # Сохраняем также в marathon.json (для страницы БК)
+    marathon_file = os.path.join(SCRIPT_DIR, 'marathon.json')
+    with open(marathon_file, 'w', encoding='utf-8') as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)
+
     kb = os.path.getsize(OUTPUT_FILE) / 1024
     print(f"\n✓ Сохранено: {OUTPUT_FILE} ({kb:.1f} KB)")
+    print(f"✓ Сохранено: {marathon_file} ({kb:.1f} KB)")
     print(f"✓ Всего матчей: {len(unique)}")
 
 

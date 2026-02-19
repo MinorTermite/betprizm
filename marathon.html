@@ -97,20 +97,16 @@
 
         async function loadData() {
             let data = null;
-            try { const r = await fetch('matches.json?t=' + Date.now()); if (r.ok) data = await r.json(); } catch(e) {}
+            try {
+                // Загружаем ТОЛЬКО marathon.json
+                const r = await fetch('marathon.json?t=' + Date.now());
+                if (r.ok) data = await r.json();
+            } catch(e) { console.warn(e); }
             if (!data?.matches?.length) {
-                document.getElementById('content').innerHTML = '<div class="section"><p style="text-align:center;color:var(--text-secondary);">Не удалось загрузить данные</p></div>';
+                document.getElementById('content').innerHTML = '<div class="section"><p style="text-align:center;color:var(--text-secondary);">Нет матчей Marathon. Запустите парсер.</p></div>';
                 return;
             }
-            const marathonMatches = data.matches.filter(m =>
-                (m.source || '').toLowerCase() === 'marathon' ||
-                (m.match_url || '').includes('marathon')
-            );
-            if (!marathonMatches.length) {
-                document.getElementById('content').innerHTML = `<div class="section"><div class="empty-state"><p>Матчей от Marathonbet пока нет</p><small>Парсер Marathon активируется при наличии данных. Сейчас все матчи идут из Winline.</small></div></div>`;
-                return;
-            }
-            renderMatches(marathonMatches);
+            renderMatches(data.matches);
         }
 
         function renderMatches(matches) {
