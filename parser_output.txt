@@ -1,0 +1,47 @@
+============================================================
+PRIZMBET — Парсер реальных матчей Winline
+Источник: winline.ru/stavki
+============================================================
+
+[ФУТБОЛ]
+  → https://winline.ru/stavki/sport/futbol
+    Матчей: 10
+
+[ХОККЕЙ]
+  → https://winline.ru/stavki/sport/xokkej
+    Матчей: 18
+
+[БАСКЕТБОЛ]
+  → https://winline.ru/stavki/sport/basketbol
+    Матчей: 9
+
+[ТЕННИС]
+  → https://winline.ru/stavki/sport/tennis
+    Матчей: 9
+
+[ВОЛЕЙБОЛ]
+  → https://winline.ru/stavki/sport/volejbol
+    Матчей: 11
+
+[КИБЕРСПОРТ]
+  → https://winline.ru/stavki/sport/kibersport
+    Матчей: 26
+
+[ЕДИНОБОРСТВА]
+  → https://winline.ru/stavki/sport/edinoborstva
+    Матчей: 61
+
+✓ Сохранено: c:\Users\GravMix\Desktop\suite full stake QWEN\prizmbet-final\matches.json (29.0 KB)
+✓ Всего матчей: 119
+
+По видам спорта:
+  mma: 61
+  esports: 26
+  hockey: 18
+  volleyball: 11
+  football: 10
+  basket: 9
+  tennis: 9
+
+============================================================
+ГОТОВО
