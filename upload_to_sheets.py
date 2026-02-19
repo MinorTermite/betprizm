@@ -5,7 +5,7 @@ PRIZMBET — Upload real matches to Google Sheets
 Sources: winline.ru + marathonbet.ru
 
 Столбцы в таблице:
-  Спорт | Лига | Дата | Время | Команда 1 | Команда 2 | К1 | X | К2 | Winline | Marathon
+  Спорт | Лига | Дата | Время | Команда 1 | Команда 2 | К1 | X | К2 | 1X | 12 | X2 | Winline | Marathon
 
 Ссылки:
   - Winline: https://winline.ru/stavki/event/{id}   (из поля match_url)
@@ -108,7 +108,7 @@ def main():
     header = [
         'Спорт', 'Лига', 'Дата', 'Время',
         'Команда 1', 'Команда 2',
-        'К1', 'X', 'К2',
+        'К1', 'X', 'К2', '1X', '12', 'X2',
         'Winline (ссылка)', 'Marathon (ссылка)',
     ]
 
@@ -135,6 +135,9 @@ def main():
             m.get('p1', '—'),
             m.get('x', '—'),
             m.get('p2', '—'),
+            m.get('p1x', '—'),
+            m.get('p12', '—'),
+            m.get('px2', '—'),
             wl_url,
             ma_url,
         ])
