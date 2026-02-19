@@ -48,22 +48,35 @@ jobs:
           rm -f credentials.json
         continue-on-error: true
 
-      # ── Шаг 3: коммитим matches.json если изменился ─────────────────
+      # ── Шаг 3: генерируем JSON файлы по БК ─────────────────────────
+      - name: Generate bookmaker JSON files
+        run: python -c "import json,os; d=json.load(open('matches.json')); [json.dump({'last_update':d['last_update'],'source':s,'total':len(m),'matches':m}, open(f'{s}.json','w',encoding='utf-8'), ensure_ascii=False, indent=2) for s,m in [('winline',[x for x in d['matches'] if x.get('source')=='winline']),('marathon',[x for x in d['matches'] if x.get('source')=='marathon']),('fonbet',[x for x in d['matches'] if x.get('source')=='fonbet'])]]"
+
+      # ── Шаг 4: коммитим matches.json и JSON файлы если изменились ────
       - name: Check for changes
         id: check
         run: |
-          if git diff --quiet matches.json 2>/dev/null; then
-            echo "changed=false" >> $GITHUB_OUTPUT
-          else
-            echo "changed=true" >> $GITHUB_OUTPUT
-            echo "matches.json updated"
+          CHANGED=false
+          if ! git diff --quiet matches.json 2>/dev/null; then
+            CHANGED=true
           fi
+          if ! git diff --quiet winline.json 2>/dev/null; then
+            CHANGED=true
+          fi
+          if ! git diff --quiet marathon.json 2>/dev/null; then
+            CHANGED=true
+          fi
+          if ! git diff --quiet fonbet.json 2>/dev/null; then
+            CHANGED=true
+          fi
+          echo "changed=$CHANGED" >> $GITHUB_OUTPUT
+          echo "Changes detected: $CHANGED"
 
-      - name: Commit and push updated matches.json
+      - name: Commit and push updated files
         if: steps.check.outputs.changed == 'true'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add matches.json
+          git add matches.json winline.json marathon.json fonbet.json
           git commit -m "chore: auto-update matches [$(date -u +'%Y-%m-%d %H:%M UTC')]"
           git push
