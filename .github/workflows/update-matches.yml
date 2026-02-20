@@ -52,7 +52,12 @@ jobs:
           rm -f credentials.json
         continue-on-error: true
 
-      # ── Шаг 3: генерируем JSON файлы по БК ─────────────────────────
+      # ── Шаг 3: запускаем парсеры реальных матчей (включая Marathon) ───────────────────
+      - name: Run real-time parsers (including Marathon)
+        run: |
+          python parse_all_real.py
+
+      # ── Шаг 4: генерируем JSON файлы по БК ─────────────────────────
       - name: Generate bookmaker JSON files
         run: |
           python generate_bookmaker_json.py

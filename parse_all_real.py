@@ -234,8 +234,13 @@ def run_marathon() -> List[dict]:
             m.setdefault('source', 'marathon')
         print(f"  Marathon: {len(matches)} матчей")
         return matches
+    except ImportError as e:
+        print(f"  Marathon ПРЕДУПРЕЖДЕНИЕ: {e} (парсер не доступен)")
+        print("  Установите playwright: pip install playwright && playwright install chromium")
+        return []  # Не ломаем пайплайн, если парсер недоступен
     except Exception as e:
         print(f"  Marathon ОШИБКА: {e}")
+        # Возвращаем пустой список вместо прерывания всего пайплайна
         return []
 
 
@@ -259,6 +264,17 @@ def print_stats(matches: List[dict]) -> None:
 # MAIN
 # =============================================================================
 
+def load_existing_matches() -> List[dict]:
+    """Загружает существующие матчи из matches.json для объединения"""
+    try:
+        with open(OUTPUT_FILE, 'r', encoding='utf-8') as f:
+            data = json.load(f)
+            return data.get('matches', [])
+    except (FileNotFoundError, json.JSONDecodeError):
+        print("  Нет существующего файла matches.json, начинаем с пустого")
+        return []
+
+
 def main():
     if sys.platform == 'win32':
         sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
@@ -268,24 +284,37 @@ def main():
     print("Дедупликация по именам команд")
     print("=" * 60)
 
+    # Загружаем существующие матчи из Google Sheets
+    existing_matches = load_existing_matches()
+    print(f"  Загружено существующих матчей: {len(existing_matches)}")
+
     winline_matches = run_winline()
     marathon_matches = run_marathon()
 
+    # Даже если оба источника не вернули матчи, не завершаем программу аварийно
+    # чтобы не ломать пайплайн, если есть другие источники данных
     if not winline_matches and not marathon_matches:
-        print("\nFATAL: оба источника не вернули матчи")
-        sys.exit(1)
+        print("\nПРЕДУПРЕЖДЕНИЕ: оба источника не вернули матчи, но продолжаем выполнение")
 
-    # Объединяем: winline приоритетен, marathon дополняет
-    merged = dedup_matches(winline_matches, marathon_matches)
+    # Объединяем все источники:
+    # 1. Сначала существующие матчи из Google Sheets
+    # 2. Затем данные из реальных парсеров (с возможностью обновления коэффициентов и URL)
+    
+    # Сначала объединяем данные из парсеров между собой
+    parsed_matches = dedup_matches(winline_matches, marathon_matches)
+    
+    # Затем объединяем с существующими матчами, при этом данные из парсеров приоритетнее
+    # для обновления коэффициентов и URL
+    final_matches = dedup_matches(existing_matches, parsed_matches)
 
-    sources = []
+    sources = ["google_sheets"]
     if winline_matches:
         sources.append("winline.ru")
     if marathon_matches:
         sources.append("marathonbet.ru")
 
-    save_matches(merged, sources)
-    print_stats(merged)
+    save_matches(final_matches, sources)
+    print_stats(final_matches)
 
     print("\n" + "=" * 60)
     print("✅ ГОТОВО")

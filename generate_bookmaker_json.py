@@ -18,7 +18,7 @@ def get_bookmaker_source(match):
     match_url = (match.get('match_url', '') or '').lower()
     match_url_marathon = (match.get('match_url_marathon', '') or '').lower()
     
-    # Проверяем по URL в приоритете
+    # Проверяем по URL в приоритете (даже если source не задан)
     if 'marathon' in match_url or 'marathon' in match_url_marathon:
         return 'marathon'
     if 'fonbet' in match_url or 'bkfon' in match_url:
@@ -34,6 +34,7 @@ def get_bookmaker_source(match):
     if 'winline' in source:
         return 'winline'
     
+    # Если не удается определить по URL или source, возвращаем 'unknown'
     return 'unknown'
 
 def generate_bookmaker_files():

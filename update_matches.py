@@ -13,12 +13,16 @@ import urllib.request
 import sys
 import io
 import os
+from typing import Optional, List, Dict
 
 # КОНФИГУРАЦИЯ
 SHEET_ID = os.getenv("SHEET_ID", "1QkVj51WMKSd6-LU4vZK3dYPk6QLQIO014ydpACtThNk")
 GID = os.getenv("SHEET_GID", "0")
 CSV_URL = f"https://docs.google.com/spreadsheets/d/{SHEET_ID}/export?format=csv&gid={GID}"
 OUTPUT_FILE = "matches.json"
+
+# Попробовать использовать Google API если доступны учетные данные
+GOOGLE_CREDENTIALS_JSON = os.getenv("GOOGLE_CREDENTIALS_JSON")
 
 # Маппинг спортов по началу названия лиги
 SPORT_MAPPING = {
@@ -175,8 +179,86 @@ def detect_sport(league):
         return 'mma'
     return 'football'
 
+def download_csv_from_api():
+    """Скачивание CSV через Google API если доступны учетные данные"""
+    if not GOOGLE_CREDENTIALS_JSON:
+        return None
+    
+    try:
+        import tempfile
+        import subprocess
+        
+        # Создаем временный файл с учетными данными
+        with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as temp_file:
+            temp_file.write(GOOGLE_CREDENTIALS_JSON)
+            temp_credentials_path = temp_file.name
+        
+        # Устанавливаем переменную окружения
+        env = os.environ.copy()
+        env['GOOGLE_APPLICATION_CREDENTIALS'] = temp_credentials_path
+        
+        # Попытка использовать Google API
+        try:
+            # Для этого потребуется библиотека google-api-python-client
+            from googleapiclient.discovery import build
+            import google.auth
+            from google.oauth2 import service_account
+            
+            # Загружаем учетные данные из JSON
+            creds = service_account.Credentials.from_service_account_info(
+                json.loads(GOOGLE_CREDENTIALS_JSON),
+                scopes=['https://www.googleapis.com/auth/spreadsheets.readonly']
+            )
+            
+            # Подключаемся к API
+            service = build('sheets', 'v4', credentials=creds)
+            sheet = service.spreadsheets()
+            
+            # Получаем данные
+            result = sheet.values().get(spreadsheetId=SHEET_ID, range=f'Sheet1').execute()
+            values = result.get('values', [])
+            
+            if not values:
+                print("Google API: пустой ответ")
+                return None
+            
+            # Конвертируем в CSV формат
+            import io
+            import csv
+            output = io.StringIO()
+            writer = csv.writer(output)
+            for row in values:
+                writer.writerow(row)
+            
+            content = output.getvalue()
+            print(f"Google API: OK: loaded {len(content)} bytes")
+            return content
+            
+        except ImportError:
+            print("Google API: библиотека google-api-python-client не установлена, используем fallback")
+            return None
+        except Exception as e:
+            print(f"Google API: ошибка: {e}")
+            return None
+        finally:
+            # Удаляем временный файл
+            os.unlink(temp_credentials_path)
+    
+    except Exception as e:
+        print(f"Google API: ошибка подготовки: {e}")
+        return None
+
+
 def download_csv():
-    """Скачивание CSV из Google Sheets с retry"""
+    """Скачивание CSV из Google Sheets с retry - приоритет: Google API, затем CSV export"""
+    print("Попытка использовать Google API...")
+    content = download_csv_from_api()
+    
+    if content:
+        return content
+    
+    print("Google API недоступен, используем CSV export...")
+    
     max_retries = 3
     for attempt in range(1, max_retries + 1):
         try:
@@ -274,6 +356,13 @@ def parse_csv_content(csv_content):
                 entry["source"] = "marathon"
             elif 'fonbet' in url_lower or 'bkfon' in url_lower:
                 entry["source"] = "fonbet"
+        
+        # Если source не определен по URL, пробуем определить по другим признакам
+        if "source" not in entry:
+            # Проверяем, есть ли в данных дополнительная информация для определения источника
+            # В будущем можно добавить логику для определения по другим признакам
+            pass
+            
         matches.append(entry)
 
     print(f"Parsed {len(matches)} matches from {row_num} rows (skipped {skipped})")
