@@ -17,12 +17,16 @@ from typing import Optional, List, Dict
 
 # КОНФИГУРАЦИЯ
 SHEET_ID = os.getenv("SHEET_ID", "1QkVj51WMKSd6-LU4vZK3dYPk6QLQIO014ydpACtThNk")
-GID = os.getenv("SHEET_GID", "0")
-CSV_URL = f"https://docs.google.com/spreadsheets/d/{SHEET_ID}/export?format=csv&gid={GID}"
+GID = os.getenv("SHEET_GID", "")  # Пустой = сканировать все вкладки
+CSV_URL = f"https://docs.google.com/spreadsheets/d/{SHEET_ID}/export?format=csv&gid={GID}" if GID else f"https://docs.google.com/spreadsheets/d/{SHEET_ID}/export?format=csv"
 OUTPUT_FILE = "matches.json"
+
+# Google API ключ (для прямого доступа к Sheets API)
+GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY", "AIzaSyBt2XLnnAo36M1rk_8F3fbE0id1wdOLpkk")
 
 # Попробовать использовать Google API если доступны учетные данные
 GOOGLE_CREDENTIALS_JSON = os.getenv("GOOGLE_CREDENTIALS_JSON")
+USE_GOOGLE_API = bool(GOOGLE_CREDENTIALS_JSON)
 
 # Маппинг спортов по началу названия лиги
 SPORT_MAPPING = {
@@ -180,72 +184,114 @@ def detect_sport(league):
     return 'football'
 
 def download_csv_from_api():
-    """Скачивание CSV через Google API если доступны учетные данные"""
-    if not GOOGLE_CREDENTIALS_JSON:
-        return None
-    
+    """
+    Скачивание данных из ВСЕХ вкладок через Google Sheets API v4.
+    Если SHEET_GID пустой - сканируем все вкладки.
+    Используем API ключ для доступа.
+    """
     try:
-        import tempfile
-        import subprocess
+        import requests
         
-        # Создаем временный файл с учетными данными
-        with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as temp_file:
-            temp_file.write(GOOGLE_CREDENTIALS_JSON)
-            temp_credentials_path = temp_file.name
+        # 1. Сначала получаем метаданные таблицы (список вкладок)
+        metadata_url = f"https://sheets.googleapis.com/v4/spreadsheets/{SHEET_ID}?key={GOOGLE_API_KEY}"
+        resp = requests.get(metadata_url, timeout=15)
         
-        # Устанавливаем переменную окружения
-        env = os.environ.copy()
-        env['GOOGLE_APPLICATION_CREDENTIALS'] = temp_credentials_path
-        
-        # Попытка использовать Google API
-        try:
-            # Для этого потребуется библиотека google-api-python-client
-            from googleapiclient.discovery import build
-            import google.auth
-            from google.oauth2 import service_account
-            
-            # Загружаем учетные данные из JSON
-            creds = service_account.Credentials.from_service_account_info(
-                json.loads(GOOGLE_CREDENTIALS_JSON),
-                scopes=['https://www.googleapis.com/auth/spreadsheets.readonly']
-            )
-            
-            # Подключаемся к API
-            service = build('sheets', 'v4', credentials=creds)
-            sheet = service.spreadsheets()
-            
-            # Получаем данные
-            result = sheet.values().get(spreadsheetId=SHEET_ID, range=f'Sheet1').execute()
-            values = result.get('values', [])
-            
-            if not values:
-                print("Google API: пустой ответ")
-                return None
-            
-            # Конвертируем в CSV формат
-            import io
-            import csv
-            output = io.StringIO()
-            writer = csv.writer(output)
-            for row in values:
-                writer.writerow(row)
-            
-            content = output.getvalue()
-            print(f"Google API: OK: loaded {len(content)} bytes")
-            return content
-            
-        except ImportError:
-            print("Google API: библиотека google-api-python-client не установлена, используем fallback")
+        if resp.status_code != 200:
+            print(f"[WARN] API metadata: {resp.status_code}")
             return None
-        except Exception as e:
-            print(f"Google API: ошибка: {e}")
+        
+        metadata = resp.json()
+        sheet_title = metadata.get('properties', {}).get('title', 'Unknown')
+        worksheets = metadata.get('sheets', [])
+        
+        print(f"[OK] Connected to Google Sheets API: {sheet_title}")
+        print(f"[INFO] Found {len(worksheets)} worksheets")
+        
+        # Определяем какие вкладки читать
+        if GID:
+            # Читаем конкретную вкладку по GID
+            worksheets = [ws for ws in worksheets if str(ws.get('properties', {}).get('sheetId', '')) == GID]
+            if not worksheets:
+                print(f"[WARN] Worksheet GID={GID} not found, scanning all tabs")
+                worksheets = metadata.get('sheets', [])
+        
+        # Сканируем все вкладки и собираем данные
+        all_rows = []
+        
+        for ws in worksheets:
+            props = ws.get('properties', {})
+            title = props.get('title', 'Unknown')
+            gid = props.get('sheetId', 'unknown')
+            sheet_id = props.get('sheetId', 0)
+            
+            # Пропускаем Summary
+            if 'summary' in title.lower():
+                print(f"  [SKIP] {title} (summary tab)")
+                continue
+            
+            # Получаем данные из вкладки через API
+            range_name = f"'{title}'!A1:N"  # Читаем колонки A-N
+            values_url = f"https://sheets.googleapis.com/v4/spreadsheets/{SHEET_ID}/values/{range_name}?key={GOOGLE_API_KEY}"
+            
+            try:
+                values_resp = requests.get(values_url, timeout=15)
+                if values_resp.status_code != 200:
+                    print(f"  [ERROR] {title}: HTTP {values_resp.status_code}")
+                    continue
+                
+                values_data = values_resp.json()
+                all_values = values_data.get('values', [])
+                
+                if not all_values:
+                    continue
+                
+                # Считаем статистику
+                total_rows = len(all_values) - 1  # без заголовка
+                marathon_count = 0
+                fonbet_count = 0
+                winline_count = 0
+                
+                for row in all_values[1:]:  # пропускаем заголовок
+                    if len(row) < 12:
+                        continue
+                    
+                    # Проверяем URL в колонке 12 (Ссылка)
+                    link = row[12].lower() if len(row) > 12 else ''
+                    if 'marathon' in link:
+                        marathon_count += 1
+                        all_rows.append(row)
+                    elif 'fonbet' in link or 'bkfon' in link:
+                        fonbet_count += 1
+                        all_rows.append(row)
+                    elif 'winline' in link:
+                        winline_count += 1
+                        all_rows.append(row)
+                
+                print(f"  [{title}] GID={gid}, Rows={total_rows}, Marathon={marathon_count}, Fonbet={fonbet_count}, Winline={winline_count}")
+                
+            except Exception as e:
+                print(f"  [ERROR] {title}: {e}")
+                continue
+        
+        print(f"[OK] Total rows collected: {len(all_rows)}")
+        
+        if not all_rows:
             return None
-        finally:
-            # Удаляем временный файл
-            os.unlink(temp_credentials_path)
-    
+        
+        # Преобразуем в CSV формат
+        header = all_rows[0]
+        csv_lines = [','.join(f'"{cell}"' for cell in header)]
+        
+        for row in all_rows[1:]:
+            csv_lines.append(','.join(f'"{cell}"' for cell in row))
+        
+        return '\n'.join(csv_lines)
+        
+    except ImportError:
+        print("[WARN] requests not installed")
+        return None
     except Exception as e:
-        print(f"Google API: ошибка подготовки: {e}")
+        print(f"[ERROR] Google API: {e}")
         return None
 
 
@@ -253,10 +299,10 @@ def download_csv():
     """Скачивание CSV из Google Sheets с retry - приоритет: Google API, затем CSV export"""
     print("Попытка использовать Google API...")
     content = download_csv_from_api()
-    
+
     if content:
         return content
-    
+
     print("Google API недоступен, используем CSV export...")
     
     max_retries = 3
