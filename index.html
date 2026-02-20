@@ -1504,7 +1504,11 @@
                 if (currentGameFilter !== 'all' && game !== currentGameFilter) return false;
                 if (popularOnly) {
                     const combined = ((game || '') + ' ' + (m.league || '')).toLowerCase();
-                    if (!/премьер|лига чемп|лига европы|россия|nba|кхл|нхл|dota|cs2|valorant|atp|wta|ufc|евролига|бундеслига|серия a|ла лига|лига 1/.test(combined)) return false;
+                    // Популярные лиги - не фильтруем их
+                    if (!/(лига чемпионов|лига европы|лига конференций|премьер-лига англия|ла лига|бундеслига|серия a|лига 1 франция|nba|нхл|кхл|евролига|атп|wta|ufc)/.test(combined)) {
+                        // Исключаем популярные киберспортивные лиги чтобы не доминировали
+                        if (/(dota|cs2|valorant)/.test(combined)) return false;
+                    }
                 }
                 if (favoritesOnly && !favorites.includes(m.id)) return false;
                 if (q) {

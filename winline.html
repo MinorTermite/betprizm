@@ -79,6 +79,13 @@
         .search { flex:1; min-width:200px; }
         .search::placeholder { color:var(--text-tertiary); }
         
+        /* Checkbox */
+        .checkbox { display:flex; align-items:center; gap:8px; cursor:pointer; }
+        .checkbox input[type="checkbox"] { appearance:none; width:18px; height:18px; border:1px solid var(--border); border-radius:4px; background:rgba(0,0,0,0.35); position:relative; cursor:pointer; }
+        .checkbox input[type="checkbox"]:checked { background:var(--accent); border-color:var(--accent); }
+        .checkbox input[type="checkbox"]:checked::after { content:''; position:absolute; left:5px; top:1px; width:6px; height:10px; border:solid white; border-width:0 2px 2px 0; transform:rotate(45deg); }
+        .checkbox span { font-size:0.84rem; font-weight:500; color:var(--text-primary); }
+        
         /* Toast */
         .bet-toast { position:fixed; left:50%; bottom:28px; transform:translateX(-50%) translateY(120px); background:rgba(10,10,22,0.95); border:1px solid var(--accent); border-radius:var(--radius-xl); padding:16px 24px; min-width:280px; max-width:90vw; box-shadow:0 8px 32px rgba(0,0,0,0.4), 0 0 40px var(--accent-glow); opacity:0; transition:all 0.4s cubic-bezier(0.4,0,0.2,1); z-index:9999; backdrop-filter:blur(24px); }
         .bet-toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
@@ -109,6 +116,10 @@
                 <select id="gameFilter" class="select">
                     <option value="all">Все лиги</option>
                 </select>
+                <label class="checkbox">
+                    <input type="checkbox" id="popularOnly" />
+                    <span>Только топ</span>
+                </label>
                 <input id="searchInput" class="search" placeholder="Поиск: команда, лига, ID..." />
             </div>
         </div>
@@ -181,10 +192,19 @@
         
         function applyFilters(matches) {
             const q = (document.getElementById('searchInput')?.value || '').trim().toLowerCase();
+            const popularOnly = !!document.getElementById('popularOnly')?.checked;
             return matches.filter(m => {
                 const sport = getMatchSport(m);
                 const game = getMatchGame(m);
                 if (currentSportFilter !== 'all' && sport !== currentSportFilter) return false;
+                if (popularOnly) {
+                    const combined = ((game || '') + ' ' + (m.league || '')).toLowerCase();
+                    // Популярные лиги - не фильтруем их
+                    if (!/(лига чемпионов|лига европы|лига конференций|премьер-лига англия|ла лига|бундеслига|серия a|лига 1 франция|nba|нхл|кхл|евролига|атп|wta|ufc)/.test(combined)) {
+                        // Исключаем популярные киберспортивные лиги чтобы не доминировали
+                        if (/(dota|cs2|valorant)/.test(combined)) return false;
+                    }
+                }
                 if (q) {
                     const blob = ((m.id||'') + ' ' + (m.league||'') + ' ' + (m.team1||'') + ' ' + (m.team2||'') + ' ' + game).toLowerCase();
                     if (!blob.includes(q)) return false;
@@ -312,6 +332,7 @@
         
         document.getElementById('gameFilter')?.addEventListener('change', loadData);
         document.getElementById('searchInput')?.addEventListener('input', loadData);
+        document.getElementById('popularOnly')?.addEventListener('change', loadData);
         
         window.addEventListener('load', loadData);
     </script>

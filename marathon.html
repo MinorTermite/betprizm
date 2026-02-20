@@ -62,6 +62,13 @@
         .search{flex:1;min-width:200px}
         .search::placeholder{color:var(--text-tertiary)}
         
+        /* Checkbox */
+        .checkbox{display:flex;align-items:center;gap:8px;cursor:pointer}
+        .checkbox input[type="checkbox"]{appearance:none;width:18px;height:18px;border:1px solid var(--border);border-radius:4px;background:rgba(0,0,0,0.35);position:relative;cursor:pointer}
+        .checkbox input[type="checkbox"]:checked{background:var(--accent);border-color:var(--accent)}
+        .checkbox input[type="checkbox"]:checked::after{content:'';position:absolute;left:5px;top:1px;width:6px;height:10px;border:solid white;border-width:0 2px 2px 0;transform:rotate(45deg)}
+        .checkbox span{font-size:0.84rem;font-weight:500;color:var(--text-primary)}
+        
         /* Toast */
         .bet-toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%) translateY(120px);background:rgba(10,10,22,0.95);border:1px solid var(--accent);border-radius:var(--radius-xl);padding:16px 24px;min-width:280px;box-shadow:0 8px 32px rgba(0,0,0,0.4),0 0 40px var(--accent-glow);opacity:0;transition:all 0.4s;z-index:9999;backdrop-filter:blur(24px)}
         .bet-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
@@ -88,6 +95,10 @@
             </div>
             <div class="filters">
                 <select id="gameFilter" class="select"><option value="all">Все лиги</option></select>
+                <label class="checkbox">
+                    <input type="checkbox" id="popularOnly" />
+                    <span>Только топ</span>
+                </label>
                 <input id="searchInput" class="search" placeholder="Поиск: команда, лига, ID..." />
             </div>
         </div>
@@ -123,7 +134,7 @@
         function inferSport(m){const t=((m.league||'')+' '+(m.team1||'')+' '+(m.team2||'')).toLowerCase();if(/dota|counter-strike|cs2|valorant/.test(t))return'esports';if(/кхл|нхл|hockey|nhl|хоккей/.test(t))return'hockey';if(/nba|нба|баскет/.test(t))return'basket';if(/теннис|atp|wta/.test(t))return'tennis';return'football'}
         function getMatchGame(m){const l=(m.league||'').toLowerCase();if(l.includes('лига чемпионов'))return'ЛЧ УЕФА';if(l.includes('ла лига'))return'Испания. Ла Лига';if(l.includes('бундеслига'))return'Германия. Бундеслига';if(l.includes('кхл'))return'КХЛ';if(l.includes('нхл'))return'НХЛ';if(l.includes('dota 2'))return'Dota 2';if(l.includes('counter-strike'))return'CS2';return m.league||'Другое'}
         function buildGameFilter(matches){const sel=document.getElementById('gameFilter');if(!sel)return;const set=new Set();matches.forEach(m=>set.add(getMatchGame(m)));const games=Array.from(set).sort((a,b)=>a.localeCompare(b,'ru'));const prev=sel.value||'all';sel.innerHTML='<option value="all">Все лиги</option>'+games.map(g=>`<option value="${escapeHtml(g)}">${escapeHtml(g)}</option>`).join('');if(games.includes(prev))sel.value=prev}
-        function applyFilters(matches){const q=(document.getElementById('searchInput')?.value||'').trim().toLowerCase();return matches.filter(m=>{const sport=getMatchSport(m);const game=getMatchGame(m);if(currentSportFilter!=='all'&&sport!==currentSportFilter)return false;if(q){const blob=((m.id||'')+' '+(m.league||'')+' '+(m.team1||'')+' '+(m.team2||'')+' '+game).toLowerCase();if(!blob.includes(q))return false}return true})}
+        function applyFilters(matches){const q=(document.getElementById('searchInput')?.value||'').trim().toLowerCase();const popularOnly=!!document.getElementById('popularOnly')?.checked;return matches.filter(m=>{const sport=getMatchSport(m);const game=getMatchGame(m);if(currentSportFilter!=='all'&&sport!==currentSportFilter)return false;if(popularOnly){const combined=((game||'')+' '+(m.league||'')).toLowerCase();if(!/(лига чемпионов|лига европы|лига конференций|премьер-лига англия|ла лига|бундеслига|серия a|лига 1 франция|nba|нхл|кхл|евролига|атп|wta|ufc)/.test(combined)){if(/(dota|cs2|valorant)/.test(combined))return false;}}if(q){const blob=((m.id||'')+' '+(m.league||'')+' '+(m.team1||'')+' '+(m.team2||'')+' '+game).toLowerCase();if(!blob.includes(q))return false}return true})}
         function escapeHtml(t){const d=document.createElement('div');d.textContent=t;return d.innerHTML}
         function showToast(msg){const t=document.getElementById('betToast');document.getElementById('betToastMessage').textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3500)}
         function copyBet(id,teams,betType,coef,datetime,league){const msg=`📋 Ставка PRIZMBET\n🏆 ${league}\n⚽ ${teams}\n📅 ${datetime}\n🎯 Ставка: ${betType}\n📊 Коэффициент: ${coef}\n🆔 ID: ${id}`;navigator.clipboard.writeText(msg).then(()=>{showToast(`${teams} — ${betType} @ ${coef}`);if(navigator.vibrate)navigator.vibrate(50)})}
@@ -133,6 +144,7 @@
         document.querySelectorAll('.tab').forEach(btn=>{btn.addEventListener('click',()=>{document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));btn.classList.add('active');currentSportFilter=btn.dataset.sport||'all';loadData()})});
         document.getElementById('gameFilter')?.addEventListener('change',loadData);
         document.getElementById('searchInput')?.addEventListener('input',loadData);
+        document.getElementById('popularOnly')?.addEventListener('change',loadData);
         window.addEventListener('load',loadData);
     </script>
 </body>
