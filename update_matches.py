@@ -24,9 +24,11 @@ OUTPUT_FILE = "matches.json"
 # Google API ключ (для прямого доступа к Sheets API)
 GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY", "AIzaSyBt2XLnnAo36M1rk_8F3fbE0id1wdOLpkk")
 
-# Попробовать использовать Google API если доступны учетные данные
+# Учетные данные для Google Sheets (сервис-аккаунт)
 GOOGLE_CREDENTIALS_JSON = os.getenv("GOOGLE_CREDENTIALS_JSON")
-USE_GOOGLE_API = bool(GOOGLE_CREDENTIALS_JSON)
+
+# SHEET_GIDS - список ID вкладок через запятую для чтения
+SHEET_GIDS = os.getenv("SHEET_GIDS", "")
 
 # Маппинг спортов по началу названия лиги
 SPORT_MAPPING = {
@@ -208,12 +210,24 @@ def download_csv_from_api():
         print(f"[INFO] Found {len(worksheets)} worksheets")
         
         # Определяем какие вкладки читать
-        if GID:
-            # Читаем конкретную вкладку по GID
-            worksheets = [ws for ws in worksheets if str(ws.get('properties', {}).get('sheetId', '')) == GID]
+        target_gids = set()
+        
+        # Если указан SHEET_GIDS - используем его (список gid через запятую)
+        if SHEET_GIDS:
+            target_gids = set(str(g.strip()) for g in SHEET_GIDS.split(',') if g.strip())
+            print(f"[INFO] Using SHEET_GIDS: {target_gids}")
+        elif GID:
+            # Если указан одиночный GID
+            target_gids = {str(GID)}
+        
+        if target_gids:
+            # Фильтруем вкладки по GID
+            worksheets = [ws for ws in worksheets if str(ws.get('properties', {}).get('sheetId', '')) in target_gids]
             if not worksheets:
-                print(f"[WARN] Worksheet GID={GID} not found, scanning all tabs")
+                print(f"[WARN] Worksheet GID not found in {target_gids}, scanning all tabs")
                 worksheets = metadata.get('sheets', [])
+            else:
+                print(f"[INFO] Filtered to {len(worksheets)} worksheets by GID")
         
         # Сканируем все вкладки и собираем данные
         all_rows = []
