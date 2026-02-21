@@ -1048,11 +1048,6 @@
             border: 1px solid rgba(0, 100, 200, 0.4);
             color: #60a5fa;
         }
-        .bk-badge--fonbet {
-            background: rgba(255, 165, 0, 0.15);
-            border: 1px solid rgba(255, 165, 0, 0.4);
-            color: #fbbf24;
-        }
         .match-link {
             display: inline-flex;
             align-items: center;
@@ -1105,8 +1100,6 @@
         .bk-nav-link--winline:hover { border-color: #34d399; box-shadow: 0 4px 20px rgba(0, 128, 55, 0.2); }
         .bk-nav-link--marathon { border-color: rgba(0, 100, 200, 0.3); }
         .bk-nav-link--marathon:hover { border-color: #60a5fa; box-shadow: 0 4px 20px rgba(0, 100, 200, 0.2); }
-        .bk-nav-link--fonbet { border-color: rgba(255, 165, 0, 0.3); }
-        .bk-nav-link--fonbet:hover { border-color: #fbbf24; box-shadow: 0 4px 20px rgba(255, 165, 0, 0.2); }
 
         /* ===== RESPONSIVE ===== */
         @media (min-width: 768px) {
@@ -1207,9 +1200,8 @@
 
         <!-- БК НАВИГАЦИЯ -->
         <nav class="bk-nav">
-            <a href="winline.html" class="bk-nav-link bk-nav-link--winline">🟢 Winline</a>
             <a href="marathon.html" class="bk-nav-link bk-nav-link--marathon">🔵 Marathonbet</a>
-            <a href="fonbet.html" class="bk-nav-link bk-nav-link--fonbet">🟠 Fonbet</a>
+            <a href="winline.html" class="bk-nav-link bk-nav-link--winline">🟢 Winline</a>
         </nav>
 
         <!-- STATS -->
@@ -1492,12 +1484,38 @@
             if (games.includes(prev)) sel.value = prev;
         }
 
+        function isValidMatch(m) {
+            const team1 = (m.team1 || '').trim();
+            const team2 = (m.team2 || '').trim();
+            const league = (m.league || '').toLowerCase();
+            
+            if (!team1 || !team2) return false;
+            
+            if (/^(1|x|12|x2|2|0|-)$/i.test(team2)) return false;
+            
+            if (/^\d+\.?\d*$/.test(team2)) return false;
+            
+            if (team2.length < 2) return false;
+            
+            if (/счет|серия|score| матч/i.test(team1 + team2)) return false;
+            
+            const leagueInTeam = ['nba', 'nfl', 'nhl', 'ufc', 'wta', 'atp'].some(x => 
+                team1.toLowerCase().includes(x) || team2.toLowerCase().includes(x));
+            if (leagueInTeam && !/basketball|tennis|mma|hockey|esports/.test(league)) {
+                if (team1.toLowerCase() === team2.toLowerCase()) return false;
+            }
+            
+            return true;
+        }
+
         function applyFilters(matches) {
+            let filtered = matches.filter(isValidMatch);
+            
             const q = (document.getElementById('searchInput')?.value || '').trim().toLowerCase();
             const popularOnly = !!document.getElementById('popularOnly')?.checked;
             const favoritesOnly = !!document.getElementById('favoritesOnly')?.checked;
             const favorites = getFavorites();
-            return matches.filter(m => {
+            filtered = filtered.filter(m => {
                 const sport = getMatchSport(m);
                 const game = getMatchGame(m);
                 if (currentSportFilter !== 'all' && sport !== currentSportFilter) return false;
@@ -1558,10 +1576,22 @@
 
         function getLeaguePriority(match) {
             const league = (match.league || '').toLowerCase();
+            const sport = getMatchSport(match);
+            
+            let sportPriority = 0;
+            if (sport === 'football') sportPriority = 0;
+            else if (sport === 'hockey') sportPriority = 100;
+            else if (sport === 'basketball') sportPriority = 200;
+            else if (sport === 'tennis') sportPriority = 300;
+            else if (sport === 'volleyball') sportPriority = 400;
+            else if (sport === 'mma') sportPriority = 500;
+            else if (sport === 'esports') sportPriority = 800;
+            else sportPriority = 900;
+            
             for (const [key, priority] of Object.entries(LEAGUE_PRIORITY)) {
-                if (league.includes(key)) return priority;
+                if (league.includes(key)) return sportPriority + priority;
             }
-            return 999; // низкий приоритет для неизвестных лиг
+            return sportPriority + 999;
         }
 
         function sortMatches(matches) {
@@ -1717,18 +1747,31 @@
 
                     // Определяем БК-источник и ссылку для проверки
                     const matchUrl = match.match_url || '';
+                    const matchUrlMarathon = match.match_url_marathon || '';
+                    const matchUrlWinline = match.match_url_winline || '';
                     const source = (match.source || '').toLowerCase();
                     let bkBadge = '';
                     let verifyLink = '';
-                    if (matchUrl) {
-                        if (matchUrl.includes('winline')) {
-                            bkBadge = `<span class="bk-badge bk-badge--winline">Winline</span>`;
-                        } else if (matchUrl.includes('marathon')) {
+                    
+                    // Приоритет: Marathon → Winline
+                    if (matchUrlMarathon) {
+                        bkBadge = `<span class="bk-badge bk-badge--marathon">Marathon</span>`;
+                        verifyLink = `<a href="${escapeHtml(matchUrlMarathon)}" target="_blank" rel="noopener" class="match-link" title="Проверить коэффициент на Marathon">🔍 Проверить</a>`;
+                    } else if (matchUrlWinline) {
+                        bkBadge = `<span class="bk-badge bk-badge--winline">Winline</span>`;
+                        verifyLink = `<a href="${escapeHtml(matchUrlWinline)}" target="_blank" rel="noopener" class="match-link" title="Проверить коэффициент на Winline">🔍 Проверить</a>`;
+                    } else if (matchUrl) {
+                        if (matchUrl.includes('marathon')) {
                             bkBadge = `<span class="bk-badge bk-badge--marathon">Marathon</span>`;
-                        } else if (matchUrl.includes('fonbet')) {
-                            bkBadge = `<span class="bk-badge bk-badge--fonbet">Fonbet</span>`;
+                        } else if (matchUrl.includes('winline')) {
+                            bkBadge = `<span class="bk-badge bk-badge--winline">Winline</span>`;
                         }
                         verifyLink = `<a href="${escapeHtml(matchUrl)}" target="_blank" rel="noopener" class="match-link" title="Проверить коэффициент на сайте БК">🔍 Проверить</a>`;
+                    } else if (source === 'marathon' && eid) {
+                        // Marathon URL format if known
+                        const mUrl = 'https://www.marathonbet.ru/su/betting/' + eid;
+                        bkBadge = `<span class="bk-badge bk-badge--marathon">Marathon</span>`;
+                        verifyLink = `<a href="${mUrl}" target="_blank" rel="noopener" class="match-link" title="Проверить коэффициент на Marathon">🔍 Проверить</a>`;
                     } else if (source === 'winline' && eid) {
                         const wUrl = 'https://winline.ru/stavki/event/' + eid;
                         bkBadge = `<span class="bk-badge bk-badge--winline">Winline</span>`;

@@ -3,6 +3,7 @@
 """
 PRIZMBET — Generate bookmaker JSON files from matches.json
 Разделяет матчи по БК на основе source И match_url
+Удаляет Fonbet, делает Marathon основным источником
 """
 
 import json
@@ -21,16 +22,12 @@ def get_bookmaker_source(match):
     # Проверяем по URL в приоритете (даже если source не задан)
     if 'marathon' in match_url or 'marathon' in match_url_marathon:
         return 'marathon'
-    if 'fonbet' in match_url or 'bkfon' in match_url:
-        return 'fonbet'
     if 'winline' in match_url:
         return 'winline'
     
     # Проверяем по source
     if 'marathon' in source:
         return 'marathon'
-    if 'fonbet' in source:
-        return 'fonbet'
     if 'winline' in source:
         return 'winline'
     
@@ -38,7 +35,7 @@ def get_bookmaker_source(match):
     return 'unknown'
 
 def generate_bookmaker_files():
-    """Генерирует JSON файлы для каждого БК"""
+    """Генерирует JSON файлы для каждого БК (только Winline и Marathon)"""
     print("=" * 60)
     print("PRIZMBET - Generate Bookmaker JSON Files")
     print("=" * 60)
@@ -58,16 +55,18 @@ def generate_bookmaker_files():
     matches = data.get('matches', [])
     last_update = data.get('last_update', datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M:%S'))
     
-    # Разделяем по БК
+    # Разделяем по БК (только Winline и Marathon)
     bookmakers = {
         'winline': [],
         'marathon': [],
-        'fonbet': [],
         'unknown': []
     }
     
     for match in matches:
         bk = get_bookmaker_source(match)
+        # Игнорируем Fonbet
+        if bk == 'fonbet':
+            continue
         bookmakers[bk].append(match)
     
     # Генерируем файлы
@@ -88,15 +87,20 @@ def generate_bookmaker_files():
         
         print(f"[OK] {bk_name}.json: {len(bk_matches)} matches")
     
+    # Удаляем fonbet.json если он существует
+    fonbet_file = os.path.join(SCRIPT_DIR, 'fonbet.json')
+    if os.path.exists(fonbet_file):
+        os.remove(fonbet_file)
+        print(f"[OK] fonbet.json removed")
+    
     # Итог
     print(f"\n{'=' * 60}")
     print("SUMMARY")
     print("=" * 60)
-    total_generated = sum(len(bookmakers[bk]) for bk in ['winline', 'marathon', 'fonbet'])
+    total_generated = sum(len(bookmakers[bk]) for bk in ['winline', 'marathon'])
     print(f"Total matches: {total_generated}")
+    print(f"  Marathon:  {len(bookmakers['marathon'])}")  # Marathon first
     print(f"  Winline:   {len(bookmakers['winline'])}")
-    print(f"  Marathon:  {len(bookmakers['marathon'])}")
-    print(f"  Fonbet:    {len(bookmakers['fonbet'])}")
     
     if bookmakers['unknown']:
         print(f"\n[WARN] {len(bookmakers['unknown'])} matches with unknown bookmaker")

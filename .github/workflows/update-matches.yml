@@ -78,9 +78,6 @@ jobs:
           if ! git diff --quiet marathon.json 2>/dev/null; then
             CHANGED=true
           fi
-          if ! git diff --quiet fonbet.json 2>/dev/null; then
-            CHANGED=true
-          fi
           echo "changed=$CHANGED" >> $GITHUB_OUTPUT
           echo "Changes detected: $CHANGED"
 
@@ -89,6 +86,6 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add matches.json winline.json marathon.json fonbet.json
+          git add matches.json winline.json marathon.json
           git commit -m "chore: auto-update matches [$(date -u +'%Y-%m-%d %H:%M UTC')]"
           git push

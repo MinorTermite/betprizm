@@ -117,8 +117,8 @@ def merge_coefs(primary: dict, secondary: dict) -> dict:
 def dedup_matches(primary: List[dict], secondary: List[dict]) -> List[dict]:
     """
     Объединяет два списка матчей без дублей.
-    primary — приоритетный источник (winline).
-    secondary — дополнительный (marathon).
+    primary — приоритетный источник (marathon).
+    secondary — дополнительный (winline).
     """
     result = list(primary)
 
@@ -138,14 +138,14 @@ def dedup_matches(primary: List[dict], secondary: List[dict]) -> List[dict]:
             if teams_match(t1_p, t2_p, t1_s, t2_s):
                 # Матч уже есть — дополняем коэффициентами если нужно
                 result[i] = merge_coefs(m_pri, m_sec)
-                # Если у marathon есть URL матча а у winline нет — добавим как второй
-                if not result[i].get('match_url_marathon') and m_sec.get('match_url'):
-                    result[i]['match_url_marathon'] = m_sec['match_url']
+                # Если у winline есть URL матча а у marathon нет — добавим как второй
+                if not result[i].get('match_url_winline') and m_sec.get('match_url'):
+                    result[i]['match_url_winline'] = m_sec['match_url']
                 found = True
                 break
 
         if not found:
-            # Матча нет у winline — добавляем из marathon
+            # Матча нет у marathon — добавляем из winline
             result.append(m_sec)
 
     return result
@@ -300,8 +300,8 @@ def main():
     # 1. Сначала существующие матчи из Google Sheets
     # 2. Затем данные из реальных парсеров (с возможностью обновления коэффициентов и URL)
     
-    # Сначала объединяем данные из парсеров между собой
-    parsed_matches = dedup_matches(winline_matches, marathon_matches)
+    # Сначала объединяем данные из парсеров между собой (Marathon основной)
+    parsed_matches = dedup_matches(marathon_matches, winline_matches)
     
     # Затем объединяем с существующими матчами, при этом данные из парсеров приоритетнее
     # для обновления коэффициентов и URL
