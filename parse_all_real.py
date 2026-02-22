@@ -111,8 +111,8 @@ def merge_coefs(primary: dict, secondary: dict) -> dict:
 def dedup_matches(primary: List[dict], secondary: List[dict]) -> List[dict]:
     """
     Объединяет два списка матчей без дублей.
-    primary — приоритетный источник (marathon).
-    secondary — дополнительный (winline).
+    primary — приоритетный источник (новые данные).
+    secondary — дополнительный (существующие).
     """
     result = list(primary)
 
@@ -200,26 +200,9 @@ def save_matches(matches: List[dict], sources: List[str]) -> None:
 # ЗАПУСК ПАРСЕРОВ
 # =============================================================================
 
-def run_winline() -> List[dict]:
-    print("\n" + "=" * 60)
-    print("[1/2] Winline.ru")
-    print("=" * 60)
-    try:
-        from winline_parser import run_parser
-        matches = run_parser()
-        # Помечаем источник
-        for m in matches:
-            m.setdefault('source', 'winline')
-        print(f"  Winline: {len(matches)} матчей")
-        return matches
-    except Exception as e:
-        print(f"  Winline ОШИБКА: {e}")
-        return []
-
-
 def run_marathon() -> List[dict]:
     print("\n" + "=" * 60)
-    print("[2/2] Marathonbet.ru")
+    print("[1/1] Marathonbet.ru")
     print("=" * 60)
     try:
         from marathon_parser import run_parser
@@ -274,7 +257,7 @@ def main():
         sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 
     print("=" * 60)
-    print("PRIZMBET — Объединённый парсер: Winline + Marathon")
+    print("PRIZMBET — Парсер: Marathon")
     print("Дедупликация по именам команд")
     print("=" * 60)
 
@@ -282,28 +265,17 @@ def main():
     existing_matches = load_existing_matches()
     print(f"  Загружено существующих матчей: {len(existing_matches)}")
 
-    winline_matches = run_winline()
     marathon_matches = run_marathon()
 
-    # Даже если оба источника не вернули матчи, не завершаем программу аварийно
-    # чтобы не ломать пайплайн, если есть другие источники данных
-    if not winline_matches and not marathon_matches:
-        print("\nПРЕДУПРЕЖДЕНИЕ: оба источника не вернули матчи, но продолжаем выполнение")
+    if not marathon_matches:
+        print("\nПРЕДУПРЕЖДЕНИЕ: источник не вернул матчи, но продолжаем выполнение")
 
-    # Объединяем все источники:
-    # 1. Сначала существующие матчи из Google Sheets
-    # 2. Затем данные из реальных парсеров (с возможностью обновления коэффициентов и URL)
+    parsed_matches = marathon_matches
     
-    # Сначала объединяем данные из парсеров между собой (Marathon основной)
-    parsed_matches = dedup_matches(marathon_matches, winline_matches)
-    
-    # Затем объединяем с существующими матчами, при этом данные из парсеров приоритетнее
-    # для обновления коэффициентов и URL
+    # Затем объединяем с существующими матчами
     final_matches = dedup_matches(existing_matches, parsed_matches)
 
     sources = ["google_sheets"]
-    if winline_matches:
-        sources.append("winline.ru")
     if marathon_matches:
         sources.append("marathonbet.ru")
 

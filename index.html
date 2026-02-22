@@ -1739,38 +1739,19 @@
                     }
 
                     // Определяем БК-источник и ссылку для проверки
-                    const matchUrl = match.match_url || '';
-                    const matchUrlMarathon = match.match_url_marathon || '';
-                    const matchUrlWinline = match.match_url_winline || '';
+                    const matchUrl = match.match_url || match.match_url_marathon || '';
                     const source = (match.source || '').toLowerCase();
                     let bkBadge = '';
                     let verifyLink = '';
                     
-                    // Приоритет: Marathon → Winline
-                    if (matchUrlMarathon) {
+                    if (matchUrl) {
                         bkBadge = `<span class="bk-badge bk-badge--marathon">Marathon</span>`;
-                        verifyLink = `<a href="${escapeHtml(matchUrlMarathon)}" target="_blank" rel="noopener" class="match-link" title="Проверить коэффициент на Marathon">🔍 Проверить</a>`;
-                    } else if (matchUrlWinline) {
-                        bkBadge = `<span class="bk-badge bk-badge--winline">Winline</span>`;
-                        verifyLink = `<a href="${escapeHtml(matchUrlWinline)}" target="_blank" rel="noopener" class="match-link" title="Проверить коэффициент на Winline">🔍 Проверить</a>`;
-                    } else if (matchUrl) {
-                        if (matchUrl.includes('marathon')) {
-                            bkBadge = `<span class="bk-badge bk-badge--marathon">Marathon</span>`;
-                        } else if (matchUrl.includes('winline')) {
-                            bkBadge = `<span class="bk-badge bk-badge--winline">Winline</span>`;
-                        }
-                        verifyLink = `<a href="${escapeHtml(matchUrl)}" target="_blank" rel="noopener" class="match-link" title="Проверить коэффициент на сайте БК">🔍 Проверить</a>`;
-                    } else if (source === 'marathon' && eid) {
-                        // Marathon URL format if known
+                        verifyLink = `<a href="${escapeHtml(matchUrl)}" target="_blank" rel="noopener" class="match-link" title="Проверить коэффициент на Marathon">🔍 Проверить</a>`;
+                    } else if (eid) {
                         const mUrl = 'https://www.marathonbet.ru/su/betting/' + eid;
                         bkBadge = `<span class="bk-badge bk-badge--marathon">Marathon</span>`;
                         verifyLink = `<a href="${mUrl}" target="_blank" rel="noopener" class="match-link" title="Проверить коэффициент на Marathon">🔍 Проверить</a>`;
-                    } else if (source === 'winline' && eid) {
-                        const wUrl = 'https://winline.ru/stavki/event/' + eid;
-                        bkBadge = `<span class="bk-badge bk-badge--winline">Winline</span>`;
-                        verifyLink = `<a href="${wUrl}" target="_blank" rel="noopener" class="match-link" title="Проверить коэффициент на Winline">🔍 Проверить</a>`;
                     }
-
                     card.id = `match-${eid}`;
                     card.innerHTML = `
                         <div class="match-header">

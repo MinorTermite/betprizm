@@ -434,90 +434,40 @@ def parse_csv_content(csv_content):
             skipped += 1
             continue
 
-        # Определяем тип данных по URL (колонка 12)
-        match_url = norm(row[12]) if len(row) > 12 else ""
-        is_marathon = "marathon" in match_url.lower()
+        # Универсальная структура (Marathon-only)
+        league = norm(row[1]) if len(row) > 1 else ""
+        date = norm(row[2]) if len(row) > 2 else ""
+        time_val = norm(row[3]) if len(row) > 3 else ""
+        team1 = norm(row[4]) if len(row) > 4 else ""
+        team2 = norm(row[5]) if len(row) > 5 else ""
 
-        if is_marathon:
-            # Для marathon данных структура другая:
-            # row[0]=sport, row[1]=league_id, row[2]=date, row[3]=time
-            # row[4]=team1, row[5]=team2(?), row[6]=p1, row[7]=x, row[8]=p2
-            # row[9]=p1x, row[10]=p12, row[11]=league_name, row[12]=URL
+        # Очистка: иногда дата/время попадает в имя команды
+        DATE_TIME_RX = r"\d{1,2}\s+[а-яёА-ЯЁa-zA-Z]{2,4}\s+\d{1,2}:\d{2}"
+        team1 = re.sub(DATE_TIME_RX, "", team1).strip()
+        team2 = re.sub(DATE_TIME_RX, "", team2).strip()
 
-            # Проверяем: если row[0] - это число (league_id), значит структура marathon
-            if row[0].isdigit() or (row[0] and row[0][0].isdigit()):
-                # Marathon структура
-                league_id = norm(row[0])
-                date = norm(row[1])  # это date
-                time_val = norm(row[2])  # это time
-                team1 = norm(row[3])
-                team2 = norm(row[4])
+        p1 = norm(row[6]) if len(row) > 6 else "0.00"
+        x = norm(row[7]) if len(row) > 7 else "0.00"
+        p2 = norm(row[8]) if len(row) > 8 else "0.00"
+        p1x = norm(row[9]) if len(row) > 9 else "0.00"
+        p12 = norm(row[10]) if len(row) > 10 else "0.00"
+        px2 = norm(row[11]) if len(row) > 11 else "0.00"
 
-                # Очистка: иногда дата/время попадает в имя команды
-                DATE_TIME_RX = r"\d{1,2}\s+[а-яёА-ЯЁa-zA-Z]{2,4}\s+\d{1,2}:\d{2}"
-                team1 = re.sub(DATE_TIME_RX, "", team1).strip()
-                team2 = re.sub(DATE_TIME_RX, "", team2).strip()
-
-                # Проверяем: если team2 - число, это коэффициент, значит данные ещё смещены
-                # Пробуем взять team1 из row[4], team2 из row[5]
-                if not team2 or team2.replace(".", "").isdigit():
-                    team1 = norm(row[4])
-                    team2 = norm(row[5])
-                    team1 = re.sub(DATE_TIME_RX, "", team1).strip()
-                    team2 = re.sub(DATE_TIME_RX, "", team2).strip()
-
-                p1 = norm(row[6]) or "0.00"
-                x = norm(row[7]) or "0.00"
-                p2 = norm(row[8]) or "0.00"
-                p1x = norm(row[9]) or "0.00"
-                p12 = norm(row[10]) or "0.00"
-                league = norm(row[11])  # Это название лиги!
-                match_id = date + " " + time_val if date and time_val else league_id
-            else:
-                # Стандартная структура
-                league = norm(row[0])
-                match_id = norm(row[1])
-                date = norm(row[2])
-                time_val = norm(row[3])
-                team1 = norm(row[4])
-                team2 = norm(row[5])
-
-                DATE_TIME_RX = r"\d{1,2}\s+[а-яёА-ЯЁa-zA-Z]{2,4}\s+\d{1,2}:\d{2}"
-                team1 = re.sub(DATE_TIME_RX, "", team1).strip()
-                team2 = re.sub(DATE_TIME_RX, "", team2).strip()
-
-                p1 = norm(row[6]) or "0.00"
-                x = norm(row[7]) or "0.00"
-                p2 = norm(row[8]) or "0.00"
-                p1x = norm(row[9]) or "0.00"
-                p12 = norm(row[10]) or "0.00"
-                px2 = norm(row[11]) or "0.00"
-        else:
-            # Стандартная структура для Winline
-            league = norm(row[0])
-            match_id = norm(row[1])
-            date = norm(row[2])
-            time_val = norm(row[3])
-            team1 = norm(row[4])
-            team2 = norm(row[5])
-
-            # Очистка: иногда дата/время попадает в имя команды
-            DATE_TIME_RX = r"\d{1,2}\s+[а-яёА-ЯЁa-zA-Z]{2,4}\s+\d{1,2}:\d{2}"
-            team1 = re.sub(DATE_TIME_RX, "", team1).strip()
-            team2 = re.sub(DATE_TIME_RX, "", team2).strip()
-
-            p1 = norm(row[6]) or "0.00"
-            x = norm(row[7]) or "0.00"
-            p2 = norm(row[8]) or "0.00"
-            p1x = norm(row[9]) or "0.00"
-            p12 = norm(row[10]) or "0.00"
-            px2 = norm(row[11]) or "0.00"
+        # В новой схеме 13-й индекс (14 столбец) — это Marathon ссылка
+        match_url = norm(row[13]) if len(row) > 13 else ""
+        # На всякий случай, если ссылка оказалась в 12-м столбце
+        if not match_url and len(row) > 12 and "marathon" in norm(row[12]).lower():
+            match_url = norm(row[12])
 
         if not team1 or not team2:
             skipped += 1
             continue
 
         sport = detect_sport(league)
+        # Генерируем уникальный ID для матча
+        import hashlib
+        m_hash = hashlib.md5(f"{date}{time_val}{team1}{team2}".encode('utf-8')).hexdigest()[:8]
+        match_id = f"ma_{m_hash}"
 
         entry = {
             "sport": sport,
@@ -527,22 +477,16 @@ def parse_csv_content(csv_content):
             "time": time_val,
             "team1": team1,
             "team2": team2,
-            "p1": p1,
-            "x": x,
-            "p2": p2,
-            "p1x": p1x,
-            "p12": p12,
-            "px2": px2 if "px2" in dir() else "0.00",
+            "p1": p1 or "0.00",
+            "x": x or "0.00",
+            "p2": p2 or "0.00",
+            "p1x": p1x or "0.00",
+            "p12": p12 or "0.00",
+            "px2": px2 or "0.00",
         }
         if match_url:
             entry["match_url"] = match_url
-            url_lower = match_url.lower()
-            if "winline" in url_lower:
-                entry["source"] = "winline"
-            elif "marathon" in url_lower:
-                entry["source"] = "marathon"
-            elif "fonbet" in url_lower or "bkfon" in url_lower:
-                entry["source"] = "fonbet"
+            entry["source"] = "marathon"
 
         matches.append(entry)
 

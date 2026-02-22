@@ -162,7 +162,7 @@ def main():
         ws.clear()
         
         upload_data = [header] + group_rows
-        ws.update('A1', upload_data, value_input_option='RAW')
+        ws.update(values=upload_data, range_name='A1', value_input_option='RAW')
 
     print("\n" + "=" * 60)
     print(f"[OK] SUCCESS: All categories uploaded")
