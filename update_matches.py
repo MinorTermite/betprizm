@@ -310,8 +310,8 @@ def download_csv_from_api():
             sheet_id = props.get("sheetId", 0)
 
             # Пропускаем Summary
-            if "summary" in title.lower():
-                print(f"  [SKIP] {title} (summary tab)")
+            if "summary" in title.lower() or 'winline' in title.lower() or 'фонбет' in title.lower() or 'fonbet' in title.lower():
+                print(f"  [SKIP] {title} (summary/legacy tab)")
                 continue
 
             # Получаем данные из вкладки через API
@@ -453,15 +453,25 @@ def parse_csv_content(csv_content):
         p12 = norm(row[10]) if len(row) > 10 else "0.00"
         px2 = norm(row[11]) if len(row) > 11 else "0.00"
 
-        # В новой схеме 13-й индекс (14 столбец) — это Marathon ссылка
-        match_url = norm(row[13]) if len(row) > 13 else ""
-        # На всякий случай, если ссылка оказалась в 12-м столбце
-        if not match_url and len(row) > 12 and "marathon" in norm(row[12]).lower():
-            match_url = norm(row[12])
-
         if not team1 or not team2:
             skipped += 1
             continue
+
+        # В новой схеме 13-й индекс (14 столбец) — это Marathon ссылка
+        match_url = norm(row[13]) if len(row) > 13 else ""
+        # На всякий случай, если ссылка оказалась в 12-м столбце
+        if not match_url and len(row) > 12:
+            link_col = norm(row[12]).lower()
+            if "marathon" in link_col:
+                match_url = norm(row[12])
+            elif "winline" in link_col or "fonbet" in link_col or "bkfon" in link_col:
+                skipped += 1
+                continue
+        elif match_url:
+            link_col = match_url.lower()
+            if "winline" in link_col or "fonbet" in link_col or "bkfon" in link_col:
+                skipped += 1
+                continue
 
         sport = detect_sport(league)
         # Генерируем уникальный ID для матча
