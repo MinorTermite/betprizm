@@ -73,7 +73,7 @@ def main():
 
     print("=" * 60)
     print("PRIZMBET — Upload to Google Sheets")
-    print("Sources: winline.ru + marathonbet.ru")
+    print("MAPPING: Split by Sport tabs")
     print("=" * 60)
 
     # Credentials
@@ -91,18 +91,13 @@ def main():
     print(f"\nOpening spreadsheet {SPREADSHEET_ID}...")
     gc = gspread.authorize(creds)
     sheet = gc.open_by_key(SPREADSHEET_ID)
-    worksheet = sheet.get_worksheet(0)
-    print(f"[OK] Worksheet: {worksheet.title}")
-
+    
     # Load matches
     print(f"\nLoading {MATCHES_FILE}...")
     with open(MATCHES_FILE, encoding='utf-8') as f:
         data = json.load(f)
     matches = data.get('matches', [])
-    last_update = data.get('last_update', '')
-    source = data.get('source', '')
-    print(f"[OK] Matches: {len(matches)} | Updated: {last_update}")
-    print(f"[OK] Source: {source}")
+    print(f"[OK] Total Matches: {len(matches)}")
 
     # Header
     header = [
@@ -112,20 +107,28 @@ def main():
         'Winline (ссылка)', 'Marathon (ссылка)',
     ]
 
-    rows = [header]
-    no_winline = 0
-    no_marathon = 0
+    # Mapping
+    SPORT_TABS = {
+        'football': 'Футбол',
+        'hockey': 'Хоккей',
+        'basket': 'Баскетбол',
+        'tennis': 'Теннис',
+        'esports': 'Киберспорт',
+        'volleyball': 'Волейбол',
+        'mma': 'MMA',
+    }
 
+    # Группируем матчи
+    grouped = {}
     for m in matches:
+        sport = m.get('sport', 'other').lower()
+        if sport not in grouped:
+            grouped[sport] = []
+        
         wl_url = get_winline_url(m)
         ma_url = get_marathon_url(m)
 
-        if not wl_url:
-            no_winline += 1
-        if not ma_url:
-            no_marathon += 1
-
-        rows.append([
+        grouped[sport].append([
             m.get('sport', ''),
             m.get('league', ''),
             m.get('date', ''),
@@ -142,17 +145,27 @@ def main():
             ma_url,
         ])
 
-    print(f"\n  Матчей без Winline ссылки: {no_winline}")
-    print(f"  Матчей без Marathon ссылки: {no_marathon}")
+    print("\nUploading to tabs...")
+    existing_worksheets = {ws.title: ws for ws in sheet.worksheets()}
 
-    # Upload
-    print(f"\nClearing worksheet...")
-    worksheet.clear()
-    print(f"Uploading {len(rows) - 1} rows...")
-    worksheet.update('A1', rows, value_input_option='RAW')
+    for sport, group_rows in grouped.items():
+        tab_name = SPORT_TABS.get(sport, 'Other')
+        
+        if tab_name not in existing_worksheets:
+            print(f"  Creating tab: {tab_name}...")
+            ws = sheet.add_worksheet(title=tab_name, rows=len(group_rows) + 100, cols=15)
+            existing_worksheets[tab_name] = ws
+        else:
+            ws = existing_worksheets[tab_name]
+        
+        print(f"  [{tab_name}] Clearing and uploading {len(group_rows)} matches...")
+        ws.clear()
+        
+        upload_data = [header] + group_rows
+        ws.update('A1', upload_data, value_input_option='RAW')
 
     print("\n" + "=" * 60)
-    print(f"[OK] SUCCESS: {len(rows) - 1} matches uploaded")
+    print(f"[OK] SUCCESS: All categories uploaded")
     print(f"[URL] https://docs.google.com/spreadsheets/d/{SPREADSHEET_ID}")
     print("=" * 60)
 

@@ -1,15 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-PRIZMBET — Объединённый парсер реальных матчей
-Источники:
-  1. winline.ru    — playwright (winline_parser.py)
-  2. marathonbet.ru — playwright (marathon_parser.py)
-
-Дедупликация:
-  Матчи считаются одинаковыми если совпадают нормализованные имена обеих команд.
-  Приоритет: winline.ru (берётся первым), потом marathon.
-  При совпадении — в итоговой записи остаётся winline URL + лучший набор коэффициентов.
+PRIZMBET — Парсер реальных матчей (Marathon-only)
+Внимание: Winline и Fonbet отключены.
+Используется только marathon_parser.py / marathon.json.
 
 Запуск:
   python parse_all_real.py
