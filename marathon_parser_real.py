@@ -245,6 +245,19 @@ def http_get(url: str) -> str:
     return r.text
 
 
+def infer_sport(league: str, t1: str, t2: str) -> str:
+    """Определяет вид спорта по строке, если он ошибочно присвоен (например, при редиректе LIVE на общую страницу)"""
+    text = f"{league} {t1} {t2}".lower()
+    if "настольный теннис" in text or "table tennis" in text: return "tabletennis"
+    if any(x in text for x in ["dota", "counter-strike", "cs2", "valorant", "league of legends", "rocket league", "pubg"]): return "esports"
+    if any(x in text for x in ["хоккей", "nhl", "кхл", "вхл", "мхл", "hockey", "shl", "liiga"]): return "hockey"
+    if any(x in text for x in ["баскет", "nba", "нба", "евролига", "vtb", "basket"]): return "basket"
+    if any(x in text for x in ["теннис", "atp", "wta", "itf", "tennis"]): return "tennis"
+    if any(x in text for x in ["волейбол", "volleyball", "cev", "vnl"]): return "volleyball"
+    if any(x in text for x in ["mma", "ufc", "bellator", "pfl", "aca", "единоборства"]): return "mma"
+    return "football"
+
+
 def norm_space(s: str) -> str:
     return re.sub(r"\s+", " ", (s or "").strip())
 
@@ -542,11 +555,28 @@ def main() -> None:
         except Exception as e:
             print(f"[ERR] LIVE {sport}: {e}")
 
-    # Dedup by (sport,id)
+    # Dedup by (id) and correct sports
     uniq = {}
     for m in all_items:
-        key = f"{m.get('sport','')}:{m.get('id','')}"
-        uniq[key] = m
+        m_id = m.get('id', '')
+        if not m_id:
+            continue
+            
+        # Для LIVE событий уточняем вид спорта через infer_sport, так как Marathon
+        # часто редиректит URL категории на весь список LIVE
+        if m.get("date") == "LIVE":
+            m["sport"] = infer_sport(m.get("league", ""), m.get("team1", ""), m.get("team2", ""))
+            
+        if m_id not in uniq:
+            uniq[m_id] = m
+        else:
+            # Если уже есть, обновляем только если новый имеет более понятный спорт
+            if uniq[m_id]["sport"] == "other" and m["sport"] != "other":
+                uniq[m_id]["sport"] = m["sport"]
+            # Если оба LIVE, берем с более чистым названием лиги (если у одного 'Все события')
+            if len(m["league"]) > 3 and "Все" not in m["league"]:
+                uniq[m_id]["league"] = m["league"]
+
     all_items = list(uniq.values())
 
     payload = {
