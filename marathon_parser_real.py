@@ -249,6 +249,23 @@ def norm_space(s: str) -> str:
     return re.sub(r"\s+", " ", (s or "").strip())
 
 
+def clean_name(s: str) -> str:
+    """Удаляет лишний технический текст из названий команд (матч, счет, серии и т.д.)"""
+    if not s:
+        return ""
+    # Удаляем "(Первый матч 0:0)", "счет 1:1" и т.п.
+    s = re.sub(r"\(?Первый матч\s+\d+:\d+\)?", "", s, flags=re.I)
+    s = re.sub(r"\(?счет\s+\d+:\d+\)?", "", s, flags=re.I)
+    s = re.sub(r"\(?серия\s+\d+:\d+\)?", "", s, flags=re.I)
+    # Удаляем счет в конце
+    s = re.sub(r"\d+:\d+$", "", s).strip()
+    # Удаляем слово "матч" если оно стоит отдельно
+    s = re.sub(r"\bматч\b", "", s, flags=re.I).strip()
+    # Удаляем лишние пробелы и тире
+    s = re.sub(r"\s+", " ", s)
+    return s.strip()
+
+
 def as_float(s: str) -> Optional[float]:
     if s is None:
         return None
@@ -276,64 +293,58 @@ def parse_football_table(html: str) -> List[dict]:
     soup = BeautifulSoup(html, "lxml")
     out = []
 
-    for row in soup.select("tr"):
-        txt = norm_space(row.get_text(" "))
-        if not txt:
+    # В сыром HTML контейнер - div.coupon-row
+    rows = soup.select("div.coupon-row")
+    
+    for row in rows:
+        # Пытаемся взять ID разными способами (BS может привести к нижнему регистру)
+        event_id = row.get("data-event-treeid") or row.get("data-event-treeId") or row.get("data-event-id")
+        if not event_id:
             continue
-
-        m_id = re.search(r"\+(\d{2,})", txt)
-        if not m_id:
+            
+        member_links = row.select("a.member-link")
+        if len(member_links) < 2:
             continue
-        event_id = m_id.group(1)
+            
+        t1 = clean_name(member_links[0].get_text())
+        t2 = clean_name(member_links[1].get_text())
+        
+        m_link = member_links[0].get("href")
+        match_url = urljoin(BASE, m_link) if m_link else ""
 
-        tds = [norm_space(td.get_text(" ")) for td in row.select("td")]
-        odds: List[float] = []
-        for td in tds:
-            if re.fullmatch(r"\d+(?:[.,]\d+)?", td):
-                f = as_float(td)
-                if f is not None:
-                    odds.append(f)
+        # Дата и время часто в .date-wrapper или .date
+        time_el = row.select_one(".date-wrapper") or row.select_one(".date")
+        time_txt = norm_space(time_el.get_text()) if time_el else ""
+        
+        date_str = ""
+        time_str = ""
+        m_dt = re.search(r"(\d{1,2}\s+[а-яёА-Я]{2,4})\s+(\d{1,2}:\d{2})", time_txt)
+        if m_dt:
+            date_str = m_dt.group(1)
+            time_str = m_dt.group(2)
+        else:
+            time_str = time_txt if ":" in time_txt else ""
 
-        if len(odds) < 3:
-            continue
-
-        p1 = odds[0]
-        x = odds[1] if len(odds) > 1 else 0.0
-        p2 = odds[2] if len(odds) > 2 else 0.0
-        p1x = odds[3] if len(odds) > 3 else 0.0
-        p12 = odds[4] if len(odds) > 4 else 0.0
-        x2 = odds[5] if len(odds) > 5 else 0.0
-
-        t1 = t2 = ""
-        m_teams = re.search(r"1\.\s*(.+?)\s+2\.\s*(.+?)(?:\s+\+|\s+\d{1,2}:\d{2}|\s+\d{1,2}\s+\w+)", txt)
-        if m_teams:
-            t1 = norm_space(m_teams.group(1))
-            t2 = norm_space(m_teams.group(2))
-
-        m_time = re.search(r"\b(\d{1,2}:\d{2})\b", txt)
-        time_str = m_time.group(1) if m_time else ""
-
-        m_date = re.search(r"(\d{1,2}\s+[а-яёА-ЯЁ]{2,4})", txt)
-        date_str = m_date.group(1) if m_date else ""
-
-        # Очистка от даты/времени в названии
-        t1 = re.sub(r"\d{1,2}\s+[а-яёА-ЯЁ]{2,4}\s+\d{1,2}:\d{2}", "", t1).strip()
-        t2 = re.sub(r"\d{1,2}\s+[а-яёА-ЯЁ]{2,4}\s+\d{1,2}:\d{2}", "", t2).strip()
+        odds_dict = {}
+        # Мапинг ключей из data-selection-key (содержат @Match_Result.1 или похожее)
+        key_map = {
+            "Match_Result.1": "p1", "Match_Result.draw": "x", "Match_Result.3": "p2",
+            "Result.HD": "p1x", "Result.HA": "p12", "Result.AD": "px2"
+        }
+        for btn in row.select(".selection-link"):
+            sel_key = btn.get("data-selection-key", "")
+            for suffix, field in key_map.items():
+                if sel_key.endswith(suffix):
+                    val = btn.get_text().strip()
+                    odds_dict[field] = f"{as_float(val):.3g}" if as_float(val) else "0.00"
+                    break
 
         out.append({
-            "sport": "football",
-            "league": "",
-            "id": event_id,
-            "date": date_str,
-            "time": time_str,
-            "team1": t1,
-            "team2": t2,
-            "p1": f"{p1:.3g}" if p1 else "0.00",
-            "x": f"{x:.3g}" if x else "0.00",
-            "p2": f"{p2:.3g}" if p2 else "0.00",
-            "p1x": f"{p1x:.3g}" if p1x else "0.00",
-            "p12": f"{p12:.3g}" if p12 else "0.00",
-            "px2": f"{x2:.3g}" if x2 else "0.00",
+            "sport": "football", "league": "", "id": event_id,
+            "date": date_str, "time": time_str, "team1": t1, "team2": t2,
+            "match_url": match_url,
+            "p1": odds_dict.get("p1", "0.00"), "x": odds_dict.get("x", "0.00"), "p2": odds_dict.get("p2", "0.00"),
+            "p1x": odds_dict.get("p1x", "0.00"), "p12": odds_dict.get("p12", "0.00"), "px2": odds_dict.get("px2", "0.00"),
         })
 
     return out
@@ -343,50 +354,49 @@ def parse_2way_winner(html: str, sport: str) -> List[dict]:
     soup = BeautifulSoup(html, "lxml")
     out = []
 
-    for row in soup.select("tr"):
-        txt = norm_space(row.get_text(" "))
-        if not txt:
+    for row in soup.select("div.coupon-row"):
+        event_id = row.get("data-event-treeId") or row.get("data-event-id")
+        if not event_id:
             continue
-        m_id = re.search(r"\+(\d{2,})", txt)
-        if not m_id:
+            
+        member_links = row.select("a.member-link")
+        if len(member_links) < 2:
             continue
-        event_id = m_id.group(1)
+            
+        t1 = clean_name(member_links[0].get_text())
+        t2 = clean_name(member_links[1].get_text())
+        
+        m_link = member_links[0].get("href")
+        match_url = urljoin(BASE, m_link) if m_link else ""
 
-        nums = [as_float(x) for x in re.findall(r"\b\d+(?:[.,]\d+)?\b", txt)]
-        nums = [x for x in nums if x is not None]
-        if len(nums) < 2:
-            continue
+        time_el = row.select_one(".date-wrapper") or row.select_one(".date")
+        time_txt = norm_space(time_el.get_text()) if time_el else ""
+        
+        date_str = ""
+        time_str = ""
+        m_dt = re.search(r"(\d{1,2}\s+[а-яёА-Я]{2,4})\s+(\d{1,2}:\d{2})", time_txt)
+        if m_dt:
+            date_str = m_dt.group(1)
+            time_str = m_dt.group(2)
+        else:
+            time_str = time_txt if ":" in time_txt else ""
 
-        t1 = t2 = ""
-        m_teams = re.search(r"1\.\s*(.+?)\s+2\.\s*(.+?)(?:\s+\+|\s+\d{1,2}:\d{2}|\s+\d{1,2}\s+\w+)", txt)
-        if m_teams:
-            t1 = norm_space(m_teams.group(1))
-            t2 = norm_space(m_teams.group(2))
-
-        m_time = re.search(r"\b(\d{1,2}:\d{2})\b", txt)
-        time_str = m_time.group(1) if m_time else ""
-
-        m_date = re.search(r"(\d{1,2}\s+[а-яёА-ЯЁ]{2,4})", txt)
-        date_str = m_date.group(1) if m_date else ""
-
-        t1 = re.sub(r"\d{1,2}\s+[а-яёА-ЯЁ]{2,4}\s+\d{1,2}:\d{2}", "", t1).strip()
-        t2 = re.sub(r"\d{1,2}\s+[а-яёА-ЯЁ]{2,4}\s+\d{1,2}:\d{2}", "", t2).strip()
-
-        p1, p2 = nums[0], nums[1]
+        # Для 2-way обычно просто первые две котировки в ряду
+        odds_btns = row.select(".selection-link")
+        p1_val = p2_val = 0.0
+        if len(odds_btns) >= 2:
+            p1_val = as_float(odds_btns[0].get_text())
+            p2_val = as_float(odds_btns[-1].get_text())
 
         out.append({
-            "sport": sport,
-            "league": "",
-            "id": event_id,
-            "date": date_str,
-            "time": time_str,
-            "team1": t1,
-            "team2": t2,
-            "p1": f"{p1:.3g}" if p1 else "0.00",
+            "sport": sport, "league": "", "id": event_id,
+            "date": date_str, "time": time_str, "team1": t1, "team2": t2,
+            "match_url": match_url,
+            "p1": f"{p1_val:.3g}" if p1_val else "0.00",
             "x": "—",
-            "p2": f"{p2:.3g}" if p2 else "0.00",
+            "p2": f"{p2_val:.3g}" if p2_val else "0.00",
             "p1x": "—",
-            "p12": f"{min(p1,p2)*0.95:.3g}" if p1 and p2 else "0.00",
+            "p12": f"{min(p1_val, p2_val)*0.95:.3g}" if p1_val and p2_val else "0.00",
             "px2": "—",
         })
 
@@ -394,112 +404,40 @@ def parse_2way_winner(html: str, sport: str) -> List[dict]:
 
 
 def parse_esports_winner_only(html: str, league_title: str) -> List[dict]:
-    soup = BeautifulSoup(html, "lxml")
-    out = []
-
-    for row in soup.select("tr"):
-        txt = norm_space(row.get_text(" "))
-        if not txt:
-            continue
-        if "(" in txt or ")" in txt:
-            continue
-
-        m_id = re.search(r"\+(\d{2,})", txt)
-        if not m_id:
-            continue
-        event_id = m_id.group(1)
-
-        nums = [as_float(x) for x in re.findall(r"\b\d+(?:[.,]\d+)?\b", txt)]
-        nums = [x for x in nums if x is not None]
-        if len(nums) < 2:
-            continue
-
-        t1 = t2 = ""
-        m_teams = re.search(r"1\.\s*(.+?)\s+2\.\s*(.+?)(?:\s+\+|\s+\d{1,2}:\d{2}|\s+\d{1,2}\s+\w+)", txt)
-        if m_teams:
-            t1 = norm_space(m_teams.group(1))
-            t2 = norm_space(m_teams.group(2))
-
-        m_time = re.search(r"\b(\d{1,2}:\d{2})\b", txt)
-        time_str = m_time.group(1) if m_time else ""
-
-        m_date = re.search(r"(\d{1,2}\s+[а-яёА-ЯЁ]{2,4})", txt)
-        date_str = m_date.group(1) if m_date else ""
-
-        t1 = re.sub(r"\d{1,2}\s+[а-яёА-ЯЁ]{2,4}\s+\d{1,2}:\d{2}", "", t1).strip()
-        t2 = re.sub(r"\d{1,2}\s+[а-яёА-ЯЁ]{2,4}\s+\d{1,2}:\d{2}", "", t2).strip()
-
-        p1, p2 = nums[0], nums[1]
-        out.append({
-            "sport": "esports",
-            "league": league_title,
-            "id": event_id,
-            "date": date_str,
-            "time": time_str,
-            "team1": t1,
-            "team2": t2,
-            "p1": f"{p1:.3g}" if p1 else "0.00",
-            "x": "—",
-            "p2": f"{p2:.3g}" if p2 else "0.00",
-            "p1x": "—",
-            "p12": f"{min(p1,p2)*0.95:.3g}" if p1 and p2 else "0.00",
-            "px2": "—",
-        })
-
-    return out
+    return parse_2way_winner(html, "esports")
 
 
 def parse_live_matches(html: str, sport: str) -> List[dict]:
-    """Парсинг live-событий"""
     soup = BeautifulSoup(html, "lxml")
     out = []
 
-    for row in soup.select("tr"):
-        txt = norm_space(row.get_text(" "))
-        if not txt:
+    for row in soup.select("div.coupon-row"):
+        event_id = row.get("data-event-treeId") or row.get("data-event-id")
+        if not event_id:
             continue
+            
+        member_links = row.select("a.member-link")
+        if len(member_links) < 2:
+            continue
+            
+        t1 = clean_name(member_links[0].get_text())
+        t2 = clean_name(member_links[1].get_text())
         
-        # Ищем ID события
-        m_id = re.search(r"\+(\d{2,})", txt)
-        if not m_id:
-            continue
-        event_id = m_id.group(1)
+        m_link = member_links[0].get("href")
+        match_url = urljoin(BASE, m_link) if m_link else ""
 
-        # Извлекаем коэффициенты
-        nums = [as_float(x) for x in re.findall(r"\b\d+(?:[.,]\d+)?\b", txt)]
-        nums = [x for x in nums if x is not None]
-        if len(nums) < 2:
-            continue
-
-        t1 = t2 = ""
-        m_teams = re.search(r"1\.\s*(.+?)\s+2\.\s*(.+?)(?:\s+\+|\s+\d{1,2}:\d{2})", txt)
-        if m_teams:
-            t1 = norm_space(m_teams.group(1))
-            t2 = norm_space(m_teams.group(2))
-
-        # Время в live - это текущее время матча
-        m_time = re.search(r"\b(\d{1,2}:\d{2})\b", txt)
-        time_str = m_time.group(1) if m_time else "LIVE"
-
-        if not t1 or not t2:
-            continue
-
-        p1, p2 = nums[0], nums[1]
         out.append({
-            "sport": sport,
-            "league": "LIVE",
-            "id": event_id,
-            "date": "LIVE",
-            "time": time_str,
-            "team1": t1,
-            "team2": t2,
-            "p1": f"{p1:.3g}" if p1 else "0.00",
-            "x": "—",
-            "p2": f"{p2:.3g}" if p2 else "0.00",
-            "p1x": "—",
-            "p12": f"{min(p1,p2)*0.95:.3g}" if p1 and p2 else "0.00",
-            "px2": "—",
+            "sport": sport, "league": "LIVE", "id": event_id,
+            "date": "LIVE", "time": "LIVE", "team1": t1, "team2": t2,
+            "match_url": match_url,
+            "p1": "0.00", "x": "—", "p2": "0.00", "p1x": "—", "p12": "0.00", "px2": "—",
         })
+        odds_btns = row.select(".selection-link")
+        if len(odds_btns) >= 2:
+            p1 = as_float(odds_btns[0].get_text())
+            p2 = as_float(odds_btns[-1].get_text())
+            out[-1]["p1"] = f"{p1:.3g}" if p1 else "0.00"
+            out[-1]["p2"] = f"{p2:.3g}" if p2 else "0.00"
 
     return out
 
