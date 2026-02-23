@@ -1721,7 +1721,7 @@
 
             if (team2.length < 2) return false;
 
-            if (/счет|серия|score| матч/i.test(team1 + team2)) return false;
+            if (/счет|серия|score/i.test(team1 + team2)) return false;
 
             const leagueInTeam = ['nba', 'nfl', 'nhl', 'ufc', 'wta', 'atp'].some(x =>
                 team1.toLowerCase().includes(x) || team2.toLowerCase().includes(x));
