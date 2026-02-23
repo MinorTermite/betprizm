@@ -416,44 +416,59 @@ def parse_live_matches(html: str, sport: str) -> List[dict]:
     soup = BeautifulSoup(html, "lxml")
     out = []
 
-    rows = soup.select("div.coupon-row")
-    for row in rows:
-        # Пытаемся взять ID разными способами (BS может привести к нижнему регистру)
-        event_id = row.get("data-event-treeid") or row.get("data-event-treeId") or row.get("data-event-id")
-        if not event_id:
-            continue
-            
-        member_links = row.select("a.member-link")
-        if len(member_links) < 2:
-            continue
-            
-        t1 = clean_name(member_links[0].get_text())
-        t2 = clean_name(member_links[1].get_text())
-        
-        m_link = member_links[0].get("href")
-        match_url = urljoin(BASE, m_link) if m_link else ""
+    # В LIVE Marathon группирует матчи по блокам (category-container)
+    containers = soup.select(".category-container")
+    if not containers:
+        # Fallback если структура другая (бывает в некоторых разделах)
+        containers = [soup]
 
-        # Для LIVE событий проставляем league как "LIVE" если не удастся найти более точную
-        out.append({
-            "sport": sport, "league": "LIVE", "id": event_id,
-            "date": "LIVE", "time": "LIVE", "team1": t1, "team2": t2,
-            "match_url": match_url,
-            "p1": "0.00", "x": "—", "p2": "0.00", "p1x": "—", "p12": "0.00", "px2": "—",
-        })
-        
-        # Попробуем вытащить коэффициенты П1 и П2
-        odds_btns = row.select(".selection-link")
-        if len(odds_btns) >= 2:
-            try:
-                # Обычно П1 первая, П2 последняя в ряду основных
-                p1_val = odds_btns[0].get_text().strip()
-                p2_val = odds_btns[-1].get_text().strip()
-                p1 = as_float(p1_val)
-                p2 = as_float(p2_val)
-                if p1: out[-1]["p1"] = f"{p1:.3g}"
-                if p2: out[-1]["p2"] = f"{p2:.3g}"
-            except:
-                pass
+    for cont in containers:
+        # Ищем заголовок лиги в этом контейнере
+        label_el = cont.select_one(".category-label-td") or cont.select_one(".sport-category-label")
+        league_name = "LIVE"
+        if label_el:
+            # Берем первую строку текста (чтобы не брать "Все события", "Назад" и т.д.)
+            raw_txt = label_el.get_text().strip()
+            league_name = raw_txt.split('\n')[0].strip()
+            # Дополнительная очистка от мусора
+            league_name = re.sub(r"\s+(Все события|Назад|Скрыть|Показать|До выигрыша).*", "", league_name, flags=re.I).strip()
+            league_name = league_name.strip(" -/")
+
+        rows = cont.select("div.coupon-row")
+        for row in rows:
+            # Пытаемся взять ID разными способами
+            event_id = row.get("data-event-treeid") or row.get("data-event-treeId") or row.get("data-event-id")
+            if not event_id:
+                continue
+                
+            member_links = row.select("a.member-link")
+            if len(member_links) < 2:
+                continue
+                
+            t1 = clean_name(member_links[0].get_text())
+            t2 = clean_name(member_links[1].get_text())
+            
+            m_link = member_links[0].get("href")
+            match_url = urljoin(BASE, m_link) if m_link else ""
+
+            out.append({
+                "sport": sport, "league": league_name, "id": event_id,
+                "date": "LIVE", "time": "LIVE", "team1": t1, "team2": t2,
+                "match_url": match_url,
+                "p1": "0.00", "x": "—", "p2": "0.00", "p1x": "—", "p12": "0.00", "px2": "—",
+            })
+            
+            odds_btns = row.select(".selection-link")
+            if len(odds_btns) >= 2:
+                try:
+                    p1_val = odds_btns[0].get_text().strip()
+                    p2_val = odds_btns[-1].get_text().strip()
+                    p1 = as_float(p1_val)
+                    p2 = as_float(p2_val)
+                    if p1: out[-1]["p1"] = f"{p1:.3g}"
+                    if p2: out[-1]["p2"] = f"{p2:.3g}"
+                except:
+                    pass
 
     return out
 

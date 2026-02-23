@@ -1,214 +1,79 @@
-# 💎 PRIZMBET — Криптобукмекер на PRIZM
+# 💎 PRIZMBET — Мониторинг линий Marathonbet
 
-![GitHub last commit](https://img.shields.io/github/last-commit/MinorTermite/betprizm)
-![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-deployed-brightgreen)
-
-Современный криптобукмекер на монетах PRIZM. Статический сайт с автоматическим обновлением линии матчей через парсинг реальных букмекеров (Winline, Marathon) + GitHub Actions + GitHub Pages.
+Современный сервис для мониторинга спортивных событий и коэффициентов. Статический сайт с автоматическим обновлением линии через GitHub Actions.
 
 ---
 
-## 🌐 Демо
+## 🌐 Ссылка на сайт
 
 **[minortermite.github.io/betprizm](https://minortermite.github.io/betprizm)**
 
 ---
 
-## 🏗 Архитектура
+## 🏗 Архитектура проекта
 
-```
-GitHub репозиторий (MinorTermite/betprizm)
-├── index.html              # Главный фронтенд (все виды спорта)
-├── winline.html            # Страница БК Winline
-├── marathon.html           # Страница БК Marathonbet
-├── fonbet.html             # Страница БК Fonbet
-├── matches.json            # Актуальная линия (авто-обновляется через CI)
-├── winline_parser.py       # Парсер Winline.ru (Playwright)
-├── marathon_parser.py      # Парсер Marathonbet.ru
-├── parse_all_real.py       # Агрегатор парсеров с дедупликацией
-├── .github/
-│   └── workflows/
-│       └── update-matches.yml  # GitHub Actions: парсинг каждые 2 часа
-└── update_matches.py       # Python-скрипт синхронизации
-```
-
-**Поток данных:**
-```
-Winline.ru + Marathonbet.ru (реальные букмекеры)
-    ↓ Playwright парсинг (headless browser)
-Python парсеры (дедупликация, нормализация, коэффициенты 1X/12/X2)
-    ↓
-matches.json → Google Sheets → GitHub Pages
-    ↓
-index.html / winline.html / marathon.html / fonbet.html
-```
+- **index.html** — Основной интерфейс (Prematch + LIVE)
+- **live_index.html** — Специальная версия для LIVE-событий
+- **marathon_parser_real.py** — Основной парсер Marathonbet (использует числовые ID категорий)
+- **matches.json** — База данных матчей (обновляется автоматически)
+- **.github/workflows/update-matches.yml** — Автоматизация парсинга каждые 2 часа
 
 ---
 
-## ⚙️ Настройка
+## ⚙️ Технологии
 
-### 1. Google Sheets
-
-Таблица с коэффициентами: **[docs.google.com/spreadsheets/d/1QkVj51WMKSd6-LU4vZK3dYPk6QLQIO014ydpACtThNk](https://docs.google.com/spreadsheets/d/1QkVj51WMKSd6-LU4vZK3dYPk6QLQIO014ydpACtThNk/edit?pli=1&gid=0)**
-
-**Структура таблицы (колонки):**
-
-| A | B | C | D | E | F | G | H | I | J | K | L | M |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| Спорт | Лига | ID | Дата | Время | Команда 1 | Команда 2 | К1 | X | К2 | 1X | 12 | X2 |
-
-**Формат данных:**
-- **Дата**: `28 фев`, `01 мар` (день + месяц сокращённо)
-- **Время**: `18:15`, `20:45` (часы:минуты)
-- **Коэффициенты**: `1.33`, `6.6`, `7.7` (десятичный формат, диапазон 1.01–25.0)
-
-**Типы коэффициентов:**
-- **К1 (П1)** — победа первой команды
-- **X** — ничья
-- **К2 (П2)** — победа второй команды
-- **1X** — двойной шанс: победа 1 или ничья
-- **12** — двойной шанс: победа 1 или 2
-- **X2** — двойной шанс: ничья или победа 2
-
-Таблица должна быть открыта для чтения (File → Share → Anyone with link → Viewer).
-
-### 2. Переменные окружения
-
-#### GitHub Secrets (Settings → Secrets → Actions):
-```
-SHEET_ID=1QkVj51WMKSd6-LU4vZK3dYPk6QLQIO014ydpACtThNk
-SHEET_GID=0
-GOOGLE_CREDENTIALS_JSON={...}  # JSON сервисного аккаунта Google
-```
-
-### 3. Деплой на GitHub Pages
-
-1. Подключите репозиторий: `https://github.com/MinorTermite/betprizm`
-2. В настройках: Settings → Pages → Source: **Deploy from a branch** → `master` / `root`
-3. Сайт будет доступен по адресу: `https://minortermite.github.io/betprizm/`
-
----
-
-## 🔄 Автообновление
-
-### GitHub Actions (каждые 2 часа)
-Workflow `.github/workflows/update-matches.yml` запускается автоматически и:
-1. Парсит реальные матчи с Winline.ru + Marathonbet.ru (Playwright)
-2. Извлекает коэффициенты: **П1, X, П2, 1X, 12, X2**
-3. Дедуплицирует и нормализует данные
-4. Загружает в Google Sheets
-5. Коммитит обновлённый `matches.json` в репозиторий
-6. GitHub Pages автоматически обновляет сайт
-
-### Ручной запуск
-```bash
-# Локально — запустить парсинг Winline + Marathon
-python parse_all_real.py
-
-# Только Winline
-python winline_parser.py
-
-# Только Marathon
-python marathon_parser.py
-
-# Загрузить в Google Sheets
-python upload_to_sheets.py
-
-# Через GitHub Actions UI
-# Actions → Auto-update matches → Run workflow
-```
+- **Backend**: Python, BeautifulSoup4, Requests
+- **Frontend**: Vanilla JS, HTML5, CSS3 (Modern Glassmorphism Design)
+- **CI/CD**: GitHub Actions, GitHub Pages
 
 ---
 
 ## 🏆 Поддерживаемые виды спорта
 
-| Спорт | Лиги |
-|-------|------|
-| ⚽ Футбол | Лига чемпионов УЕФА, Лига Европы УЕФА, АПЛ, Ла Лига, Серия A, Бундеслига, РПЛ и др. |
-| 🏒 Хоккей | КХЛ, НХЛ, ВХЛ, SHL, Liiga |
-| 🏀 Баскетбол | NBA, Евролига, Единая лига ВТБ, ACB |
-| 🎮 Киберспорт | CS2, Dota 2, Valorant, League of Legends, Rocket League |
-| 🎾 Теннис | ATP, WTA, Большой шлем |
-| 🏐 Волейбол | CEV, Суперлига, PlusLiga |
-| 🥊 MMA | UFC, Bellator, ONE Championship |
+| Иконка | Спорт | Детали |
+|---|---|---|
+| ⚽ | Футбол | Топ-лиги + LIVE |
+| 🏒 | Хоккей | КХЛ, НХЛ, ВХЛ |
+| 🏀 | Баскетбол | NBA, Евролига |
+| 🎾 | Теннис | ATP, WTA |
+| 🏓 | Наст. теннис | **Новое!** Удаление мусора из названий команд |
+| 🎮 | Киберспорт | CS2, Dota 2, LoL |
+| 🏐 | Волейбол | Суперлига |
+| 🥊 | MMA | UFC, Bellator |
+
+---
+
+## 🔄 Автоматизация
+
+Парсинг запускается автоматически через GitHub Actions. Скрипт:
+
+1. Собирает данные по Prematch линиям (150+ лиг).
+2. Собирает LIVE события по прямым ID категорий.
+3. Очищает названия команд и нормализует коэффициенты.
+4. Обновляет `matches.json` и пушит изменения.
+
+---
+
+## 🛠 Локальный запуск
+
+```bash
+# Установка зависимостей
+pip install requests beautifulsoup4 lxml
+
+# Запуск парсера
+python marathon_parser_real.py
+
+# Просмотр сайта
+python -m http.server 8000
+```
 
 ---
 
 ## 💰 Приём ставок
 
 **Кошелёк:** `PRIZM-4N7T-L2A7-RQZA-5BETW`
-
-При переводе в комментарии укажите: `ID события + тип ставки`
-
-**Лимиты:**
-- Минимум: **1 500 PRIZM**
-- Максимум: **200 000 PRIZM**
-- Ставки после начала события не принимаются
+*В комментарии указывать ID события.*
 
 ---
 
-## 📱 Контакты
-
-- **Telegram**: [t.me/+PMrQ9Nbzu08wYmI0](https://t.me/+PMrQ9Nbzu08wYmI0)
-
----
-
-## 🛠 Локальная разработка
-
-```bash
-# Клонировать
-git clone https://github.com/MinorTermite/betprizm.git
-cd betprizm
-
-# Установить зависимости
-pip install -r requirements.txt
-playwright install chromium
-
-# Запустить локальный сервер
-python -m http.server 8000
-# или
-npx serve .
-
-# Обновить матчи вручную (парсинг + сохранение)
-python parse_all_real.py
-```
-
----
-
-*© 2026 PRIZMBET — Ответственная игра*
-
----
-
-## 🔧 Разработка и правки
-
-### Ветки
-- `master` — продакшн (деплоится на GitHub Pages автоматически)
-- `dev` — разработка (рекомендуется создать для правок)
-
-### Рабочий процесс
-```bash
-# Создать ветку для правок
-git checkout -b dev
-
-# Внести изменения...
-
-# Закоммитить
-git add .
-git commit -m "feat: описание изменений"
-
-# Влить в master для деплоя
-git checkout master
-git merge dev
-git push origin master
-```
-
-### Структура index.html
-Весь фронтенд — один файл `index.html`. Основные секции:
-- `<style>` — CSS стили (~600 строк)
-- `<body>` — HTML разметка
-- `<script>` — JavaScript логика (~400 строк): загрузка матчей, фильтры, поиск, модалки
-
-### Сортировка матчей
-Матчи сортируются по времени проведения (функция `sortMatches`):
-- **По умолчанию** — по времени (ближайшие сначала)
-- **По коэффициентам** — по среднему значению П1/П2
-- **По лиге** —alphabetically
+*© 2026 PRIZMBET — Современные технологии беттинга.*
