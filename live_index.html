@@ -490,7 +490,7 @@
             box-shadow: 0 0 16px var(--pink-glow);
         }
 
-        .filters {
+        Assistant .filters {
             display: flex;
             gap: 10px;
             flex-wrap: wrap;
@@ -775,29 +775,6 @@
             color: var(--text-tertiary);
             transition: color 0.2s, transform 0.2s;
             line-height: 1;
-        }
-
-        .match-link {
-            display: inline-flex;
-            align-items: center;
-            background: rgba(139, 92, 246, 0.1);
-            color: var(--accent-bright);
-            padding: 4px 10px;
-            border-radius: var(--radius-pill);
-            text-decoration: none;
-            font-size: 0.75rem;
-            font-weight: 600;
-            transition: all 0.2s;
-            position: relative;
-            z-index: 10;
-            border: 1px solid rgba(139, 92, 246, 0.3);
-        }
-
-        .match-link:hover {
-            background: rgba(139, 92, 246, 0.2);
-            color: #fff;
-            transform: scale(1.05);
-            box-shadow: 0 0 10px var(--accent-glow);
         }
 
         .share-btn:hover {
@@ -1404,10 +1381,10 @@
                 <button class="tab active" data-sport="all">Все</button>
                 <button class="tab" data-sport="football">⚽ Футбол</button>
                 <button class="tab" data-sport="hockey">🏒 Хоккей</button>
-                <button class="tab" data-sport="basket">� Баскетбол</button>
+                <button class="tab" data-sport="basket">🏀 Баскетбол</button>
                 <button class="tab" data-sport="tennis">🎾 Теннис</button>
-                <button class="tab" data-sport="tabletennis">� Наст. теннис</button>
-                <button class="tab" data-sport="volleyball">� Волейбол</button>
+                <button class="tab" data-sport="tabletennis">🏓 Наст. теннис</button>
+                <button class="tab" data-sport="volleyball">🏐 Волейбол</button>
                 <button class="tab" data-sport="mma">🥊 MMA</button>
                 <button class="tab" data-sport="esports">🎮 Киберспорт</button>
             </div>
@@ -1427,8 +1404,7 @@
             </div>
             <div class="sort-controls">
                 <span class="sort-label">Сортировка:</span>
-                <button class="sort-btn active" data-sort="none">По умолч.</button>
-                <button class="sort-btn" data-sort="time">По времени</button>
+                <button class="sort-btn active" data-sort="time">По времени</button>
                 <button class="sort-btn" data-sort="odds">По коэф.</button>
                 <button class="sort-btn" data-sort="league">По лигам</button>
             </div>
@@ -1582,7 +1558,7 @@
         // ===== Filters state =====
         let currentSportFilter = 'all';
         let currentGameFilter = 'all';
-        let currentSort = 'none';
+        let currentSort = 'time';
 
         function getMatchSport(m) {
             return (m.sport || '').toLowerCase() || inferSport(m);
@@ -1792,7 +1768,6 @@
                 }
                 return true;
             });
-            return filtered;
         }
 
         // Топ-лиги (приоритет - меньше число = выше приоритет)
@@ -1856,27 +1831,48 @@
             const sorted = [...matches];
             if (currentSort === 'time') {
                 sorted.sort((a, b) => {
-                    // Строго по дате/времени
+                    // Сначала сортируем по приоритету лиги (топ-лиги выше)
+                    const priorityA = getLeaguePriority(a);
+                    const priorityB = getLeaguePriority(b);
+                    if (priorityA !== priorityB) return priorityA - priorityB;
+
+                    // Потом по дате/времени
                     const dateA = parseMatchDateTime(a);
                     const dateB = parseMatchDateTime(b);
                     if (!dateA && !dateB) return 0;
                     if (!dateA) return 1;
                     if (!dateB) return -1;
+
+                    // Ближайшие матчи (в пределах 7 дней) показываем раньше
+                    const now = new Date();
+                    const weekFromNow = now.getTime() + 7 * 24 * 60 * 60 * 1000;
+                    const isNearA = dateA.getTime() < weekFromNow;
+                    const isNearB = dateB.getTime() < weekFromNow;
+                    if (isNearA && !isNearB) return -1;
+                    if (!isNearA && isNearB) return 1;
+
                     return dateA - dateB;
                 });
             } else if (currentSort === 'odds') {
                 sorted.sort((a, b) => {
-                    // Строго по коэффициентам
+                    // Сначала по приоритету лиги
+                    const priorityA = getLeaguePriority(a);
+                    const priorityB = getLeaguePriority(b);
+                    if (priorityA !== priorityB) return priorityA - priorityB;
+
+                    // Потом по коэффициентам
                     const avgA = (parseFloat(a.p1 || 0) + parseFloat(a.p2 || 0)) / 2;
                     const avgB = (parseFloat(b.p1 || 0) + parseFloat(b.p2 || 0)) / 2;
                     return avgB - avgA;
                 });
             } else if (currentSort === 'league') {
                 sorted.sort((a, b) => {
+                    const priorityA = getLeaguePriority(a);
+                    const priorityB = getLeaguePriority(b);
+                    if (priorityA !== priorityB) return priorityA - priorityB;
                     return (a.league || '').localeCompare(b.league || '', 'ru');
                 });
             }
-            // Если currentSort === 'none', возвращаем оригинальный порядок из Google Sheets
             return sorted;
         }
 
@@ -1991,11 +1987,11 @@
 
                     if (matchUrl) {
                         bkBadge = `<span class="bk-badge bk-badge--marathon">Marathon</span>`;
-                        verifyLink = `<a href="${escapeHtml(matchUrl)}" target="_blank" rel="noopener" class="match-link" title="Проверить коэффициент на Marathon" onclick="event.stopPropagation()">🔍 Проверить</a>`;
+                        verifyLink = `<a href="${escapeHtml(matchUrl)}" target="_blank" rel="noopener" class="match-link" title="Проверить коэффициент на Marathon">🔍 Проверить</a>`;
                     } else if (eid) {
                         const mUrl = 'https://www.marathonbet.ru/su/betting/' + eid;
                         bkBadge = `<span class="bk-badge bk-badge--marathon">Marathon</span>`;
-                        verifyLink = `<a href="${mUrl}" target="_blank" rel="noopener" class="match-link" title="Проверить коэффициент на Marathon" onclick="event.stopPropagation()">🔍 Проверить</a>`;
+                        verifyLink = `<a href="${mUrl}" target="_blank" rel="noopener" class="match-link" title="Проверить коэффициент на Marathon">🔍 Проверить</a>`;
                     }
                     card.id = `match-${eid}`;
                     card.innerHTML = `

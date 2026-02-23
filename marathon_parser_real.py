@@ -203,16 +203,16 @@ POPULAR_FALLBACK = [
     ("esports", "Rainbow Six. EUL", f"{BASE}/su/e-sports/Rainbow%2BSix/European%2BLeague%2B-%2B111127"),
 ]
 
-# LIVE события - отдельные URL для live матчей
+# LIVE события - числовые ID категорий (Marathon перешел на них)
 LIVE_URLS = [
-    f"{BASE}/su/live/Football/",
-    f"{BASE}/su/live/Ice%2BHockey/",
-    f"{BASE}/su/live/Basketball/",
-    f"{BASE}/su/live/Tennis/",
-    f"{BASE}/su/live/e-Sports/",
-    f"{BASE}/su/live/Volleyball/",
-    f"{BASE}/su/live/Table%2BTennis/",
-    f"{BASE}/su/live/MMA/",
+    f"{BASE}/su/live/26418", # Football
+    f"{BASE}/su/live/43658", # Ice Hockey
+    f"{BASE}/su/live/45356", # Basketball
+    f"{BASE}/su/live/22723", # Tennis
+    f"{BASE}/su/live/1372932", # e-Sports
+    f"{BASE}/su/live/23690", # Volleyball
+    f"{BASE}/su/live/414329", # Table Tennis
+    f"{BASE}/su/live/439050", # MMA
 ]
 
 # Output
@@ -257,13 +257,18 @@ def clean_name(s: str) -> str:
     s = re.sub(r"\(?Первый матч\s+\d+:\d+\)?", "", s, flags=re.I)
     s = re.sub(r"\(?счет\s+\d+:\d+\)?", "", s, flags=re.I)
     s = re.sub(r"\(?серия\s+\d+:\d+\)?", "", s, flags=re.I)
-    # Удаляем счет в конце
-    s = re.sub(r"\d+:\d+$", "", s).strip()
+    
+    # Удаляем счет по сетам/геймам в скобках: (11:8, 4:11, 11:7)
+    s = re.sub(r"\(\d{1,2}:\d{1,2}(?:,\s*\d{1,2}:\d{1,2})*\)", "", s)
+    
+    # Удаляем счет в конце или отдельно
+    s = re.sub(r"\d+:\d+", "", s).strip()
+    
     # Удаляем слово "матч" если оно стоит отдельно
     s = re.sub(r"\bматч\b", "", s, flags=re.I).strip()
-    # Удаляем лишние пробелы и тире
+    # Удаляем лишние пробелы, тире и спецсимволы по краям
     s = re.sub(r"\s+", " ", s)
-    return s.strip()
+    return s.strip(" -/\\")
 
 
 def as_float(s: str) -> Optional[float]:
@@ -411,8 +416,10 @@ def parse_live_matches(html: str, sport: str) -> List[dict]:
     soup = BeautifulSoup(html, "lxml")
     out = []
 
-    for row in soup.select("div.coupon-row"):
-        event_id = row.get("data-event-treeId") or row.get("data-event-id")
+    rows = soup.select("div.coupon-row")
+    for row in rows:
+        # Пытаемся взять ID разными способами (BS может привести к нижнему регистру)
+        event_id = row.get("data-event-treeid") or row.get("data-event-treeId") or row.get("data-event-id")
         if not event_id:
             continue
             
@@ -426,18 +433,27 @@ def parse_live_matches(html: str, sport: str) -> List[dict]:
         m_link = member_links[0].get("href")
         match_url = urljoin(BASE, m_link) if m_link else ""
 
+        # Для LIVE событий проставляем league как "LIVE" если не удастся найти более точную
         out.append({
             "sport": sport, "league": "LIVE", "id": event_id,
             "date": "LIVE", "time": "LIVE", "team1": t1, "team2": t2,
             "match_url": match_url,
             "p1": "0.00", "x": "—", "p2": "0.00", "p1x": "—", "p12": "0.00", "px2": "—",
         })
+        
+        # Попробуем вытащить коэффициенты П1 и П2
         odds_btns = row.select(".selection-link")
         if len(odds_btns) >= 2:
-            p1 = as_float(odds_btns[0].get_text())
-            p2 = as_float(odds_btns[-1].get_text())
-            out[-1]["p1"] = f"{p1:.3g}" if p1 else "0.00"
-            out[-1]["p2"] = f"{p2:.3g}" if p2 else "0.00"
+            try:
+                # Обычно П1 первая, П2 последняя в ряду основных
+                p1_val = odds_btns[0].get_text().strip()
+                p2_val = odds_btns[-1].get_text().strip()
+                p1 = as_float(p1_val)
+                p2 = as_float(p2_val)
+                if p1: out[-1]["p1"] = f"{p1:.3g}"
+                if p2: out[-1]["p2"] = f"{p2:.3g}"
+            except:
+                pass
 
     return out
 
@@ -485,14 +501,14 @@ def main() -> None:
     # Парсинг LIVE событий
     print("\n[INFO] Парсинг LIVE событий...")
     live_sport_map = {
-        "/live/Football/": "football",
-        "/live/Ice%2BHockey/": "hockey",
-        "/live/Basketball/": "basket",
-        "/live/Tennis/": "tennis",
-        "/live/e-Sports/": "esports",
-        "/live/Volleyball/": "volleyball",
-        "/live/Table%2BTennis/": "tennis",
-        "/live/MMA/": "mma",
+        "/live/26418": "football",
+        "/live/43658": "hockey",
+        "/live/45356": "basket",
+        "/live/22723": "tennis",
+        "/live/1372932": "esports",
+        "/live/23690": "volleyball",
+        "/live/414329": "tabletennis",
+        "/live/439050": "mma",
     }
     
     for live_url in LIVE_URLS:
