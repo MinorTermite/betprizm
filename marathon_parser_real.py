@@ -504,40 +504,7 @@ def parse_live_matches(html: str, sport: str) -> List[dict]:
     return out
 
 
-def update_google_sheets(rows: List[List[str]]) -> None:
-    if not WRITE_SHEETS:
-        print("[INFO] Google Sheets: отключено (WRITE_SHEETS=0).")
-        return
-    if not SPREADSHEET_ID:
-        print("[WARN] SPREADSHEET_ID пустой — пропуск записи в Sheets.")
-        return
 
-    try:
-        import gspread
-        from google.oauth2.service_account import Credentials
-    except Exception:
-        print("[WARN] Google Sheets libs не установлены — пропуск записи.")
-        return
-
-    if not os.path.exists(CREDS_FILE):
-        print(f"[WARN] credentials.json не найден ({CREDS_FILE}) — пропуск записи в Sheets.")
-        return
-
-    try:
-        scopes = ["https://www.googleapis.com/auth/spreadsheets", "https://www.googleapis.com/auth/drive"]
-        creds = Credentials.from_service_account_file(CREDS_FILE, scopes=scopes)
-        gc = gspread.authorize(creds)
-        ws = gc.open_by_key(SPREADSHEET_ID).worksheet(SHEET_NAME)
-
-        ws.clear()
-        ws.update("A1", rows, value_input_option="RAW")
-        print("[OK] Google Sheets обновлён (batch).")
-    except Exception as e:
-        msg = str(e)
-        if "429" in msg or "Quota exceeded" in msg:
-            print("[WARN] Google Sheets не обновлён: квота 429 (попробуй позже).")
-        else:
-            print(f"[WARN] Google Sheets не обновлён: {e}")
 
 
 def main() -> None:
@@ -631,26 +598,6 @@ def main() -> None:
     print("\nПо видам спорта:")
     for sport, count in sorted(sports.items(), key=lambda x: -x[1]):
         print(f"  {sport}: {count}")
-
-    header = ["sport","league","id","date","time","team1","team2","1","X","2","1X","12","X2"]
-    rows = [header]
-    for m in all_items:
-        rows.append([
-            m.get("sport",""),
-            m.get("league",""),
-            m.get("id",""),
-            m.get("date",""),
-            m.get("time",""),
-            m.get("team1",""),
-            m.get("team2",""),
-            m.get("p1","0.00"),
-            m.get("x","0.00"),
-            m.get("p2","0.00"),
-            m.get("p1x","0.00"),
-            m.get("p12","0.00"),
-            m.get("px2","0.00"),
-        ])
-    update_google_sheets(rows)
 
 
 if __name__ == "__main__":

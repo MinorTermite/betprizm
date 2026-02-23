@@ -33,15 +33,10 @@ jobs:
       - name: Install Playwright browsers
         run: playwright install chromium --with-deps
 
-      # ── Шаг 1: обновляем данные из Google Sheets ─────────────────────
-      - name: Update matches from Google Sheets
-        env:
-          SHEET_ID: ${{ secrets.SHEET_ID }}
-          SHEET_GID: ${{ secrets.SHEET_GID }}
-          SHEET_GIDS: ${{ secrets.SHEET_GIDS }}
-          GOOGLE_CREDENTIALS_JSON: ${{ secrets.GOOGLE_CREDENTIALS_JSON }}
+      # ── Шаг 1: запускаем парсеры реальных матчей (включая Marathon) ───────────────────
+      - name: Run real-time parsers (including Marathon)
         run: |
-          python update_matches.py
+          python marathon_parser_real.py
 
       # ── Шаг 2: загружаем в Google Sheets (обратно) ───────────────────
       - name: Upload to Google Sheets
@@ -54,12 +49,7 @@ jobs:
           rm -f credentials.json
         continue-on-error: true
 
-      # ── Шаг 3: запускаем парсеры реальных матчей (включая Marathon) ───────────────────
-      - name: Run real-time parsers (including Marathon)
-        run: |
-          python parse_all_real.py
-
-      # ── Шаг 4: генерируем JSON файлы по БК ─────────────────────────
+      # ── Шаг 3: генерируем JSON файлы по БК ─────────────────────────
       - name: Generate bookmaker JSON files
         run: |
           python generate_bookmaker_json.py
