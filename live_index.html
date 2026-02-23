@@ -80,6 +80,8 @@
 
         html {
             scroll-behavior: smooth;
+            width: 100%;
+            overflow-x: hidden;
         }
 
         body {
@@ -87,6 +89,7 @@
             background: var(--bg-primary);
             color: var(--text-primary);
             line-height: 1.55;
+            width: 100%;
             overflow-x: hidden;
             min-height: 100vh;
             -webkit-font-smoothing: antialiased;
@@ -99,36 +102,31 @@
             inset: 0;
             z-index: -1;
             overflow: hidden;
+            background: var(--bg-primary);
         }
 
-        .bg-canvas::before {
-            content: '';
+        .bg-aurora {
             position: absolute;
             width: 200%;
             height: 200%;
             top: -50%;
             left: -50%;
             background:
-                radial-gradient(ellipse 800px 800px at 25% 15%, rgba(139, 92, 246, 0.12), transparent 70%),
-                radial-gradient(ellipse 600px 600px at 75% 25%, rgba(236, 72, 153, 0.08), transparent 70%),
-                radial-gradient(ellipse 700px 700px at 50% 80%, rgba(59, 130, 246, 0.06), transparent 70%),
-                radial-gradient(ellipse 500px 500px at 15% 65%, rgba(6, 182, 212, 0.05), transparent 70%);
-            animation: bgDrift 30s ease-in-out infinite;
+                radial-gradient(circle at 15% 50%, rgba(139, 92, 246, 0.15), transparent 40%),
+                radial-gradient(circle at 85% 30%, rgba(6, 182, 212, 0.12), transparent 40%),
+                radial-gradient(circle at 50% 80%, rgba(16, 185, 129, 0.08), transparent 40%),
+                radial-gradient(circle at 50% 50%, rgba(236, 72, 153, 0.05), transparent 50%);
+            filter: blur(80px);
+            animation: auroraDrift 20s infinite alternate ease-in-out;
         }
 
-        @keyframes bgDrift {
+        @keyframes auroraDrift {
+            0% {
+                transform: translateY(0) scale(1) rotate(0deg);
+            }
 
-            0%,
             100% {
-                transform: translate(0, 0) scale(1);
-            }
-
-            33% {
-                transform: translate(2%, -3%) scale(1.02);
-            }
-
-            66% {
-                transform: translate(-3%, 2%) scale(0.98);
+                transform: translateY(-5%) scale(1.05) rotate(5deg);
             }
         }
 
@@ -140,19 +138,6 @@
             background: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
             opacity: 0.6;
             pointer-events: none;
-        }
-
-        /* Grid pattern overlay */
-        .bg-grid {
-            position: fixed;
-            inset: 0;
-            z-index: -1;
-            background-image:
-                linear-gradient(rgba(139, 92, 246, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(139, 92, 246, 0.03) 1px, transparent 1px);
-            background-size: 60px 60px;
-            mask-image: radial-gradient(ellipse 80% 70% at 50% 30%, black 20%, transparent 70%);
-            -webkit-mask-image: radial-gradient(ellipse 80% 70% at 50% 30%, black 20%, transparent 70%);
         }
 
         /* ===== SCROLL PROGRESS ===== */
@@ -170,6 +155,7 @@
 
         /* ===== LAYOUT ===== */
         .container {
+            width: 100%;
             max-width: 920px;
             margin: 0 auto;
             padding: 12px;
@@ -840,6 +826,7 @@
             color: #ffffff;
             text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
             line-height: 1.4;
+            word-break: break-word;
         }
 
         .match-teams .vs {
@@ -1389,8 +1376,9 @@
 
 <body>
     <div class="scroll-progress" id="scrollProgress"></div>
-    <div class="bg-canvas"></div>
-    <div class="bg-grid"></div>
+    <div class="bg-canvas">
+        <div class="bg-aurora"></div>
+    </div>
 
     <div class="container">
         <!-- FILTERS -->
