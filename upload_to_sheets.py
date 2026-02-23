@@ -99,7 +99,7 @@ def main():
     }
 
     # Группируем матчи
-    grouped = {}
+    grouped = {k: [] for k in SPORT_TABS.keys()}
     for m in matches:
         sport = m.get('sport', 'other').lower()
         if sport not in grouped:
