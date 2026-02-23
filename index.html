@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
     <meta name="theme-color" content="#06060e">
+    <link rel="manifest" href="manifest.json">
     <meta name="description"
         content="PRIZMBET - Криптобукмекер на монетах PRIZM. Ставки на футбол, хоккей, баскетбол и киберспорт">
     <title>PRIZMBET — Криптобукмекер</title>
@@ -1394,6 +1395,174 @@
         .section:nth-child(6) {
             animation-delay: 0.25s;
         }
+
+        /* ===== BET SLIP (Купон) ===== */
+        .bet-slip {
+            position: fixed;
+            bottom: -100%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 480px;
+            background: rgba(14, 14, 28, 0.85);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-bottom: none;
+            border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+            padding: 24px;
+            z-index: 10000;
+            box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            transition: bottom 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+            color: #fff;
+        }
+
+        .bet-slip.show {
+            bottom: 0;
+        }
+
+        .bet-slip-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding-bottom: 16px;
+            margin-bottom: 16px;
+        }
+
+        .bet-slip-title {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: var(--accent-bright);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-shadow: 0 0 10px var(--accent-glow);
+        }
+
+        .bet-slip-close {
+            background: rgba(255, 255, 255, 0.05);
+            border: none;
+            color: var(--text-secondary);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .bet-slip-close:hover {
+            background: rgba(239, 68, 68, 0.2);
+            color: var(--red);
+        }
+
+        .bet-slip-match {
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+            line-height: 1.3;
+        }
+
+        .bet-slip-selection {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 12px 16px;
+            border-radius: var(--radius-md);
+            margin: 12px 0;
+            border: 1px solid rgba(255, 255, 255, 0.02);
+        }
+
+        .bet-slip-outcome {
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .bet-slip-coef {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: var(--green-bright);
+            text-shadow: 0 0 10px rgba(16, 185, 129, 0.4);
+        }
+
+        .bet-calc {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .bet-calc-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .bet-input-wrap {
+            position: relative;
+            flex-grow: 1;
+        }
+
+        .bet-input {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 12px 16px 12px 8px;
+            color: #fff;
+            font-size: 1.1rem;
+            font-weight: 600;
+            outline: none;
+            transition: border-color 0.2s;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .bet-input:focus {
+            border-color: var(--accent);
+        }
+
+        .bet-currency {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-tertiary);
+            font-weight: 600;
+            pointer-events: none;
+        }
+
+        .bet-payout {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: var(--green-bright);
+        }
+
+        .bet-action-btn {
+            margin-top: 20px;
+            width: 100%;
+            font-size: 1.05rem;
+            padding: 16px;
+            background: linear-gradient(135deg, var(--green), #059669);
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+            border: none;
+            color: white;
+            border-radius: var(--radius-lg);
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .bet-action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+            background: linear-gradient(135deg, var(--green-bright), var(--green));
+        }
     </style>
 </head>
 
@@ -1536,7 +1705,49 @@
         <div class="bet-toast-message" id="betToastMessage"></div>
     </div>
 
+    <!-- BET SLIP (Купон ставок) -->
+    <div class="bet-slip" id="betSlip">
+        <div class="bet-slip-header">
+            <div class="bet-slip-title">Купон ставки</div>
+            <button class="bet-slip-close" onclick="closeBetSlip()">✕</button>
+        </div>
+        <div class="bet-slip-match" id="bsMatch">Атлетико — Реал</div>
+        <div style="color:var(--text-tertiary); font-size: 0.8rem; margin-bottom: 8px;" id="bsMeta">Лига Чемпионов •
+            #12345</div>
+
+        <div class="bet-slip-selection">
+            <div class="bet-slip-outcome" id="bsOutcome">П1</div>
+            <div class="bet-slip-coef" id="bsCoef">2.45</div>
+        </div>
+
+        <div class="bet-calc">
+            <div class="bet-calc-row">
+                <span style="color:var(--text-secondary); font-size:0.9rem;">Сумма ставки:</span>
+                <span style="color:var(--text-secondary); font-size:0.9rem;">Возможный выигрыш:</span>
+            </div>
+            <div class="bet-calc-row" style="gap: 16px;">
+                <div class="bet-input-wrap">
+                    <input type="number" id="bsInput" class="bet-input" placeholder="1500" min="1500" max="200000"
+                        oninput="calcPayout()">
+                    <span class="bet-currency">PZM</span>
+                </div>
+                <div class="bet-payout" id="bsPayout">0.00</div>
+            </div>
+        </div>
+
+        <button class="btn btn-primary bet-action-btn" onclick="copyBetSlipData()">📋 Скопировать для перевода</button>
+    </div>
+
     <script>
+        // ===== PWA Service Worker Registration =====
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/betprizm/sw.js')
+                    .then(reg => console.log('SW registered:', reg.scope))
+                    .catch(err => console.log('SW registration failed:', err));
+            });
+        }
+
         // ===== КОНФИГУРАЦИЯ =====
         const AUTO_REFRESH_MS = 5 * 60 * 1000;
         const DATA_STALE_HOURS = 48;
@@ -2128,10 +2339,52 @@
             });
         }
 
-        function copyBet(id, teams, betType, coef, datetime, league) {
-            const msg = `${teams} — ${betType} @ ${coef}`;
+        // ===== BET SLIP LOGIC =====
+        let currentBet = null;
+
+        function openBetSlip(id, teams, betType, coef, datetime, league) {
+            currentBet = { id, teams, betType, coef, datetime, league };
+
+            document.getElementById('bsMatch').textContent = teams;
+            document.getElementById('bsMeta').textContent = `${league} • #${id} • ${datetime}`;
+            document.getElementById('bsOutcome').textContent = betType;
+            document.getElementById('bsCoef').textContent = coef;
+
+            // Сброс инпута и выплаты
+            const input = document.getElementById('bsInput');
+            input.value = '';
+            document.getElementById('bsPayout').textContent = '0.00';
+
+            // Показываем купон
+            document.getElementById('betSlip').classList.add('show');
+
+            // Фокус на инпут для удобства (на мобильных может вызывать клаву)
+            setTimeout(() => input.focus(), 300);
+        }
+
+        function closeBetSlip() {
+            document.getElementById('betSlip').classList.remove('show');
+            currentBet = null;
+        }
+
+        function calcPayout() {
+            if (!currentBet) return;
+            const amt = parseFloat(document.getElementById('bsInput').value) || 0;
+            const c = parseFloat(currentBet.coef) || 0;
+            const payout = amt * c;
+            document.getElementById('bsPayout').textContent = payout > 0 ? payout.toFixed(2) : '0.00';
+        }
+
+        function copyBetSlipData() {
+            if (!currentBet) return;
+            const amt = document.getElementById('bsInput').value.trim();
+            const amtText = amt ? `Сумма: ${amt} PRIZM` : '(Сумма не указана)';
+
+            const msg = `Ставка на PRIZMBET\nМатч: ${currentBet.teams}\nID: #${currentBet.id}\nИсход: ${currentBet.betType} @ ${currentBet.coef}\n${amtText}\n\nОтправьте на кошелек: PRIZM-4N7T-L2A7-RQZA-5BETW\nКомментарий к переводу: ${currentBet.id} ${currentBet.betType}`;
+
             navigator.clipboard.writeText(msg).then(() => {
-                showToast(msg);
+                closeBetSlip();
+                showToast('Данные для перевода скопированы!');
                 if (navigator.vibrate) navigator.vibrate(50);
             });
         }
