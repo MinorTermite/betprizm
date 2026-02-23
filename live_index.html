@@ -1539,6 +1539,59 @@
             box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
             background: linear-gradient(135deg, var(--green-bright), var(--green));
         }
+
+        /* ===== HISTORY ===== */
+        .history-list {
+            max-height: 50vh;
+            overflow-y: auto;
+            margin-bottom: 8px;
+            padding-right: 4px;
+        }
+
+        .history-item {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: var(--radius-md);
+            padding: 12px;
+            margin-bottom: 8px;
+        }
+
+        .history-item-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            color: var(--text-tertiary);
+            margin-bottom: 8px;
+        }
+
+        .history-item-match {
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-bottom: 8px;
+            color: #fff;
+            line-height: 1.3;
+        }
+
+        .history-item-details {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 8px;
+            border-radius: 4px;
+        }
+
+        .history-item-bet {
+            color: var(--accent-bright);
+            font-weight: bold;
+        }
+
+        .history-item-payout {
+            color: var(--green-bright);
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
     </style>
 </head>
 
@@ -1601,6 +1654,9 @@
             <div class="header-actions">
                 <a href="https://t.me/+PMrQ9Nbzu08wYmI0" target="_blank" rel="noopener" class="btn btn-telegram">✈
                     Telegram</a>
+                <button class="btn btn-primary" onclick="openHistory()"
+                    style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);"><span
+                        class="icon">📜</span> История</button>
                 <button class="btn btn-primary" onclick="refreshData()">↻ Обновить</button>
             </div>
             <div id="lastUpdate" class="update-info">
@@ -1711,6 +1767,20 @@
         </div>
 
         <button class="btn btn-primary bet-action-btn" onclick="copyBetSlipData()">📋 Скопировать для перевода</button>
+    </div>
+
+    <!-- HISTORY MODAL -->
+    <div class="bet-slip" id="historyModal">
+        <div class="bet-slip-header">
+            <div class="bet-slip-title">История ставок</div>
+            <button class="bet-slip-close" onclick="closeHistory()">✕</button>
+        </div>
+        <div class="history-list" id="historyList">
+            <!-- Items will be injected here -->
+        </div>
+        <button class="btn btn-outline"
+            style="width: 100%; margin-top: 16px; border-color: rgba(239, 68, 68, 0.4); color: var(--red);"
+            onclick="clearHistory()">🗑 Очистить историю</button>
     </div>
 
     <script>
@@ -2377,10 +2447,75 @@
             const msg = `Ставка на PRIZMBET LIVE\nМатч: ${currentBet.teams}\nДата: ${currentBet.datetime}\nИсход: ${currentBet.betType} @ ${currentBet.coef}\n${amtText}\n\nОтправьте на кошелек: PRIZM-4N7T-L2A7-RQZA-5BETW\nКомментарий к переводу: ${currentBet.teams} ${currentBet.datetime} ${currentBet.betType} ${currentBet.coef}`;
 
             navigator.clipboard.writeText(msg).then(() => {
+                // Сохраняем в локальную историю
+                const payout = (parseFloat(amt) || 0) * (parseFloat(currentBet.coef) || 0);
+                saveBetToHistory({
+                    timestamp: Date.now(),
+                    teams: currentBet.teams,
+                    betType: currentBet.betType,
+                    coef: currentBet.coef,
+                    amount: amt || '0',
+                    payout: payout
+                });
+
                 closeBetSlip();
                 showToast('Данные для перевода скопированы!');
                 if (navigator.vibrate) navigator.vibrate(50);
             });
+        }
+
+        // ===== HISTORY LOGIC =====
+        function getHistory() {
+            try { return JSON.parse(localStorage.getItem('prizmbet_history')) || []; }
+            catch { return []; }
+        }
+
+        function saveBetToHistory(betItem) {
+            const h = getHistory();
+            h.unshift(betItem);
+            if (h.length > 50) h.pop(); // Храним только последние 50 ставок
+            localStorage.setItem('prizmbet_history', JSON.stringify(h));
+        }
+
+        function openHistory() {
+            const list = document.getElementById('historyList');
+            const history = getHistory();
+
+            if (!history.length) {
+                list.innerHTML = '<div style="text-align:center; padding: 30px 10px; color: var(--text-tertiary);">Вы еще не делали ставок.</div>';
+            } else {
+                list.innerHTML = history.map(h => {
+                    const dt = new Date(h.timestamp).toLocaleString('ru-RU', {
+                        day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit'
+                    });
+                    const payoutText = h.payout > 0 ? `+${h.payout.toFixed(2)} PZM` : '—';
+                    return `
+                        <div class="history-item">
+                            <div class="history-item-header">
+                                <span>🕒 ${dt}</span>
+                                <span style="color: #fff;">${h.amount} PZM</span>
+                            </div>
+                            <div class="history-item-match">${escapeHtml(h.teams)}</div>
+                            <div class="history-item-details">
+                                <span class="history-item-bet">${escapeHtml(h.betType)} @ ${escapeHtml(h.coef)}</span>
+                                <span class="history-item-payout">${payoutText}</span>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
+            document.getElementById('historyModal').classList.add('show');
+        }
+
+        function closeHistory() {
+            document.getElementById('historyModal').classList.remove('show');
+        }
+
+        function clearHistory() {
+            if (confirm('Вы уверены, что хотите удалить локальную историю ставок?')) {
+                localStorage.removeItem('prizmbet_history');
+                openHistory();
+            }
         }
 
         function copyWallet() {
