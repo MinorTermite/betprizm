@@ -1,20 +1,20 @@
 @echo off
 chcp 65001 >nul
-title PRIZMBET - Update Matches
+title PRIZMBET - Обновление матчей (Marathon)
 
 echo.
 echo ====================================================================
-echo PRIZMBET - Updating match lineup
+echo PRIZMBET - Обновление линии Marathon...
 echo ====================================================================
 echo.
 
 cd /d "%~dp0"
-python winline_parser.py
+python marathon_parser_real.py
 
 echo.
 echo ====================================================================
-echo Update complete!
+echo Линия обновлена! Файл matches.json готов.
 echo ====================================================================
 echo.
-echo Press any key to exit...
+echo Нажмите любую клавишу для выхода...
 pause >nul
