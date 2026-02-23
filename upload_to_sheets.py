@@ -2,13 +2,12 @@
 # -*- coding: utf-8 -*-
 """
 PRIZMBET — Upload real matches to Google Sheets
-Sources: winline.ru + marathonbet.ru
+Sources: marathonbet.ru
 
 Столбцы в таблице:
-  Спорт | Лига | Дата | Время | Команда 1 | Команда 2 | К1 | X | К2 | 1X | 12 | X2 | Winline | Marathon
+  Спорт | Лига | Дата | Время | Команда 1 | Команда 2 | К1 | X | К2 | 1X | 12 | X2 | Ссылка Marathon
 
 Ссылки:
-  - Winline: https://winline.ru/stavki/event/{id}   (из поля match_url)
   - Marathon: https://marathonbet.ru/...              (из поля match_url_marathon, если есть)
 """
 
@@ -24,27 +23,8 @@ MATCHES_FILE = os.path.join(SCRIPT_DIR, 'matches.json')
 CREDS_FILE = os.path.join(SCRIPT_DIR, 'credentials.json')
 SPREADSHEET_ID = '1QkVj51WMKSd6-LU4vZK3dYPk6QLQIO014ydpACtThNk'
 
-WINLINE_BASE  = 'https://winline.ru/stavki/event/'
+
 MARATHON_BASE = 'https://www.marathonbet.ru/su/betting/'
-
-
-def get_winline_url(m: dict) -> str:
-    """Возвращает прямую ссылку на матч в Winline."""
-    url = m.get('match_url', '')
-    if url and 'winline' in url:
-        return url
-    # Для матчей из winline id не имеет префикса
-    match_id = m.get('id', '')
-    src = m.get('source', '')
-    if src == 'winline' and match_id:
-        return f"{WINLINE_BASE}{match_id}"
-    if url and url.startswith('http') and 'winline' in url:
-        return url
-    # winline матч — id без префикса ma_
-    if match_id and not match_id.startswith('ma_'):
-        return f"{WINLINE_BASE}{match_id}"
-    return ''
-
 
 def get_marathon_url(m: dict) -> str:
     """Возвращает прямую ссылку на матч в Marathonbet."""
@@ -104,7 +84,7 @@ def main():
         'Спорт', 'Лига', 'Дата', 'Время',
         'Команда 1', 'Команда 2',
         'К1', 'X', 'К2', '1X', '12', 'X2',
-        'Winline (ссылка)', 'Marathon (ссылка)',
+        'Marathon (ссылка)'
     ]
 
     # Mapping
@@ -125,7 +105,6 @@ def main():
         if sport not in grouped:
             grouped[sport] = []
         
-        wl_url = get_winline_url(m)
         ma_url = get_marathon_url(m)
 
         grouped[sport].append([
@@ -141,8 +120,7 @@ def main():
             m.get('p1x', '—'),
             m.get('p12', '—'),
             m.get('px2', '—'),
-            wl_url,
-            ma_url,
+            ma_url
         ])
 
     print("\nUploading to tabs...")
@@ -153,7 +131,7 @@ def main():
         
         if tab_name not in existing_worksheets:
             print(f"  Creating tab: {tab_name}...")
-            ws = sheet.add_worksheet(title=tab_name, rows=len(group_rows) + 100, cols=15)
+            ws = sheet.add_worksheet(title=tab_name, rows=len(group_rows) + 100, cols=13)
             existing_worksheets[tab_name] = ws
         else:
             ws = existing_worksheets[tab_name]
@@ -163,6 +141,16 @@ def main():
         
         upload_data = [header] + group_rows
         ws.update(values=upload_data, range_name='A1', value_input_option='RAW')
+
+    print("\nCleaning up legacy tabs...")
+    for title, ws in list(existing_worksheets.items()):
+        lower_title = title.lower()
+        if "winline" in lower_title or "fonbet" in lower_title or "summary" in lower_title or "matches" == lower_title:
+            try:
+                print(f"  Deleting legacy tab: {title}")
+                sheet.del_worksheet(ws)
+            except Exception as e:
+                print(f"  [ERROR] Cannot delete {title}: {e}")
 
     print("\n" + "=" * 60)
     print(f"[OK] SUCCESS: All categories uploaded")
