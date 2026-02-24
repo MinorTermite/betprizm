@@ -2464,10 +2464,7 @@
 
         function copyBetSlipData() {
             if (!currentBet) return;
-            const amt = document.getElementById('bsInput').value.trim();
-            const amtText = amt ? `Сумма: ${amt} PRIZM` : '(Сумма не указана)';
-
-            const msg = `Ставка на PRIZMBET LIVE\nМатч: ${currentBet.teams}\nДата: ${currentBet.datetime}\nИсход: ${currentBet.betType} @ ${currentBet.coef}\n${amtText}\n\nОтправьте на кошелек: PRIZM-4N7T-L2A7-RQZA-5BETW\nКомментарий к переводу: ${currentBet.teams} ${currentBet.datetime} ${currentBet.betType} ${currentBet.coef}`;
+            const msg = `${currentBet.teams} ${currentBet.datetime} ${currentBet.betType} ${currentBet.coef}`;
 
             navigator.clipboard.writeText(msg).then(() => {
                 // Сохраняем в локальную историю
