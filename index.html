@@ -2306,12 +2306,7 @@
                 const section = document.createElement('div');
                 section.className = 'section';
                 section.style.animationDelay = `${sectionIndex * 0.05}s`;
-
-                const liveMatches = matches.filter(m => isMatchLive(m));
-                const liveBadge = liveMatches.length > 0 ?
-                    '<span class="live-badge"><span class="live-dot"></span>LIVE</span>' : '';
-
-                section.innerHTML = `<h2 class="section-title">${escapeHtml(league)} ${liveBadge}</h2>`;
+                section.innerHTML = `<h2 class="section-title">${escapeHtml(league)}</h2>`;
 
                 matches.forEach(match => {
                     const card = document.createElement('div');

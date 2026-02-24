@@ -203,17 +203,8 @@ POPULAR_FALLBACK = [
     ("esports", "Rainbow Six. EUL", f"{BASE}/su/e-sports/Rainbow%2BSix/European%2BLeague%2B-%2B111127"),
 ]
 
-# LIVE события - числовые ID категорий (Marathon перешел на них)
-LIVE_URLS = [
-    f"{BASE}/su/live/26418", # Football
-    f"{BASE}/su/live/43658", # Ice Hockey
-    f"{BASE}/su/live/45356", # Basketball
-    f"{BASE}/su/live/22723", # Tennis
-    f"{BASE}/su/live/1372932", # e-Sports
-    f"{BASE}/su/live/23690", # Volleyball
-    f"{BASE}/su/live/414329", # Table Tennis
-    f"{BASE}/su/live/439050", # MMA
-]
+# LIVE события отключены по запросу пользователя
+LIVE_URLS = []
 
 # Output
 OUT_JSON = "matches.json"
