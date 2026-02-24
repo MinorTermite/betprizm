@@ -185,7 +185,6 @@
 
         /* ===== HEADER ===== */
         .header {
-            order: 1;
             position: sticky;
             top: 0;
             z-index: 1000;
@@ -386,7 +385,6 @@
 
         /* ===== STATS ===== */
         .stats-bar {
-            order: 2;
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 10px;
@@ -449,7 +447,6 @@
 
         /* ===== FILTERS ===== */
         .filters-bar {
-            order: 3;
             background: var(--bg-card);
             border: 1px solid var(--border);
             border-radius: var(--radius-xl);
@@ -457,13 +454,6 @@
             margin-bottom: 18px;
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
-        }
-
-        .section,
-        .wallet-section,
-        #content,
-        footer {
-            order: 4;
         }
 
         .tabs {
@@ -1715,6 +1705,22 @@
             </div>
         </header>
 
+        <!-- СТАТИСТИКА -->
+        <div class="stats-bar">
+            <div class="stat-card">
+                <div class="stat-number" id="totalMatches">0</div>
+                <div class="stat-label">Матчей</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="totalLeagues">0</div>
+                <div class="stat-label">Лиг</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="avgOdds">0.00</div>
+                <div class="stat-label">Ср. коэф.</div>
+            </div>
+        </div>
+
         <!-- FILTERS -->
         <div class="filters-bar">
             <div class="tabs">
@@ -1757,22 +1763,6 @@
                 </div>
             </div>
         </div>
-        <!-- ПРАВИЛА -->
-        <div class="stats-bar">
-            <div class="stat-card">
-                <div class="stat-number" id="totalMatches">0</div>
-                <div class="stat-label">Матчей</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number" id="totalLeagues">0</div>
-                <div class="stat-label">Лиг</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number" id="avgOdds">0.00</div>
-                <div class="stat-label">Ср. коэф.</div>
-            </div>
-        </div>
-
         <!-- ПРАВИЛА -->
         <div class="section">
             <h2 class="section-title">📋 Правила PRIZMBET</h2>
