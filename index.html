@@ -451,11 +451,12 @@
             border: 1px solid var(--border);
             border-radius: var(--radius-xl);
             padding: 16px;
-            margin-bottom: 18px;
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
             margin-bottom: 16px;
             overflow-x: auto;
+            position: relative;
+            z-index: 10;
         }
 
         .tabs {
@@ -2453,6 +2454,7 @@
 
         function copyBetSlipData() {
             if (!currentBet) return;
+            const amt = document.getElementById('bsInput').value.trim();
             const msg = `${currentBet.teams} ${currentBet.datetime} ${currentBet.betType} ${currentBet.coef}`;
 
             navigator.clipboard.writeText(msg).then(() => {
