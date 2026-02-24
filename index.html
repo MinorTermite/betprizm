@@ -179,10 +179,13 @@
             padding: 12px;
             position: relative;
             z-index: 1;
+            display: flex;
+            flex-direction: column;
         }
 
         /* ===== HEADER ===== */
         .header {
+            order: 1;
             position: sticky;
             top: 0;
             z-index: 1000;
@@ -383,6 +386,7 @@
 
         /* ===== STATS ===== */
         .stats-bar {
+            order: 2;
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 10px;
@@ -445,6 +449,7 @@
 
         /* ===== FILTERS ===== */
         .filters-bar {
+            order: 3;
             background: var(--bg-card);
             border: 1px solid var(--border);
             border-radius: var(--radius-xl);
@@ -452,6 +457,15 @@
             margin-bottom: 18px;
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
+            margin-bottom: 16px;
+            overflow-x: auto;
+        }
+
+        .section,
+        .wallet-section,
+        #content,
+        footer {
+            order: 4;
         }
 
         .tabs {
@@ -460,16 +474,15 @@
             margin-bottom: 16px;
             overflow-x: auto;
             padding-bottom: 8px;
-            /* For scrollbar space */
-            -webkit-overflow-scrolling: touch;
             scrollbar-width: none;
-            /* Firefox */
+            -ms-overflow-style: none;
         }
 
         .tabs::-webkit-scrollbar {
             display: none;
-            /* Chrome/Safari */
         }
+
+        /* Chrome/Safari */
 
         .tab {
             flex: 0 0 auto;
