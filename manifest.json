@@ -1,7 +1,7 @@
 {
     "name": "PRIZMBET",
     "short_name": "PRIZMBET",
-    "description": "Криптобукмекер на монетах PRIZM - Ставки на спорт",
+    "description": "Ставки на монетах PRIZM - Ставки на спорт",
     "start_url": "/betprizm/",
     "display": "standalone",
     "background_color": "#06060e",

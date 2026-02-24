@@ -1,4 +1,4 @@
-const CACHE_NAME = 'prizmbet-v3';
+const CACHE_NAME = 'prizmbet-v8';
 const ASSETS = [
     '/betprizm/',
     '/betprizm/index.html',
@@ -8,6 +8,7 @@ const ASSETS = [
 ];
 
 self.addEventListener('install', (event) => {
+    self.skipWaiting();
     event.waitUntil(
         caches.open(CACHE_NAME).then((cache) => {
             return cache.addAll(ASSETS).catch(err => {
@@ -18,6 +19,7 @@ self.addEventListener('install', (event) => {
 });
 
 self.addEventListener('activate', (event) => {
+    event.waitUntil(clients.claim());
     event.waitUntil(
         caches.keys().then((keys) => {
             return Promise.all(

@@ -6,13 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
     <meta name="theme-color" content="#06060e">
     <link rel="manifest" href="manifest.json">
-    <meta name="description" content="PRIZMBET LIVE - Ставки на спорт в реальном времени на монетах PRIZM">
-    <title>PRIZMBET LIVE — Криптобукмекер</title>
+    <meta name="description" content="PRIZMBET - Ставки на монетах PRIZM. Футбол, хоккей, баскетбол и киберспорт">
+    <title>PRIZMBET LIVE</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <!-- Только нужные веса - быстрее загружается -->
     <link
-        href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=JetBrains+Mono:wght@600&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@600;700&display=swap"
         rel="stylesheet">
 
     <style>
@@ -81,16 +80,16 @@
         html {
             scroll-behavior: smooth;
             width: 100%;
-            overflow-x: hidden;
+            overflow-x: clip;
         }
 
         body {
-            font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             background: var(--bg-primary);
             color: var(--text-primary);
             line-height: 1.55;
             width: 100%;
-            overflow-x: hidden;
+            overflow-x: clip;
             min-height: 100vh;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
@@ -112,12 +111,12 @@
             top: -50%;
             left: -50%;
             background:
-                radial-gradient(circle at 15% 50%, rgba(139, 92, 246, 0.15), transparent 40%),
-                radial-gradient(circle at 85% 30%, rgba(6, 182, 212, 0.12), transparent 40%),
-                radial-gradient(circle at 50% 80%, rgba(16, 185, 129, 0.08), transparent 40%),
-                radial-gradient(circle at 50% 50%, rgba(236, 72, 153, 0.05), transparent 50%);
+                radial-gradient(circle at 15% 50%, rgba(139, 92, 246, 0.18), transparent 45%),
+                radial-gradient(circle at 85% 30%, rgba(6, 182, 212, 0.15), transparent 45%),
+                radial-gradient(circle at 50% 80%, rgba(16, 185, 129, 0.12), transparent 45%),
+                radial-gradient(circle at 50% 50%, rgba(236, 72, 153, 0.1), transparent 55%);
             filter: blur(80px);
-            animation: auroraDrift 20s infinite alternate ease-in-out;
+            animation: auroraDrift 25s infinite alternate ease-in-out;
         }
 
         @keyframes auroraDrift {
@@ -138,6 +137,25 @@
             background: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
             opacity: 0.6;
             pointer-events: none;
+        }
+
+        /* ===== CUSTOM SCROLLBARS ===== */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-primary);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-pill);
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.2);
         }
 
         /* ===== SCROLL PROGRESS ===== */
@@ -165,21 +183,31 @@
 
         /* ===== HEADER ===== */
         .header {
-            text-align: center;
-            padding: 40px 0 28px;
-            position: relative;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 16px;
+            background: rgba(14, 14, 28, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            margin: -12px -12px 14px -12px;
         }
 
         .logo-wrapper {
             position: relative;
-            width: 110px;
-            height: 110px;
-            margin: 0 auto 20px;
+            width: 44px;
+            height: 44px;
+            margin: 0;
+            flex-shrink: 0;
         }
 
         .logo-ring {
             position: absolute;
-            inset: -4px;
+            inset: -2px;
             border-radius: 50%;
             background: conic-gradient(from 0deg, var(--accent), var(--pink), var(--blue), var(--accent));
             animation: logoSpin 8s linear infinite;
@@ -201,12 +229,13 @@
         }
 
         .logo-container {
-            width: 110px;
-            height: 110px;
+            width: 44px;
+            height: 44px;
             border-radius: 50%;
             overflow: hidden;
             position: relative;
             z-index: 2;
+            padding: 2px;
         }
 
         .logo-video,
@@ -215,60 +244,77 @@
             height: 100%;
             object-fit: cover;
             display: block;
+            border-radius: 50%;
         }
 
         .logo-video {
             position: absolute;
             top: 0;
             left: 0;
+            z-index: 2;
         }
 
         .brand-name {
-            font-size: clamp(2rem, 7vw, 3.2rem);
+            font-size: 1.4rem;
             font-weight: 900;
-            letter-spacing: 6px;
-            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin: 0 12px;
             background: linear-gradient(135deg, #fff 0%, var(--accent-bright) 50%, var(--pink) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            position: relative;
-        }
-
-        .brand-name::after {
-            content: 'PRIZMBET';
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 100%;
-            background: linear-gradient(135deg, #fff 0%, var(--accent-bright) 50%, var(--pink) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            filter: blur(20px);
-            opacity: 0.4;
-            z-index: -1;
+            flex-grow: 1;
+            text-align: left;
         }
 
         .tagline {
-            font-size: 0.85rem;
-            font-weight: 400;
-            color: var(--text-tertiary);
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            margin-top: 6px;
+            display: none;
+        }
+
+        @media (min-width: 600px) {
+            .tagline {
+                display: block;
+                font-size: 0.75rem;
+                color: var(--text-tertiary);
+                letter-spacing: 1px;
+                text-transform: uppercase;
+                margin-left: 14px;
+                margin-right: auto;
+            }
         }
 
         .header-actions {
             display: flex;
-            gap: 10px;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .btn-icon {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #fff;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
             justify-content: center;
-            flex-wrap: wrap;
-            margin-top: 22px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.2s;
+            padding: 0;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-icon:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: scale(1.05);
+            border-color: rgba(255, 255, 255, 0.25);
+            box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
         }
 
         .update-info {
-            margin-top: 14px;
             font-size: 0.8rem;
             color: var(--text-tertiary);
             font-weight: 500;
@@ -410,22 +456,33 @@
 
         .tabs {
             display: flex;
-            gap: 6px;
-            flex-wrap: wrap;
-            margin-bottom: 14px;
+            gap: 8px;
+            margin-bottom: 16px;
+            overflow-x: auto;
+            padding-bottom: 8px;
+            /* For scrollbar space */
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            /* Firefox */
+        }
+
+        .tabs::-webkit-scrollbar {
+            display: none;
+            /* Chrome/Safari */
         }
 
         .tab {
+            flex: 0 0 auto;
             cursor: pointer;
-            padding: 9px 16px;
-            border-radius: var(--radius-pill);
+            padding: 9px 18px;
+            border-radius: 20px;
             border: 1px solid var(--border);
             background: rgba(255, 255, 255, 0.02);
             backdrop-filter: blur(8px);
             color: var(--text-secondary);
             font-family: 'Outfit', sans-serif;
-            font-size: 0.84rem;
-            font-weight: 600;
+            font-size: 0.88rem;
+            font-weight: 500;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             white-space: nowrap;
         }
@@ -434,54 +491,54 @@
             border-color: rgba(139, 92, 246, 0.5);
             color: #fff;
             background: rgba(139, 92, 246, 0.1);
-            transform: translateY(-1px);
         }
 
         .tab.active {
             background: var(--accent-soft);
             border-color: var(--accent);
             color: var(--accent-bright);
-            box-shadow: 0 0 16px var(--accent-glow);
+            box-shadow: 0 2px 12px var(--accent-glow);
+            font-weight: 600;
         }
 
         .tab[data-sport="football"].active {
             background: var(--green-glow);
             border-color: var(--green);
             color: var(--green-bright);
-            box-shadow: 0 0 16px var(--green-glow);
+            box-shadow: 0 2px 12px var(--green-glow);
         }
 
         .tab[data-sport="hockey"].active {
             background: var(--blue-glow);
             border-color: var(--blue);
             color: var(--blue);
-            box-shadow: 0 0 16px var(--blue-glow);
+            box-shadow: 0 2px 12px var(--blue-glow);
         }
 
         .tab[data-sport="basket"].active {
             background: var(--amber-glow);
             border-color: var(--amber);
             color: var(--amber);
-            box-shadow: 0 0 16px var(--amber-glow);
+            box-shadow: 0 2px 12px var(--amber-glow);
         }
 
         .tab[data-sport="esports"].active {
             background: var(--cyan-glow);
             border-color: var(--cyan);
             color: var(--cyan);
-            box-shadow: 0 0 16px var(--cyan-glow);
+            box-shadow: 0 2px 12px var(--cyan-glow);
         }
 
         .tab[data-sport="tabletennis"].active {
             background: var(--pink-glow);
             border-color: var(--pink);
             color: var(--pink);
-            box-shadow: 0 0 16px var(--pink-glow);
+            box-shadow: 0 2px 12px var(--pink-glow);
         }
 
-        Assistant .filters {
+        .filters {
             display: flex;
-            gap: 10px;
+            gap: 12px;
             flex-wrap: wrap;
             align-items: center;
         }
@@ -494,7 +551,7 @@
             background: rgba(0, 0, 0, 0.35);
             color: var(--text-primary);
             font-family: 'Outfit', sans-serif;
-            font-size: 0.84rem;
+            font-size: 0.88rem;
             font-weight: 500;
             outline: none;
             transition: all 0.25s;
@@ -516,33 +573,52 @@
             color: var(--text-tertiary);
         }
 
-        .checkbox {
+        .toggle-switch {
             display: flex;
-            gap: 7px;
             align-items: center;
-            color: var(--text-secondary);
-            font-size: 0.84rem;
+            gap: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
             font-weight: 500;
-            padding: 9px 14px;
-            border-radius: var(--radius-pill);
-            border: 1px solid var(--border);
-            background: transparent;
-            cursor: pointer;
+            color: var(--text-secondary);
             user-select: none;
-            transition: all 0.25s;
-            white-space: nowrap;
         }
 
-        .checkbox:hover {
-            border-color: var(--border-hover);
-            color: var(--text-primary);
+        .toggle-switch input {
+            display: none;
         }
 
-        .checkbox input {
-            width: 14px;
-            height: 14px;
-            cursor: pointer;
-            accent-color: var(--accent);
+        .toggle-slider {
+            position: relative;
+            width: 44px;
+            height: 24px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            transition: 0.3s;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .toggle-slider::before {
+            content: "";
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 18px;
+            height: 18px;
+            background: white;
+            border-radius: 50%;
+            transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .toggle-switch input:checked+.toggle-slider {
+            background: var(--accent);
+            border-color: var(--accent-bright);
+            box-shadow: 0 0 8px var(--accent-glow);
+        }
+
+        .toggle-switch input:checked+.toggle-slider::before {
+            transform: translateX(20px);
         }
 
         /* ===== SORT CONTROLS ===== */
@@ -884,15 +960,18 @@
         }
 
         .odd-item:hover {
-            background: rgba(24, 24, 46, 0.8);
-            border-color: var(--green);
-            transform: translateY(-4px);
-            box-shadow: 0 8px 20px rgba(16, 185, 129, 0.25), inset 0 0 15px rgba(16, 185, 129, 0.15);
+            background: rgba(24, 24, 46, 0.9);
+            border-color: var(--accent);
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 8px 25px rgba(139, 92, 246, 0.35), inset 0 0 15px rgba(139, 92, 246, 0.2);
+            z-index: 2;
         }
 
         .odd-item:active {
-            transform: translateY(0) scale(0.96);
-            box-shadow: none;
+            transform: translateY(0) scale(0.93);
+            box-shadow: 0 0 15px var(--accent-glow), inset 0 0 25px var(--accent);
+            border-color: var(--accent-bright);
+            transition: all 0.1s;
         }
 
         .odd-item--na {
@@ -1602,6 +1681,28 @@
     </div>
 
     <div class="container">
+        <!-- HEADER (Modern App-like) -->
+        <header class="header">
+            <div class="logo-wrapper">
+                <div class="logo-ring"></div>
+                <div class="logo-container">
+                    <video class="logo-video" autoplay loop muted playsinline preload="none">
+                        <source src="prizmbet-logo.mp4" type="video/mp4">
+                    </video>
+                    <img src="prizmbet-logo.webp" alt="PRIZMBET" class="logo-fallback" decoding="async"
+                        fetchpriority="high">
+                </div>
+            </div>
+            <h1 class="brand-name">PRIZMBET</h1>
+            <p class="tagline">Ставки на PRIZM</p>
+            <div class="header-actions">
+                <a href="https://t.me/+PMrQ9Nbzu08wYmI0" target="_blank" rel="noopener" class="btn-icon"
+                    title="Telegram">✈️</a>
+                <button class="btn-icon" onclick="openHistory()" title="История">📜</button>
+                <button class="btn-icon" onclick="refreshData()" title="Обновить">↻</button>
+            </div>
+        </header>
+
         <!-- FILTERS -->
         <div class="filters-bar">
             <div class="tabs">
@@ -1619,50 +1720,31 @@
                 <select id="gameFilter" class="select">
                     <option value="all">Все лиги</option>
                 </select>
-                <label class="checkbox">
+                <label class="toggle-switch">
                     <input type="checkbox" id="popularOnly" />
+                    <div class="toggle-slider"></div>
                     <span>Только топ</span>
                 </label>
-                <label class="checkbox">
+                <label class="toggle-switch">
                     <input type="checkbox" id="favoritesOnly" />
+                    <div class="toggle-slider"></div>
                     <span>⭐ Избранное</span>
                 </label>
                 <input id="searchInput" class="search" placeholder="Поиск: команда, лига, ID..." />
             </div>
-            <div class="sort-controls">
-                <span class="sort-label">Сортировка:</span>
-                <button class="sort-btn active" data-sort="time">По времени</button>
-                <button class="sort-btn" data-sort="odds">По коэф.</button>
-                <button class="sort-btn" data-sort="league">По лигам</button>
-            </div>
-        </div>
-
-        <!-- HEADER -->
-        <header class="header">
-            <div class="logo-wrapper">
-                <div class="logo-ring"></div>
-                <div class="logo-container">
-                    <video class="logo-video" autoplay loop muted playsinline preload="none">
-                        <source src="prizmbet-logo.mp4" type="video/mp4">
-                    </video>
-                    <img src="prizmbet-logo.webp" alt="PRIZMBET" class="logo-fallback" decoding="async"
-                        fetchpriority="high">
+            <div class="sort-controls"
+                style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center;">
+                <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+                    <span class="sort-label">Сортировка:</span>
+                    <button class="sort-btn active" data-sort="time">По времени</button>
+                    <button class="sort-btn" data-sort="odds">По коэф.</button>
+                    <button class="sort-btn" data-sort="league">По лигам</button>
+                </div>
+                <div id="lastUpdate" class="update-info" style="margin: 0; display: inline-block;">
+                    <span class="loading"></span> Загрузка линии...
                 </div>
             </div>
-            <h1 class="brand-name">PRIZMBET</h1>
-            <p class="tagline">Криптобукмекер на PRIZM</p>
-            <div class="header-actions">
-                <a href="https://t.me/+PMrQ9Nbzu08wYmI0" target="_blank" rel="noopener" class="btn btn-telegram">✈
-                    Telegram</a>
-                <button class="btn btn-primary" onclick="openHistory()"
-                    style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);"><span
-                        class="icon">📜</span> История</button>
-                <button class="btn btn-primary" onclick="refreshData()">↻ Обновить</button>
-            </div>
-            <div id="lastUpdate" class="update-info">
-                <span class="loading"></span> Загрузка...
-            </div>
-        </header>
+        </div>
         <!-- ПРАВИЛА -->
         <div class="stats-bar">
             <div class="stat-card">
@@ -1717,17 +1799,31 @@
 
         <!-- ЛИМИТЫ -->
         <div class="section">
-            <h3 class="section-title">📊 Лимиты</h3>
+            <h3 class="section-title">📊 Правила и Лимиты</h3>
             <ul class="limits-list">
                 <li>Минимальная ставка: <strong>1 500 PRIZM</strong></li>
                 <li>Максимальная ставка: <strong>200 000 PRIZM</strong></li>
-                <li>Ставки после начала события не принимаются</li>
+                <li>Ставки принимаются только до начала события</li>
+                <li>В случае проигрыша ставка не возвращается.</li>
+                <li>При выигрыше — выплата по коэффициенту.</li>
+                <li>Выплаты в течении 24 часов.</li>
             </ul>
+            <p style="color: var(--text-tertiary); font-size: 0.85rem; margin-top: 12px; line-height: 1.4;">
+                Количество ставок ограничено. PRIZMBET оставляет за собой право до начала события отказать в принятии
+                ставки и вернуть средства без объяснения причин.
+            </p>
         </div>
 
-        <footer>
-            <div class="footer-brand">PRIZMBET LIVE 2026</div>
-            <div class="footer-sub">Ответственная игра</div>
+        <footer style="padding: 24px 16px; text-align: center;">
+            <div class="footer-brand" style="font-size: 1rem; margin-bottom: 10px;">2026 &copy; PrizmBet
+            </div>
+            <p
+                style="color: var(--text-tertiary); font-size: 0.75rem; line-height: 1.4; max-width: 600px; margin: 0 auto;">
+                Букмекер, осуществляющий игровую деятельность с децентрализованной криптовалютой Prizm. Настоящий сайт
+                является источником информации о проводимых играх и коэффициентах, правилах букмекера. Игрок ознакомился
+                с правилами, они понятны ему и игрок соглашается с ними акцептируя переводом криптовалюты Prizm на
+                кошелёк PrizmBet.
+            </p>
         </footer>
     </div>
 
@@ -1783,6 +1879,9 @@
             onclick="clearHistory()">🗑 Очистить историю</button>
     </div>
 
+    <!-- Общая логика API и кэширования -->
+    <script src="api.js"></script>
+
     <script>
         // ===== PWA Service Worker Registration =====
         if ('serviceWorker' in navigator) {
@@ -1793,23 +1892,8 @@
             });
         }
 
-        // ===== КОНФИГУРАЦИЯ =====
-        const AUTO_REFRESH_MS = 5 * 60 * 1000;
-        const DATA_STALE_HOURS = 48;
-        const SITE_BASE = 'https://minortermite.github.io/betprizm';
-        const NETLIFY_FN_URL = SITE_BASE + '/matches.json';
-        const LS_CACHE_KEY = 'prizmbet_matches_cache';
-
-        // ===== Кэш матчей в localStorage для мгновенного показа =====
-        function getCachedMatches() {
-            try {
-                const raw = localStorage.getItem(LS_CACHE_KEY);
-                return raw ? JSON.parse(raw) : null;
-            } catch { return null; }
-        }
-        function setCachedMatches(data) {
-            try { localStorage.setItem(LS_CACHE_KEY, JSON.stringify(data)); } catch { }
-        }
+        // Конфигурация и функции кэширования/API (loadData, refreshData)
+        // теперь находятся в отдельном файле api.js для соответствия принципу DRY.
 
         // ===== LocalStorage для избранного =====
         function getFavorites() {
@@ -2027,33 +2111,39 @@
             return true;
         }
 
-        function applyFilters(matches) {
-            let filtered = matches.filter(isValidMatch);
+        function getFilterState() {
+            return {
+                q: (document.getElementById('searchInput')?.value || '').trim().toLowerCase(),
+                pop: !!document.getElementById('popularOnly')?.checked,
+                favOnly: !!document.getElementById('favoritesOnly')?.checked,
+                favs: getFavorites(),
+                sport: currentSportFilter,
+                game: currentGameFilter,
+                sort: currentSort
+            };
+        }
 
-            const q = (document.getElementById('searchInput')?.value || '').trim().toLowerCase();
-            const popularOnly = !!document.getElementById('popularOnly')?.checked;
-            const favoritesOnly = !!document.getElementById('favoritesOnly')?.checked;
-            const favorites = getFavorites();
+        function filterMatches(matches, filters) {
+            let filtered = matches.filter(isValidMatch);
             filtered = filtered.filter(m => {
                 const sport = getMatchSport(m);
                 const game = getMatchGame(m);
-                if (currentSportFilter !== 'all' && sport !== currentSportFilter) return false;
-                if (currentGameFilter !== 'all' && game !== currentGameFilter) return false;
-                if (popularOnly) {
+                if (filters.sport !== 'all' && sport !== filters.sport) return false;
+                if (filters.game !== 'all' && game !== filters.game) return false;
+                if (filters.pop) {
                     const combined = ((game || '') + ' ' + (m.league || '')).toLowerCase();
-                    // Популярные лиги - не фильтруем их
                     if (!/(лига чемпионов|лига европы|лига конференций|премьер-лига англия|ла лига|бундеслига|серия a|лига 1 франция|nba|нхл|кхл|евролига|атп|wta|ufc)/.test(combined)) {
-                        // Исключаем популярные киберспортивные лиги чтобы не доминировали
                         if (/(dota|cs2|valorant)/.test(combined)) return false;
                     }
                 }
-                if (favoritesOnly && !favorites.includes(m.id)) return false;
-                if (q) {
+                if (filters.favOnly && !filters.favs.includes(m.id)) return false;
+                if (filters.q) {
                     const blob = ((m.id || '') + ' ' + (m.league || '') + ' ' + (m.team1 || '') + ' ' + (m.team2 || '') + ' ' + game).toLowerCase();
-                    if (!blob.includes(q)) return false;
+                    if (!blob.includes(filters.q)) return false;
                 }
                 return true;
             });
+            return filtered;
         }
 
         // Топ-лиги (приоритет - меньше число = выше приоритет)
@@ -2113,9 +2203,9 @@
             return sportPriority + 999;
         }
 
-        function sortMatches(matches) {
+        function sortMatches(matches, sortType) {
             const sorted = [...matches];
-            if (currentSort === 'time') {
+            if (sortType === 'time') {
                 sorted.sort((a, b) => {
                     // Сначала сортируем по приоритету лиги (топ-лиги выше)
                     const priorityA = getLeaguePriority(a);
@@ -2139,7 +2229,7 @@
 
                     return dateA - dateB;
                 });
-            } else if (currentSort === 'odds') {
+            } else if (sortType === 'odds') {
                 sorted.sort((a, b) => {
                     // Сначала по приоритету лиги
                     const priorityA = getLeaguePriority(a);
@@ -2151,7 +2241,7 @@
                     const avgB = (parseFloat(b.p1 || 0) + parseFloat(b.p2 || 0)) / 2;
                     return avgB - avgA;
                 });
-            } else if (currentSort === 'league') {
+            } else if (sortType === 'league') {
                 sorted.sort((a, b) => {
                     const priorityA = getLeaguePriority(a);
                     const priorityB = getLeaguePriority(b);
@@ -2203,17 +2293,19 @@
 
         function renderMatches(allMatches) {
             window.__ALL_MATCHES__ = allMatches;
-            let filtered = applyFilters(allMatches);
-            filtered = sortMatches(filtered);
+            const state = getFilterState();
+            let filtered = filterMatches(allMatches, state);
+            filtered = sortMatches(filtered, state.sort);
             buildGameFilter(allMatches);
             updateStats(filtered);
 
-            const favorites = getFavorites();
+            const favorites = state.favs;
             const content = document.getElementById('content');
-            content.innerHTML = '';
+            const tempDiv = document.createElement('div');
 
             if (!filtered.length) {
-                content.innerHTML = '<div class="section"><p style="text-align:center;color:var(--text-tertiary);font-weight:500;">Матчи не найдены. Измените фильтры.</p></div>';
+                tempDiv.innerHTML = '<div class="section"><p style="text-align:center;color:var(--text-tertiary);font-weight:500;">Матчи не найдены. Измените фильтры.</p></div>';
+                if (content.innerHTML !== tempDiv.innerHTML) content.innerHTML = tempDiv.innerHTML;
                 return;
             }
 
@@ -2312,79 +2404,13 @@
                 fragment.appendChild(section);
                 sectionIndex++;
             }
-            content.appendChild(fragment);
-        }
-
-        // ===== DATA LOADING =====
-        function isDataStale(ts) {
-            if (!ts) return true;
-            const d = new Date(ts);
-            return isNaN(d.getTime()) || (Date.now() - d.getTime()) > DATA_STALE_HOURS * 3600000;
-        }
-
-        function fmtTime(ts) {
-            if (!ts) return '—';
-            const d = new Date(ts);
-            return isNaN(d.getTime()) ? ts : d.toLocaleString('ru-RU');
-        }
-
-        function showStatus(ts, src) {
-            const el = document.getElementById('lastUpdate');
-            const stale = isDataStale(ts);
-            el.innerHTML = `Обновлено: ${fmtTime(ts)}${src === 'live' ? ' (live)' : ''}${stale ? ' <span style="color:var(--red);">[устаревшие]</span>' : ''}`;
-        }
-
-        async function loadData() {
-            // 1. Сразу показываем кэш из localStorage (если есть) — мгновенно
-            const cached = getCachedMatches();
-            if (cached?.matches?.length) {
-                renderMatches(cached.matches);
-                showStatus(cached.last_update, 'cache');
-            }
-
-            let data = null, source = 'static';
-            // 2. Пробуем статичный matches.json (основной источник на GitHub Pages)
-            try {
-                const r = await fetch('matches.json?t=' + Date.now());
-                if (r.ok) data = await r.json();
-            } catch (e) { console.warn('static fail:', e.message); }
-            // 3. Fallback — пробуем абсолютный URL (GitHub Pages)
-            if (!data?.matches?.length) {
-                try {
-                    const r = await fetch(NETLIFY_FN_URL + '?t=' + Date.now());
-                    if (r.ok) {
-                        const live = await r.json();
-                        if (live?.matches?.length) { data = live; source = 'live'; }
-                    }
-                } catch (e) { console.warn('fallback fail:', e.message); }
-            }
-            if (data?.matches?.length) {
-                setCachedMatches(data); // сохраняем в кэш
-                renderMatches(data.matches);
-                showStatus(data.last_update, source);
-            } else if (!cached?.matches?.length) {
-                document.getElementById('content').innerHTML = '<div class="section"><p style="text-align:center;color:var(--text-secondary);">Ошибка загрузки. Обновите страницу.</p></div>';
-                document.getElementById('lastUpdate').textContent = 'Ошибка загрузки';
+            tempDiv.appendChild(fragment);
+            if (content.innerHTML !== tempDiv.innerHTML) {
+                content.innerHTML = tempDiv.innerHTML;
             }
         }
 
-        async function refreshData() {
-            document.getElementById('lastUpdate').innerHTML = '<span class="loading"></span> Обновление...';
-            let data = null;
-            try {
-                const r = await fetch('matches.json?t=' + Date.now());
-                if (r.ok) data = await r.json();
-            } catch (e) { }
-            if (data?.matches?.length) {
-                setCachedMatches(data);
-                renderMatches(data.matches);
-                showStatus(data.last_update, 'live');
-                showToast('Линия обновлена!');
-            } else {
-                await loadData();
-                showToast('Загружены кэшированные данные');
-            }
-        }
+        // Функция shareMatch для шаринга
 
         function shareMatch(id, teams, datetime) {
             const url = window.location.origin + window.location.pathname + '#match-' + id;
