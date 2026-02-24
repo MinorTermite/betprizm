@@ -1,4 +1,4 @@
-const CACHE_NAME = 'prizmbet-v9';
+const CACHE_NAME = 'prizmbet-v10';
 const ASSETS = [
     '/betprizm/',
     '/betprizm/index.html',
