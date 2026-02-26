@@ -43,164 +43,149 @@ POPULAR_FALLBACK = [
     ("football", "Франция. Лига 1", f"{BASE}/su/popular/Football/France/Ligue%2B1%2B-%2B21533?interval=ALL_TIME"),
     
     # Футбол - Другие популярные лиги
-    ("football", "Россия. Премьер-лига", f"{BASE}/su/football/Russia/Premier%2BLiga%2B-%2B26492"),
-    ("football", "Англия. Чемпионшип", f"{BASE}/su/football/England/Championship%2B-%2B21521"),
-    ("football", "Испания. Сегунда", f"{BASE}/su/football/Spain/Segunda%2BDivision%2B-%2B8737"),
-    ("football", "Италия. Серия B", f"{BASE}/su/football/Italy/Serie%2BB%2B-%2B22435"),
-    ("football", "Германия. 2. Бундеслига", f"{BASE}/su/football/Germany/2.%2BBundesliga%2B-%2B22437"),
-    ("football", "Франция. Лига 2", f"{BASE}/su/football/France/Ligue%2B2%2B-%2B21534"),
-    ("football", "Нидерланды. Эредивизие", f"{BASE}/su/football/Netherlands/Eredivisie%2B-%2B21528"),
-    ("football", "Португалия. Примейра Лига", f"{BASE}/su/football/Portugal/Primeira%2BLiga%2B-%2B22441"),
-    ("football", "Турция. Суперлига", f"{BASE}/su/football/Turkey/Super%2BLig%2B-%2B22444"),
-    ("football", "Бельгия. Про Лига", f"{BASE}/su/football/Belgium/Jupiler%2BPro%2BLeague%2B-%2B21519"),
-    ("football", "Шотландия. Премьершип", f"{BASE}/su/football/Scotland/Premiership%2B-%2B21532"),
-    ("football", "Бразилия. Серия A", f"{BASE}/su/football/Brazil/Serie%2BA%2B-%2B22428"),
-    ("football", "Аргентина. Примера Дивисьон", f"{BASE}/su/football/Argentina/Primera%2BDivision%2B-%2B22427"),
-    ("football", "США. MLS", f"{BASE}/su/football/USA/MLS%2B-%2B21535"),
-    ("football", "Мексика. Лига MX", f"{BASE}/su/football/Mexico/Liga%2BMX%2B-%2B21529"),
-    ("football", "Саудовская Аравия. Про Лига", f"{BASE}/su/football/Saudi%2BArabia/Pro%2BLeague%2B-%2B26490"),
-    ("football", "Япония. Джей-Лига", f"{BASE}/su/football/Japan/J1%2BLeague%2B-%2B22439"),
-    ("football", "Южная Корея. К-Лига", f"{BASE}/su/football/South%2BKorea/K%2BLeague%2B1%2B-%2B22442"),
-    ("football", "Австралия. A-League", f"{BASE}/su/football/Australia/A-League%2B-%2B21517"),
-    ("football", "Украина. Премьер-лига", f"{BASE}/su/football/Ukraine/Premier%2BLiga%2B-%2B26491"),
-    ("football", "Польша. Экстракласа", f"{BASE}/su/football/Poland/Extraklasa%2B-%2B21530"),
-    ("football", "Греция. Суперлига", f"{BASE}/su/football/Greece/Super%2BLiga%2B-%2B22433"),
-    ("football", "Австрия. Бундеслига", f"{BASE}/su/football/Austria/Bundesliga%2B-%2B21518"),
-    ("football", "Швейцария. Суперлига", f"{BASE}/su/football/Switzerland/Super%2BLeague%2B-%2B21536"),
-    ("football", "Дания. Суперлига", f"{BASE}/su/football/Denmark/Superliga%2B-%2B21524"),
-    ("football", "Норвегия. Элитесерия", f"{BASE}/su/football/Norway/Eliteserien%2B-%2B21531"),
-    ("football", "Швеция. Алльсвенскан", f"{BASE}/su/football/Sweden/Allsvenskan%2B-%2B21537"),
-    ("football", "Чехия. Первая лига", f"{BASE}/su/football/Czech%2BRepublic/1.%2BLiga%2B-%2B21525"),
-    ("football", "Словакия. Суперлига", f"{BASE}/su/football/Slovakia/Nike%2BLiga%2B-%2B26489"),
-    ("football", "Хорватия. ХНЛ", f"{BASE}/su/football/Croatia/1.%2BNL%2B-%2B22431"),
-    ("football", "Сербия. Суперлига", f"{BASE}/su/football/Serbia/SuperLiga%2B-%2B22443"),
-    ("football", "Румыния. Лига 1", f"{BASE}/su/football/Romania/SuperLiga%2B-%2B26487"),
-    ("football", "Венгрия. НБ I", f"{BASE}/su/football/Hungary/NB%2BI%2B-%2B21526"),
-    ("football", "Болгария. Первая лига", f"{BASE}/su/football/Bulgaria/First%2BLeague%2B-%2B22429"),
-    ("football", "Казахстан. Премьер-лига", f"{BASE}/su/football/Kazakhstan/Premier%2BLiga%2B-%2B26486"),
-    ("football", "Беларусь. Высшая лига", f"{BASE}/su/football/Belarus/Vysheshaya%2BLiga%2B-%2B26485"),
-    ("football", "Финляндия. Вейккауслига", f"{BASE}/su/football/Finland/Veikkausliiga%2B-%2B21527"),
-    ("football", "Ирландия. Премьер-дивизион", f"{BASE}/su/football/Ireland/Premier%2BDivision%2B-%2B21522"),
-    ("football", "Италия. Кубок", f"{BASE}/su/football/Italy/Coppa%2BItalia%2B-%2B22440"),
-    ("football", "Англия. Кубок", f"{BASE}/su/football/England/FA%2BCup%2B-%2B21523"),
-    ("football", "Испания. Кубок Короля", f"{BASE}/su/football/Spain/Copa%2Bdel%2BRey%2B-%2B8738"),
-    ("football", "Германия. Кубок", f"{BASE}/su/football/Germany/DFB%2BPokal%2B-%2B22438"),
-    ("football", "Франция. Кубок", f"{BASE}/su/football/France/Coupe%2Bde%2BFrance%2B-%2B21538"),
-    ("football", "Россия. Кубок", f"{BASE}/su/football/Russia/Cup%2B-%2B26496"),
-    ("football", "КОНМЕБОЛ. Копа Либертадорес", f"{BASE}/su/football/International/Copa%2BLibertadores%2B-%2B26497"),
-    ("football", "КОНМЕБОЛ. Южноамериканский кубок", f"{BASE}/su/football/International/Copa%2BSudamericana%2B-%2B26498"),
+    ("football", "Россия. Премьер-лига", f"{BASE}/su/betting/Football/Russia/Premier%2BLiga%2B-%2B26492"),
+    ("football", "Англия. Чемпионшип", f"{BASE}/su/betting/Football/England/Championship%2B-%2B21521"),
+    ("football", "Испания. Сегунда", f"{BASE}/su/betting/Football/Spain/Segunda%2BDivision%2B-%2B8737"),
+    ("football", "Италия. Серия B", f"{BASE}/su/betting/Football/Italy/Serie%2BB%2B-%2B22435"),
+    ("football", "Германия. 2. Бундеслига", f"{BASE}/su/betting/Football/Germany/2.%2BBundesliga%2B-%2B22437"),
+    ("football", "Франция. Лига 2", f"{BASE}/su/betting/Football/France/Ligue%2B2%2B-%2B21534"),
+    ("football", "Нидерланды. Эредивизие", f"{BASE}/su/betting/Football/Netherlands/Eredivisie%2B-%2B21528"),
+    ("football", "Португалия. Примейра Лига", f"{BASE}/su/betting/Football/Portugal/Primeira%2BLiga%2B-%2B22441"),
+    ("football", "Турция. Суперлига", f"{BASE}/su/betting/Football/Turkey/Super%2BLig%2B-%2B22444"),
+    ("football", "Бельгия. Про Лига", f"{BASE}/su/betting/Football/Belgium/Jupiler%2BPro%2BLeague%2B-%2B21519"),
+    ("football", "Шотландия. Премьершип", f"{BASE}/su/betting/Football/Scotland/Premiership%2B-%2B21532"),
+    ("football", "Бразилия. Серия A", f"{BASE}/su/betting/Football/Brazil/Serie%2BA%2B-%2B22428"),
+    ("football", "Аргентина. Примера Дивисьон", f"{BASE}/su/betting/Football/Argentina/Primera%2BDivision%2B-%2B22427"),
+    ("football", "США. MLS", f"{BASE}/su/betting/Football/USA/MLS%2B-%2B21535"),
+    ("football", "Мексика. Лига MX", f"{BASE}/su/betting/Football/Mexico/Liga%2BMX%2B-%2B21529"),
+    ("football", "Саудовская Аравия. Про Лига", f"{BASE}/su/betting/Football/Saudi%2BArabia/Pro%2BLeague%2B-%2B26490"),
+    ("football", "Япония. Джей-Лига", f"{BASE}/su/betting/Football/Japan/J1%2BLeague%2B-%2B22439"),
+    ("football", "Южная Корея. К-Лига", f"{BASE}/su/betting/Football/South%2BKorea/K%2BLeague%2B1%2B-%2B22442"),
+    ("football", "Австралия. A-League", f"{BASE}/su/betting/Football/Australia/A-League%2B-%2B21517"),
+    ("football", "Украина. Премьер-лига", f"{BASE}/su/betting/Football/Ukraine/Premier%2BLiga%2B-%2B26491"),
+    ("football", "Польша. Экстракласа", f"{BASE}/su/betting/Football/Poland/Extraklasa%2B-%2B21530"),
+    ("football", "Греция. Суперлига", f"{BASE}/su/betting/Football/Greece/Super%2BLiga%2B-%2B22433"),
+    ("football", "Австрия. Бундеслига", f"{BASE}/su/betting/Football/Austria/Bundesliga%2B-%2B21518"),
+    ("football", "Швейцария. Суперлига", f"{BASE}/su/betting/Football/Switzerland/Super%2BLeague%2B-%2B21536"),
+    ("football", "Дания. Суперлига", f"{BASE}/su/betting/Football/Denmark/Superliga%2B-%2B21524"),
+    ("football", "Норвегия. Элитесерия", f"{BASE}/su/betting/Football/Norway/Eliteserien%2B-%2B21531"),
+    ("football", "Швеция. Алльсвенскан", f"{BASE}/su/betting/Football/Sweden/Allsvenskan%2B-%2B21537"),
+    ("football", "Чехия. Первая лига", f"{BASE}/su/betting/Football/Czech%2BRepublic/1.%2BLiga%2B-%2B21525"),
+    ("football", "Словакия. Суперлига", f"{BASE}/su/betting/Football/Slovakia/Nike%2BLiga%2B-%2B26489"),
+    ("football", "Хорватия. ХНЛ", f"{BASE}/su/betting/Football/Croatia/1.%2BNL%2B-%2B22431"),
+    ("football", "Сербия. Суперлига", f"{BASE}/su/betting/Football/Serbia/SuperLiga%2B-%2B22443"),
+    ("football", "Румыния. Лига 1", f"{BASE}/su/betting/Football/Romania/SuperLiga%2B-%2B26487"),
+    ("football", "Венгрия. НБ I", f"{BASE}/su/betting/Football/Hungary/NB%2BI%2B-%2B21526"),
+    ("football", "Болгария. Первая лига", f"{BASE}/su/betting/Football/Bulgaria/First%2BLeague%2B-%2B22429"),
+    ("football", "Казахстан. Премьер-лига", f"{BASE}/su/betting/Football/Kazakhstan/Premier%2BLiga%2B-%2B26486"),
+    ("football", "Беларусь. Высшая лига", f"{BASE}/su/betting/Football/Belarus/Vysheshaya%2BLiga%2B-%2B26485"),
+    ("football", "Финляндия. Вейккауслига", f"{BASE}/su/betting/Football/Finland/Veikkausliiga%2B-%2B21527"),
+    ("football", "Ирландия. Премьер-дивизион", f"{BASE}/su/betting/Football/Ireland/Premier%2BDivision%2B-%2B21522"),
+    ("football", "Италия. Кубок", f"{BASE}/su/betting/Football/Italy/Coppa%2BItalia%2B-%2B22440"),
+    ("football", "Англия. Кубок", f"{BASE}/su/betting/Football/England/FA%2BCup%2B-%2B21523"),
+    ("football", "Испания. Кубок Короля", f"{BASE}/su/betting/Football/Spain/Copa%2Bdel%2BRey%2B-%2B8738"),
+    ("football", "Германия. Кубок", f"{BASE}/su/betting/Football/Germany/DFB%2BPokal%2B-%2B22438"),
+    ("football", "Франция. Кубок", f"{BASE}/su/betting/Football/France/Coupe%2Bde%2BFrance%2B-%2B21538"),
+    ("football", "Россия. Кубок", f"{BASE}/su/betting/Football/Russia/Cup%2B-%2B26496"),
+    ("football", "КОНМЕБОЛ. Копа Либертадорес", f"{BASE}/su/betting/Football/International/Copa%2BLibertadores%2B-%2B26497"),
+    ("football", "КОНМЕБОЛ. Южноамериканский кубок", f"{BASE}/su/betting/Football/International/Copa%2BSudamericana%2B-%2B26498"),
     
     # ==================== HOCKEY ====================
     ("hockey", "КХЛ", f"{BASE}/su/popular/Ice%2BHockey/KHL%2B-%2B52309?lid=15577535"),
     ("hockey", "НХЛ", f"{BASE}/su/popular/Ice%2BHockey/NHL%2B-%2B52310"),
-    ("hockey", "ВХЛ", f"{BASE}/su/ice-hockey/Russia/VHL%2B-%2B52311"),
-    ("hockey", "МХЛ", f"{BASE}/su/ice-hockey/Russia/MHL%2B-%2B52312"),
-    ("hockey", "Швеция. SHL", f"{BASE}/su/ice-hockey/Sweden/SHL%2B-%2B52313"),
-    ("hockey", "Финляндия. Liiga", f"{BASE}/su/ice-hockey/Finland/Liiga%2B-%2B52314"),
-    ("hockey", "Чехия. Extraliga", f"{BASE}/su/ice-hockey/Czech%2BRepublic/Extraliga%2B-%2B52315"),
-    ("hockey", "Германия. DEL", f"{BASE}/su/ice-hockey/Germany/DEL%2B-%2B52316"),
-    ("hockey", "Швейцария. National League", f"{BASE}/su/ice-hockey/Switzerland/National%2BLeague%2B-%2B52317"),
-    ("hockey", "Словакия. Extraliga", f"{BASE}/su/ice-hockey/Slovakia/Extraliga%2B-%2B52318"),
-    ("hockey", "Австрия. ICEHL", f"{BASE}/su/ice-hockey/Austria/ICEHL%2B-%2B52319"),
-    ("hockey", "Норвегия. Eliteserien", f"{BASE}/su/ice-hockey/Norway/Eliteserien%2B-%2B52320"),
-    ("hockey", "Дания. Metal Ligaen", f"{BASE}/su/ice-hockey/Denmark/Metal%2BLigaen%2B-%2B52321"),
-    ("hockey", "Беларусь. Экстралига", f"{BASE}/su/ice-hockey/Belarus/Extraliga%2B-%2B52322"),
-    ("hockey", "Казахстан. ЧРК", f"{BASE}/su/ice-hockey/Kazakhstan/Championship%2B-%2B52323"),
-    ("hockey", "Польша. PHL", f"{BASE}/su/ice-hockey/Poland/PHL%2B-%2B52324"),
-    ("hockey", "Великобритания. EIHL", f"{BASE}/su/ice-hockey/United%2BKingdom/EIHL%2B-%2B52325"),
-    ("hockey", "Франция. Ligue Magnus", f"{BASE}/su/ice-hockey/France/Ligue%2BMagnus%2B-%2B52326"),
-    ("hockey", "Швейцария. Swiss League", f"{BASE}/su/ice-hockey/Switzerland/Swiss%2BLeague%2B-%2B52327"),
-    ("hockey", "Россия. Женская лига", f"{BASE}/su/ice-hockey/Russia/Women%2BLeague%2B-%2B52328"),
+    ("hockey", "ВХЛ", f"{BASE}/su/betting/Ice+Hockey/Russia/VHL%2B-%2B52311"),
+    ("hockey", "МХЛ", f"{BASE}/su/betting/Ice+Hockey/Russia/MHL%2B-%2B52312"),
+    ("hockey", "Швеция. SHL", f"{BASE}/su/betting/Ice+Hockey/Sweden/SHL%2B-%2B52313"),
+    ("hockey", "Финляндия. Liiga", f"{BASE}/su/betting/Ice+Hockey/Finland/Liiga%2B-%2B52314"),
+    ("hockey", "Чехия. Extraliga", f"{BASE}/su/betting/Ice+Hockey/Czech%2BRepublic/Extraliga%2B-%2B52315"),
+    ("hockey", "Германия. DEL", f"{BASE}/su/betting/Ice+Hockey/Germany/DEL%2B-%2B52316"),
+    ("hockey", "Швейцария. National League", f"{BASE}/su/betting/Ice+Hockey/Switzerland/National%2BLeague%2B-%2B52317"),
+    ("hockey", "Словакия. Extraliga", f"{BASE}/su/betting/Ice+Hockey/Slovakia/Extraliga%2B-%2B52318"),
+    ("hockey", "Австрия. ICEHL", f"{BASE}/su/betting/Ice+Hockey/Austria/ICEHL%2B-%2B52319"),
+    ("hockey", "Норвегия. Eliteserien", f"{BASE}/su/betting/Ice+Hockey/Norway/Eliteserien%2B-%2B52320"),
+    ("hockey", "Дания. Metal Ligaen", f"{BASE}/su/betting/Ice+Hockey/Denmark/Metal%2BLigaen%2B-%2B52321"),
+    ("hockey", "Беларусь. Экстралига", f"{BASE}/su/betting/Ice+Hockey/Belarus/Extraliga%2B-%2B52322"),
+    ("hockey", "Казахстан. ЧРК", f"{BASE}/su/betting/Ice+Hockey/Kazakhstan/Championship%2B-%2B52323"),
+    ("hockey", "Польша. PHL", f"{BASE}/su/betting/Ice+Hockey/Poland/PHL%2B-%2B52324"),
+    ("hockey", "Великобритания. EIHL", f"{BASE}/su/betting/Ice+Hockey/United%2BKingdom/EIHL%2B-%2B52325"),
+    ("hockey", "Франция. Ligue Magnus", f"{BASE}/su/betting/Ice+Hockey/France/Ligue%2BMagnus%2B-%2B52326"),
+    ("hockey", "Швейцария. Swiss League", f"{BASE}/su/betting/Ice+Hockey/Switzerland/Swiss%2BLeague%2B-%2B52327"),
+    ("hockey", "Россия. Женская лига", f"{BASE}/su/betting/Ice+Hockey/Russia/Women%2BLeague%2B-%2B52328"),
     
     # ==================== BASKETBALL ====================
     ("basket", "NBA", f"{BASE}/su/popular/Basketball/NBA%2B-%2B69367?lid=15577646"),
-    ("basket", "Евролига", f"{BASE}/su/basketball/Europe/EuroLeague%2B-%2B69368"),
-    ("basket", "Еврокубок", f"{BASE}/su/basketball/Europe/EuroCup%2B-%2B69369"),
-    ("basket", "Единая лига ВТБ", f"{BASE}/su/basketball/International/VTB%2BUnited%2BLeague%2B-%2B69370"),
-    ("basket", "Испания. ACB", f"{BASE}/su/basketball/Spain/ACB%2B-%2B69371"),
-    ("basket", "Турция. BSL", f"{BASE}/su/basketball/Turkey/BSL%2B-%2B69372"),
-    ("basket", "Италия. LBA", f"{BASE}/su/basketball/Italy/Lega%2BA%2B-%2B69373"),
-    ("basket", "Германия. BBL", f"{BASE}/su/basketball/Germany/BBL%2B-%2B69374"),
-    ("basket", "Франция. Pro A", f"{BASE}/su/basketball/France/Pro%2BA%2B-%2B69375"),
-    ("basket", "Греция. HEBA A1", f"{BASE}/su/basketball/Greece/A1%2BEthniki%2B-%2B69376"),
-    ("basket", "Австралия. NBL", f"{BASE}/su/basketball/Australia/NBL%2B-%2B69377"),
-    ("basket", "Китай. CBA", f"{BASE}/su/basketball/China/CBA%2B-%2B69378"),
-    ("basket", "Аргентина. LNB", f"{BASE}/su/basketball/Argentina/LNB%2B-%2B69379"),
-    ("basket", "Бразилия. NBB", f"{BASE}/su/basketball/Brazil/NBB%2B-%2B69380"),
-    ("basket", "Литва. LKL", f"{BASE}/su/basketball/Lithuania/LKL%2B-%2B69381"),
-    ("basket", "Сербия. KLS", f"{BASE}/su/basketball/Serbia/KLS%2B-%2B69382"),
-    ("basket", "Хорватия. ABA", f"{BASE}/su/basketball/Croatia/ABA%2B-%2B69383"),
-    ("basket", "Польша. PLK", f"{BASE}/su/basketball/Poland/PLK%2B-%2B69384"),
-    ("basket", "Израиль. Winner League", f"{BASE}/su/basketball/Israel/Winner%2BLeague%2B-%2B69385"),
-    ("basket", "Бельгия. BNXT", f"{BASE}/su/basketball/Belgium/BNXT%2B-%2B69386"),
-    ("basket", "WNBA", f"{BASE}/su/basketball/USA/WNBA%2B-%2B69387"),
-    ("basket", "NCAA", f"{BASE}/su/basketball/USA/NCAA%2B-%2B69388"),
+    ("basket", "Евролига", f"{BASE}/su/betting/Basketball/Europe/EuroLeague%2B-%2B69368"),
+    ("basket", "Еврокубок", f"{BASE}/su/betting/Basketball/Europe/EuroCup%2B-%2B69369"),
+    ("basket", "Единая лига ВТБ", f"{BASE}/su/betting/Basketball/International/VTB%2BUnited%2BLeague%2B-%2B69370"),
+    ("basket", "Испания. ACB", f"{BASE}/su/betting/Basketball/Spain/ACB%2B-%2B69371"),
+    ("basket", "Турция. BSL", f"{BASE}/su/betting/Basketball/Turkey/BSL%2B-%2B69372"),
+    ("basket", "Италия. LBA", f"{BASE}/su/betting/Basketball/Italy/Lega%2BA%2B-%2B69373"),
+    ("basket", "Германия. BBL", f"{BASE}/su/betting/Basketball/Germany/BBL%2B-%2B69374"),
+    ("basket", "Франция. Pro A", f"{BASE}/su/betting/Basketball/France/Pro%2BA%2B-%2B69375"),
+    ("basket", "Греция. HEBA A1", f"{BASE}/su/betting/Basketball/Greece/A1%2BEthniki%2B-%2B69376"),
+    ("basket", "Австралия. NBL", f"{BASE}/su/betting/Basketball/Australia/NBL%2B-%2B69377"),
+    ("basket", "Китай. CBA", f"{BASE}/su/betting/Basketball/China/CBA%2B-%2B69378"),
+    ("basket", "Аргентина. LNB", f"{BASE}/su/betting/Basketball/Argentina/LNB%2B-%2B69379"),
+    ("basket", "Бразилия. NBB", f"{BASE}/su/betting/Basketball/Brazil/NBB%2B-%2B69380"),
+    ("basket", "Литва. LKL", f"{BASE}/su/betting/Basketball/Lithuania/LKL%2B-%2B69381"),
+    ("basket", "Сербия. KLS", f"{BASE}/su/betting/Basketball/Serbia/KLS%2B-%2B69382"),
+    ("basket", "Хорватия. ABA", f"{BASE}/su/betting/Basketball/Croatia/ABA%2B-%2B69383"),
+    ("basket", "Польша. PLK", f"{BASE}/su/betting/Basketball/Poland/PLK%2B-%2B69384"),
+    ("basket", "Израиль. Winner League", f"{BASE}/su/betting/Basketball/Israel/Winner%2BLeague%2B-%2B69385"),
+    ("basket", "Бельгия. BNXT", f"{BASE}/su/betting/Basketball/Belgium/BNXT%2B-%2B69386"),
+    ("basket", "WNBA", f"{BASE}/su/betting/Basketball/USA/WNBA%2B-%2B69387"),
+    ("basket", "NCAA", f"{BASE}/su/betting/Basketball/USA/NCAA%2B-%2B69388"),
     
     # ==================== TENNIS ====================
-    ("tennis", "ATP. Australian Open", f"{BASE}/su/tennis/ATP/Australian%2BOpen%2B-%2B88880"),
-    ("tennis", "ATP. Roland Garros", f"{BASE}/su/tennis/ATP/Roland%2BGarros%2B-%2B88881"),
-    ("tennis", "ATP. Уимблдон", f"{BASE}/su/tennis/ATP/Wimbledon%2B-%2B88882"),
-    ("tennis", "ATP. US Open", f"{BASE}/su/tennis/ATP/US%2BOpen%2B-%2B88883"),
-    ("tennis", "ATP. Masters 1000", f"{BASE}/su/tennis/ATP/Masters%2B1000%2B-%2B88884"),
-    ("tennis", "ATP. Турниры 500", f"{BASE}/su/tennis/ATP/ATP%2B500%2B-%2B88885"),
-    ("tennis", "ATP. Турниры 250", f"{BASE}/su/tennis/ATP/ATP%2B250%2B-%2B88886"),
-    ("tennis", "WTA. Australian Open", f"{BASE}/su/tennis/WTA/Australian%2BOpen%2B-%2B88887"),
-    ("tennis", "WTA. Roland Garros", f"{BASE}/su/tennis/WTA/Roland%2BGarros%2B-%2B88888"),
-    ("tennis", "WTA. Уимблдон", f"{BASE}/su/tennis/WTA/Wimbledon%2B-%2B88889"),
-    ("tennis", "WTA. US Open", f"{BASE}/su/tennis/WTA/US%2BOpen%2B-%2B88890"),
-    ("tennis", "WTA. Турниры 1000", f"{BASE}/su/tennis/WTA/WTA%2B1000%2B-%2B88891"),
-    ("tennis", "WTA. Турниры 500", f"{BASE}/su/tennis/WTA/WTA%2B500%2B-%2B88892"),
-    ("tennis", "WTA. Турниры 250", f"{BASE}/su/tennis/WTA/WTA%2B250%2B-%2B88893"),
-    ("tennis", "ITF. Мужчины", f"{BASE}/su/tennis/ITF/Men%2B-%2B88894"),
-    ("tennis", "ITF. Женщины", f"{BASE}/su/tennis/ITF/Women%2B-%2B88895"),
-    ("tennis", "Challenger", f"{BASE}/su/tennis/ATP/Challenger%2B-%2B88896"),
-    ("tennis", "Davis Cup", f"{BASE}/su/tennis/International/Davis%2BCup%2B-%2B88897"),
+    # Используем общую страницу тенниса — всегда актуальные турниры
+    ("tennis", "Теннис (ATP/WTA/ITF)", f"{BASE}/su/betting/Tennis/"),
     
     # ==================== VOLLEYBALL ====================
-    ("volleyball", "CEV. Лига чемпионов", f"{BASE}/su/volleyball/Europe/CEV%2BChampions%2BLeague%2B-%2B77777"),
-    ("volleyball", "Россия. Суперлига", f"{BASE}/su/volleyball/Russia/Superliga%2B-%2B77778"),
-    ("volleyball", "Италия. SuperLega", f"{BASE}/su/volleyball/Italy/SuperLega%2B-%2B77779"),
-    ("volleyball", "Польша. PlusLiga", f"{BASE}/su/volleyball/Poland/PlusLiga%2B-%2B77780"),
-    ("volleyball", "Германия. Bundesliga", f"{BASE}/su/volleyball/Germany/Bundesliga%2B-%2B77781"),
-    ("volleyball", "Франция. Ligue A", f"{BASE}/su/volleyball/France/Ligue%2BA%2B-%2B77782"),
-    ("volleyball", "Турция. Efeler Ligi", f"{BASE}/su/volleyball/Turkey/Efeler%2BLigi%2B-%2B77783"),
-    ("volleyball", "Бразилия. Superliga", f"{BASE}/su/volleyball/Brazil/Superliga%2B-%2B77784"),
-    ("volleyball", "Италия. Серия A1 (жен)", f"{BASE}/su/volleyball/Italy/Serie%2BA1%2BWomen%2B-%2B77785"),
-    ("volleyball", "Турция. Sultanlar Ligi", f"{BASE}/su/volleyball/Turkey/Sultanlar%2BLigi%2B-%2B77786"),
-    ("volleyball", "Россия. Суперлига (жен)", f"{BASE}/su/volleyball/Russia/Superliga%2BWomen%2B-%2B77787"),
-    ("volleyball", "Польша. Tauron Liga (жен)", f"{BASE}/su/volleyball/Poland/Tauron%2BLiga%2B-%2B77788"),
-    ("volleyball", "Лига наций. Мужчины", f"{BASE}/su/volleyball/International/VNL%2BMen%2B-%2B77789"),
-    ("volleyball", "Лига наций. Женщины", f"{BASE}/su/volleyball/International/VNL%2BWomen%2B-%2B77790"),
+    ("volleyball", "CEV. Лига чемпионов", f"{BASE}/su/betting/Volleyball/Europe/CEV%2BChampions%2BLeague%2B-%2B77777"),
+    ("volleyball", "Россия. Суперлига", f"{BASE}/su/betting/Volleyball/Russia/Superliga%2B-%2B77778"),
+    ("volleyball", "Италия. SuperLega", f"{BASE}/su/betting/Volleyball/Italy/SuperLega%2B-%2B77779"),
+    ("volleyball", "Польша. PlusLiga", f"{BASE}/su/betting/Volleyball/Poland/PlusLiga%2B-%2B77780"),
+    ("volleyball", "Германия. Bundesliga", f"{BASE}/su/betting/Volleyball/Germany/Bundesliga%2B-%2B77781"),
+    ("volleyball", "Франция. Ligue A", f"{BASE}/su/betting/Volleyball/France/Ligue%2BA%2B-%2B77782"),
+    ("volleyball", "Турция. Efeler Ligi", f"{BASE}/su/betting/Volleyball/Turkey/Efeler%2BLigi%2B-%2B77783"),
+    ("volleyball", "Бразилия. Superliga", f"{BASE}/su/betting/Volleyball/Brazil/Superliga%2B-%2B77784"),
+    ("volleyball", "Италия. Серия A1 (жен)", f"{BASE}/su/betting/Volleyball/Italy/Serie%2BA1%2BWomen%2B-%2B77785"),
+    ("volleyball", "Турция. Sultanlar Ligi", f"{BASE}/su/betting/Volleyball/Turkey/Sultanlar%2BLigi%2B-%2B77786"),
+    ("volleyball", "Россия. Суперлига (жен)", f"{BASE}/su/betting/Volleyball/Russia/Superliga%2BWomen%2B-%2B77787"),
+    ("volleyball", "Польша. Tauron Liga (жен)", f"{BASE}/su/betting/Volleyball/Poland/Tauron%2BLiga%2B-%2B77788"),
+    ("volleyball", "Лига наций. Мужчины", f"{BASE}/su/betting/Volleyball/International/VNL%2BMen%2B-%2B77789"),
+    ("volleyball", "Лига наций. Женщины", f"{BASE}/su/betting/Volleyball/International/VNL%2BWomen%2B-%2B77790"),
     
     # ==================== MMA ====================
-    ("mma", "UFC", f"{BASE}/su/mma/UFC%2B-%2B99999"),
-    ("mma", "Bellator", f"{BASE}/su/mma/Bellator%2B-%2B99998"),
-    ("mma", "ONE Championship", f"{BASE}/su/mma/ONE%2BChampionship%2B-%2B99997"),
-    ("mma", "PFL", f"{BASE}/su/mma/PFL%2B-%2B99996"),
-    ("mma", "ACA", f"{BASE}/su/mma/ACA%2B-%2B99995"),
-    ("mma", "RCC", f"{BASE}/su/mma/RCC%2B-%2B99994"),
-    ("mma", "Eagle FC", f"{BASE}/su/mma/Eagle%2BFC%2B-%2B99993"),
-    ("mma", "UFC. Вечер боёв", f"{BASE}/su/mma/UFC/Fight%2BNight%2B-%2B99992"),
+    ("mma", "UFC", f"{BASE}/su/betting/MMA/UFC%2B-%2B99999"),
+    ("mma", "Bellator", f"{BASE}/su/betting/MMA/Bellator%2B-%2B99998"),
+    ("mma", "ONE Championship", f"{BASE}/su/betting/MMA/ONE%2BChampionship%2B-%2B99997"),
+    ("mma", "PFL", f"{BASE}/su/betting/MMA/PFL%2B-%2B99996"),
+    ("mma", "ACA", f"{BASE}/su/betting/MMA/ACA%2B-%2B99995"),
+    ("mma", "RCC", f"{BASE}/su/betting/MMA/RCC%2B-%2B99994"),
+    ("mma", "Eagle FC", f"{BASE}/su/betting/MMA/Eagle%2BFC%2B-%2B99993"),
+    ("mma", "UFC. Вечер боёв", f"{BASE}/su/betting/MMA/UFC/Fight%2BNight%2B-%2B99992"),
     
     # ==================== ESPORTS ====================
-    ("esports", "CS2. Major", f"{BASE}/su/e-sports/Counter-Strike/Major%2B-%2B111111"),
-    ("esports", "CS2. ESL Pro League", f"{BASE}/su/e-sports/Counter-Strike/ESL%2BPro%2BLeague%2B-%2B111112"),
-    ("esports", "CS2. BLAST Premier", f"{BASE}/su/e-sports/Counter-Strike/BLAST%2BPremier%2B-%2B111113"),
-    ("esports", "CS2. IEM", f"{BASE}/su/e-sports/Counter-Strike/IEM%2B-%2B111114"),
-    ("esports", "Dota 2. The International", f"{BASE}/su/e-sports/Dota%2B2/The%2BInternational%2B-%2B111115"),
-    ("esports", "Dota 2. DPC", f"{BASE}/su/e-sports/Dota%2B2/DPC%2B-%2B111116"),
-    ("esports", "Dota 2. BLAST Slam", f"{BASE}/su/popular/e-Sports/Dota+2/BLAST+Slam+-+20603920?lid=20621739"),
-    ("esports", "LoL. LCK", f"{BASE}/su/e-sports/League%2Bof%2BLegends/LCK%2B-%2B111117"),
-    ("esports", "LoL. LPL", f"{BASE}/su/e-sports/League%2Bof%2BLegends/LPL%2B-%2B111118"),
-    ("esports", "LoL. LEC", f"{BASE}/su/e-sports/League%2Bof%2BLegends/LEC%2B-%2B111119"),
-    ("esports", "LoL. LCS", f"{BASE}/su/e-sports/League%2Bof%2BLegends/LCS%2B-%2B111120"),
-    ("esports", "LoL. Worlds", f"{BASE}/su/e-sports/League%2Bof%2BLegends/Worlds%2B-%2B111121"),
-    ("esports", "Valorant. Champions Tour", f"{BASE}/su/e-sports/Valorant/VCT%2B-%2B111122"),
-    ("esports", "Rocket League. RLCS", f"{BASE}/su/e-sports/Rocket%2BLeague/RLCS%2B-%2B111123"),
-    ("esports", "Overwatch. OWL", f"{BASE}/su/e-sports/Overwatch/OWL%2B-%2B111124"),
-    ("esports", "PUBG. Global Championship", f"{BASE}/su/e-sports/PUBG/Global%2BChampionship%2B-%2B111125"),
-    ("esports", "Apex Legends. ALGS", f"{BASE}/su/e-sports/Apex%2BLegends/ALGS%2B-%2B111126"),
-    ("esports", "Rainbow Six. EUL", f"{BASE}/su/e-sports/Rainbow%2BSix/European%2BLeague%2B-%2B111127"),
+    ("esports", "CS2. Major", f"{BASE}/su/betting/e-Sports/Counter-Strike/Major%2B-%2B111111"),
+    ("esports", "CS2. ESL Pro League", f"{BASE}/su/betting/e-Sports/Counter-Strike/ESL%2BPro%2BLeague%2B-%2B111112"),
+    ("esports", "CS2. BLAST Premier", f"{BASE}/su/betting/e-Sports/Counter-Strike/BLAST%2BPremier%2B-%2B111113"),
+    ("esports", "CS2. IEM", f"{BASE}/su/betting/e-Sports/Counter-Strike/IEM%2B-%2B111114"),
+    ("esports", "Dota 2. The International", f"{BASE}/su/betting/e-Sports/Dota%2B2/The%2BInternational%2B-%2B111115"),
+    ("esports", "Dota 2. DPC", f"{BASE}/su/betting/e-Sports/Dota%2B2/DPC%2B-%2B111116"),
+    ("esports", "Dota 2. BLAST Slam", f"{BASE}/su/betting/e-Sports/Dota+2/BLAST+Slam+-+20603920?lid=20621739"),
+    ("esports", "LoL. LCK", f"{BASE}/su/betting/e-Sports/League%2Bof%2BLegends/LCK%2B-%2B111117"),
+    ("esports", "LoL. LPL", f"{BASE}/su/betting/e-Sports/League%2Bof%2BLegends/LPL%2B-%2B111118"),
+    ("esports", "LoL. LEC", f"{BASE}/su/betting/e-Sports/League%2Bof%2BLegends/LEC%2B-%2B111119"),
+    ("esports", "LoL. LCS", f"{BASE}/su/betting/e-Sports/League%2Bof%2BLegends/LCS%2B-%2B111120"),
+    ("esports", "LoL. Worlds", f"{BASE}/su/betting/e-Sports/League%2Bof%2BLegends/Worlds%2B-%2B111121"),
+    ("esports", "Valorant. Champions Tour", f"{BASE}/su/betting/e-Sports/Valorant/VCT%2B-%2B111122"),
+    ("esports", "Rocket League. RLCS", f"{BASE}/su/betting/e-Sports/Rocket%2BLeague/RLCS%2B-%2B111123"),
+    ("esports", "Overwatch. OWL", f"{BASE}/su/betting/e-Sports/Overwatch/OWL%2B-%2B111124"),
+    ("esports", "PUBG. Global Championship", f"{BASE}/su/betting/e-Sports/PUBG/Global%2BChampionship%2B-%2B111125"),
+    ("esports", "Apex Legends. ALGS", f"{BASE}/su/betting/e-Sports/Apex%2BLegends/ALGS%2B-%2B111126"),
+    ("esports", "Rainbow Six. EUL", f"{BASE}/su/betting/e-Sports/Rainbow%2BSix/European%2BLeague%2B-%2B111127"),
+
 ]
 
 # LIVE события отключены по запросу пользователя
@@ -364,18 +349,31 @@ def parse_2way_winner(html: str, sport: str) -> List[dict]:
     out = []
 
     for row in soup.select("div.coupon-row"):
-        event_id = row.get("data-event-treeId") or row.get("data-event-id")
+        event_id = row.get("data-event-treeid") or row.get("data-event-treeId") or row.get("data-event-id")
         if not event_id:
             continue
             
         member_links = row.select("a.member-link")
-        if len(member_links) < 2:
-            continue
+        m_link = ""
+        t1 = t2 = ""
+        if len(member_links) >= 2:
+            t1 = clean_name(member_links[0].get_text())
+            t2 = clean_name(member_links[1].get_text())
+            m_link = member_links[0].get("href")
+        else:
+            event_name = row.get("data-event-name", "")
+            if " - " in event_name:
+                t1, t2 = [clean_name(x) for x in event_name.split(" - ", 1)]
+            elif " vs " in event_name:
+                t1, t2 = [clean_name(x) for x in event_name.split(" vs ", 1)]
             
-        t1 = clean_name(member_links[0].get_text())
-        t2 = clean_name(member_links[1].get_text())
+            m_link_el = row.select_one("a[href*='/betting/']")
+            if m_link_el:
+                m_link = m_link_el.get("href")
+
+        if not t1 or not t2:
+            continue
         
-        m_link = member_links[0].get("href")
         match_url = urljoin(BASE, m_link) if m_link else ""
 
         time_el = row.select_one(".date-wrapper") or row.select_one(".date")
@@ -392,10 +390,13 @@ def parse_2way_winner(html: str, sport: str) -> List[dict]:
 
         # Для 2-way обычно просто первые две котировки в ряду
         odds_btns = row.select(".selection-link")
+        if len(odds_btns) < 2:
+            odds_btns = row.select(".price")
         p1_val = p2_val = 0.0
         if len(odds_btns) >= 2:
             p1_val = as_float(odds_btns[0].get_text())
-            p2_val = as_float(odds_btns[-1].get_text())
+            p2_val = as_float(odds_btns[1].get_text())
+
 
         out.append({
             "sport": sport, "league": "", "id": event_id,
@@ -517,56 +518,16 @@ def main() -> None:
             error_count += 1
             print(f"[ERR] Пропущено ({title}): {e}")
 
-    # Парсинг LIVE событий
-    print("\n[INFO] Парсинг LIVE событий...")
-    live_sport_map = {
-        "/live/26418": "football",
-        "/live/43658": "hockey",
-        "/live/45356": "basket",
-        "/live/22723": "tennis",
-        "/live/1372932": "esports",
-        "/live/23690": "volleyball",
-        "/live/414329": "tabletennis",
-        "/live/439050": "mma",
-    }
-    
-    for live_url in LIVE_URLS:
-        sport = "other"
-        for key, value in live_sport_map.items():
-            if key in live_url:
-                sport = value
-                break
-        
-        print(f"[INFO] LIVE {sport}: {live_url}")
-        try:
-            html = http_get(live_url)
-            items = parse_live_matches(html, sport)
-            print(f"[OK]  LIVE событий: {len(items)}")
-            all_items.extend(items)
-        except Exception as e:
-            print(f"[ERR] LIVE {sport}: {e}")
+    # LIVE парсинг отключён по запросу пользователя — только предматчевые события.
 
-    # Dedup by (id) and correct sports
+    # Dedup by ID
     uniq = {}
     for m in all_items:
         m_id = m.get('id', '')
         if not m_id:
             continue
-            
-        # Для LIVE событий уточняем вид спорта через infer_sport, так как Marathon
-        # часто редиректит URL категории на весь список LIVE
-        if m.get("date") == "LIVE":
-            m["sport"] = infer_sport(m.get("league", ""), m.get("team1", ""), m.get("team2", ""))
-            
         if m_id not in uniq:
             uniq[m_id] = m
-        else:
-            # Если уже есть, обновляем только если новый имеет более понятный спорт
-            if uniq[m_id]["sport"] == "other" and m["sport"] != "other":
-                uniq[m_id]["sport"] = m["sport"]
-            # Если оба LIVE, берем с более чистым названием лиги (если у одного 'Все события')
-            if len(m["league"]) > 3 and "Все" not in m["league"]:
-                uniq[m_id]["league"] = m["league"]
 
     all_items = list(uniq.values())
 

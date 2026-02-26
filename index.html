@@ -1749,8 +1749,8 @@
         <!-- FILTERS -->
         <div class="filters-bar">
             <div class="tabs">
-                <button class="tab active" data-sport="all">Все</button>
-                <button class="tab" data-sport="football">⚽ Футбол</button>
+                <button class="tab" data-sport="all">Все</button>
+                <button class="tab active" data-sport="football">⚽ Футбол</button>
                 <button class="tab" data-sport="hockey">🏒 Хоккей</button>
                 <button class="tab" data-sport="basket"> Баскетбол</button>
                 <button class="tab" data-sport="tennis">🎾 Теннис</button>
@@ -1955,7 +1955,7 @@
         });
 
         // ===== Filters state =====
-        let currentSportFilter = 'all';
+        let currentSportFilter = 'football';
         let currentGameFilter = 'all';
         let currentSort = 'none';
 
@@ -2329,7 +2329,7 @@
                         const raw = value || '';
                         const unavail = !raw || raw === '—' || raw === '-' || raw === '0.00';
                         const val = escapeHtml(unavail ? '—' : raw);
-                        const dt = escapeHtml((match.date || '') + ' ' + (match.time || ''));
+                        const dt = escapeHtml((match.date || 'Сегодня') + ' ' + (match.time || ''));
                         const lg = escapeHtml(match.league || '');
                         if (unavail) {
                             return `<div class="odd-item odd-item--na">
@@ -2360,18 +2360,18 @@
                     card.id = `match-${eid}`;
                     card.innerHTML = `
                         <div class="match-header">
-                            <a class="match-id" href="#match-${eid}" onclick="shareMatch('${eid}','${teams.replace(/'/g, "\\'")}','${escapeHtml((match.date || '') + ' ' + (match.time || ''))}'); return false;" title="Скопировать ссылку на матч">#${eid}</a>
+                            <a class="match-id" href="#match-${eid}" onclick="shareMatch('${eid}','${teams.replace(/'/g, "\\'")}','${escapeHtml((match.date || 'Сегодня') + ' ' + (match.time || ''))}'); return false;" title="Скопировать ссылку на матч">#${eid}</a>
                             ${bkBadge}
                             <div style="display:flex;align-items:center;gap:4px;margin-left:auto;">
                                 ${verifyLink}
-                                <button class="share-btn" onclick="shareMatch('${eid}','${teams.replace(/'/g, "\\'")}','${escapeHtml((match.date || '') + ' ' + (match.time || ''))}')" title="Поделиться матчем">🔗</button>
+                                <button class="share-btn" onclick="shareMatch('${eid}','${teams.replace(/'/g, "\\'")}','${escapeHtml((match.date || 'Сегодня') + ' ' + (match.time || ''))}')" title="Поделиться матчем">🔗</button>
                                 <button class="favorite-btn ${isFavorite ? 'active' : ''}" onclick="toggleFavorite('${eid}')">
                                     ${isFavorite ? '⭐' : '☆'}
                                 </button>
                             </div>
                         </div>
                         <div class="match-time">
-                            ${escapeHtml(match.date || '')} ${escapeHtml(match.time || '')}
+                            ${escapeHtml(match.date || 'Сегодня')} ${escapeHtml(match.time || '')}
                             ${countdown ? `<span class="countdown">${countdown}</span>` : ''}
                         </div>
                         <div class="match-teams">${t1} <span class="vs">—</span> ${t2}</div>
