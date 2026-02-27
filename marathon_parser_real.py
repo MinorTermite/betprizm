@@ -44,6 +44,7 @@ POPULAR_FALLBACK = [
     
     # Футбол - Другие популярные лиги
     ("football", "Россия. Премьер-лига", f"{BASE}/su/betting/Football/Russia/Premier%2BLeague%2B-%2B22433"),
+    ("football", "Россия. 1-я лига", f"{BASE}/su/betting/Football/Russia/1st%2BLeague%2B-%2B45766"),
     ("football", "Англия. Чемпионшип", f"{BASE}/su/betting/Football/England/Championship%2B-%2B21521"),
     ("football", "Испания. Сегунда", f"{BASE}/su/betting/Football/Spain/Segunda%2BDivision%2B-%2B8737"),
     ("football", "Италия. Серия B", f"{BASE}/su/betting/Football/Italy/Serie%2BB%2B-%2B22435"),
@@ -501,6 +502,21 @@ def main() -> None:
                 items = parse_football_table(html)
                 for it in items:
                     it["league"] = title
+                # Фильтр: оставляем только матчи из нужной лиги по пути в URL матча.
+                # Это важно, потому что Марафон показывает "популярные" матчи других лиг
+                # на странице каждой лиги (напр. РПЛ попадает на страницу ЛЧ УЕФА).
+                cat_m = re.search(r'/(?:betting|popular)/Football/(.+?)(?:%2B|\+)?-(?:%2B|\+)?\d+', url, re.I)
+                if cat_m:
+                    cat_path = cat_m.group(1).replace('%2B', ' ').replace('+', ' ').lower().strip()
+                    def url_ok(match_url, cat_path=cat_path):
+                        mu = match_url.replace('+', ' ').lower()
+                        if cat_path in mu:
+                            return True
+                        # УЕФА: категория /UEFA/X но матчи лежат в /Europe/X
+                        if cat_path.startswith('uefa/'):
+                            return ('europe/' + cat_path[5:]) in mu
+                        return False
+                    items = [it for it in items if url_ok(it.get('match_url', ''))]
                 print(f"[OK]  Матчей: {len(items)}")
             elif sport == "esports":
                 items = parse_esports_winner_only(html, title)
