@@ -1,5 +1,5 @@
 {
-  "last_update": "2026-02-27 10:13:25",
+  "last_update": "2026-02-27 10:19:17",
   "matches": [
     {
       "sport": "football",
@@ -91,8 +91,8 @@
       "team2": "Крылья Советов",
       "match_url": "https://www.marathonbet.ru/su/betting/Football/Russia/Premier+League/Dynamo+Moscow+vs+Krylia+Sovetov+-+25775648",
       "p1": "1.35",
-      "x": "5.5",
-      "p2": "9",
+      "x": "5.45",
+      "p2": "9.1",
       "p1x": "1.08",
       "p12": "1.17",
       "px2": "3.35"
@@ -779,9 +779,9 @@
       "team2": "Вест Хэм Юнайтед",
       "match_url": "https://www.marathonbet.ru/su/betting/Football/England/Premier+League/Liverpool+vs+West+Ham+United+-+26091823",
       "p1": "1.42",
-      "x": "5.2",
-      "p2": "6.95",
-      "p1x": "1.12",
+      "x": "5.15",
+      "p2": "7.1",
+      "p1x": "1.11",
       "p12": "1.18",
       "px2": "2.98"
     },
@@ -1194,11 +1194,11 @@
       "team1": "Бристоль Сити",
       "team2": "Уотфорд",
       "match_url": "https://www.marathonbet.ru/su/betting/Football/England/Championship/Bristol+City+vs+Watford+-+26642419",
-      "p1": "2.54",
-      "x": "3.28",
-      "p2": "2.74",
+      "p1": "2.59",
+      "x": "3.24",
+      "p2": "2.77",
       "p1x": "1.44",
-      "p12": "1.34",
+      "p12": "1.35",
       "px2": "1.51"
     },
     {
@@ -1450,8 +1450,8 @@
       "team1": "Мэнсфилд Таун",
       "team2": "АФК Уимблдон",
       "match_url": "https://www.marathonbet.ru/su/betting/Football/England/League+1/Mansfield+Town+vs+AFC+Wimbledon+-+27063103",
-      "p1": "2.07",
-      "x": "3.28",
+      "p1": "2.08",
+      "x": "3.26",
       "p2": "3.6",
       "p1x": "1.28",
       "p12": "1.33",
@@ -1802,12 +1802,12 @@
       "team1": "Альбасете",
       "team2": "Альмерия",
       "match_url": "https://www.marathonbet.ru/su/betting/Football/Spain/Segunda+Division/Albacete+vs+Almeria+-+27051119",
-      "p1": "2.38",
-      "x": "3.4",
-      "p2": "2.95",
-      "p1x": "1.4",
+      "p1": "2.41",
+      "x": "3.38",
+      "p2": "2.9",
+      "p1x": "1.41",
       "p12": "1.32",
-      "px2": "1.59"
+      "px2": "1.57"
     },
     {
       "sport": "football",
@@ -2235,7 +2235,7 @@
       "team2": "Алавес B",
       "match_url": "https://www.marathonbet.ru/su/betting/Football/Spain/Segunda+Division+de+la+Federacion/Group+2/Sestao+River+vs+Alaves+B+-+27117388",
       "p1": "2.01",
-      "x": "2.79",
+      "x": "2.8",
       "p2": "4.05",
       "p1x": "1.18",
       "p12": "1.37",
@@ -2302,7 +2302,7 @@
       "x": "3.12",
       "p2": "2.22",
       "p1x": "1.57",
-      "p12": "1.29",
+      "p12": "1.31",
       "px2": "1.34"
     },
     {
@@ -3114,12 +3114,12 @@
       "team1": "Джана Эрминио",
       "team2": "Про Верчелли",
       "match_url": "https://www.marathonbet.ru/su/betting/Football/Italy/Serie+C/Group+A/Giana+Erminio+vs+Pro+Vercelli+-+27108364",
-      "p1": "2.45",
+      "p1": "2.41",
       "x": "2.73",
-      "p2": "3.14",
-      "p1x": "1.29",
+      "p2": "3.08",
+      "p1x": "1.3",
       "p12": "1.4",
-      "px2": "1.47"
+      "px2": "1.48"
     },
     {
       "sport": "football",
@@ -3210,12 +3210,12 @@
       "team1": "Про Патрия",
       "team2": "Виртус Верона",
       "match_url": "https://www.marathonbet.ru/su/betting/Football/Italy/Serie+C/Group+A/Pro+Patria+vs+Virtus+Verona+-+27131950",
-      "p1": "2.33",
-      "x": "3.12",
-      "p2": "2.93",
+      "p1": "2.32",
+      "x": "3.1",
+      "p2": "2.94",
       "p1x": "1.33",
       "p12": "1.3",
-      "px2": "1.51"
+      "px2": "1.52"
     },
     {
       "sport": "football",
@@ -3242,12 +3242,12 @@
       "team1": "Интер до 23",
       "team2": "Альчоне",
       "match_url": "https://www.marathonbet.ru/su/betting/Football/Italy/Serie+C/Group+A/Inter+U-23+vs+Alcione+-+27132435",
-      "p1": "1.84",
-      "x": "3.2",
-      "p2": "4.2",
+      "p1": "1.85",
+      "x": "3.1",
+      "p2": "4.25",
       "p1x": "1.17",
       "p12": "1.29",
-      "px2": "1.82"
+      "px2": "1.81"
     },
     {
       "sport": "football",
@@ -4218,12 +4218,12 @@
       "team1": "Бавария II",
       "team2": "Ханкофен-Хайлинг",
       "match_url": "https://www.marathonbet.ru/su/betting/Football/Germany/Regionalliga/Bayern/Bayern+Munich+II+vs+Hankofen-Hailing+-+27113306",
-      "p1": "1.4",
-      "x": "4.75",
-      "p2": "5.95",
-      "p1x": "1.08",
+      "p1": "1.41",
+      "x": "4.55",
+      "p2": "5.85",
+      "p1x": "1.09",
       "p12": "1.14",
-      "px2": "2.65"
+      "px2": "2.61"
     },
     {
       "sport": "football",
@@ -4234,12 +4234,12 @@
       "team1": "Бухбах",
       "team2": "Гройтер Фюрт II",
       "match_url": "https://www.marathonbet.ru/su/betting/Football/Germany/Regionalliga/Bayern/Buchbach+vs+Greuther+Furth+II+-+27113370",
-      "p1": "2.55",
-      "x": "3.6",
+      "p1": "2.59",
+      "x": "3.68",
       "p2": "2.3",
       "p1x": "1.52",
-      "p12": "1.22",
-      "px2": "1.43"
+      "p12": "1.23",
+      "px2": "1.42"
     },
     {
       "sport": "football",
@@ -4250,12 +4250,12 @@
       "team1": "Нюрнберг II",
       "team2": "Вюрцбургер Кикерс",
       "match_url": "https://www.marathonbet.ru/su/betting/Football/Germany/Regionalliga/Bayern/Nurnberg+II+vs+Wurzburger+Kickers+-+27113304",
-      "p1": "2.45",
+      "p1": "2.42",
       "x": "3.35",
-      "p2": "2.59",
-      "p1x": "1.42",
+      "p2": "2.54",
+      "p1x": "1.44",
       "p12": "1.26",
-      "px2": "1.47"
+      "px2": "1.48"
     },
     {
       "sport": "football",
@@ -4381,7 +4381,7 @@
       "p1": "3.22",
       "x": "3.52",
       "p2": "2.01",
-      "p1x": "1.69",
+      "p1x": "1.7",
       "p12": "1.24",
       "px2": "1.28"
     },
@@ -4508,7 +4508,7 @@
       "match_url": "https://www.marathonbet.ru/su/betting/Football/Germany/Regionalliga/North/Meppen+vs+Hamburger+II+-+27113386",
       "p1": "1.36",
       "x": "4.95",
-      "p2": "6.4",
+      "p2": "6.1",
       "p1x": "1.07",
       "p12": "1.12",
       "px2": "2.81"
@@ -4650,11 +4650,11 @@
       "team1": "Айленбург",
       "team2": "Карл Цейсс Йена",
       "match_url": "https://www.marathonbet.ru/su/betting/Football/Germany/Regionalliga/Northeast/Eilenburg+vs+Carl+Zeiss+Jena+-+27113364",
-      "p1": "4.75",
-      "x": "4.2",
-      "p2": "1.54",
-      "p1x": "2.27",
-      "p12": "1.16",
+      "p1": "4.55",
+      "x": "4.4",
+      "p2": "1.52",
+      "p1x": "2.31",
+      "p12": "1.17",
       "px2": "1.14"
     },
     {
@@ -4684,7 +4684,7 @@
       "match_url": "https://www.marathonbet.ru/su/betting/Football/Germany/Regionalliga/Northeast/Chemnitzer+vs+Babelsberg+03+-+27113372",
       "p1": "1.62",
       "x": "3.8",
-      "p2": "4.75",
+      "p2": "4.55",
       "p1x": "1.14",
       "p12": "1.2",
       "px2": "2.11"
@@ -4810,12 +4810,12 @@
       "team1": "Ренн",
       "team2": "Тулуза",
       "match_url": "https://www.marathonbet.ru/su/betting/Football/France/Ligue+1/Rennes+vs+Toulouse+-+26787464",
-      "p1": "2.06",
-      "x": "3.58",
-      "p2": "3.74",
+      "p1": "2.05",
+      "x": "3.6",
+      "p2": "3.75",
       "p1x": "1.3",
-      "p12": "1.33",
-      "px2": "1.82"
+      "p12": "1.32",
+      "px2": "1.83"
     },
     {
       "sport": "football",
@@ -5227,7 +5227,7 @@
       "team2": "Родез",
       "match_url": "https://www.marathonbet.ru/su/betting/Football/France/Ligue+2/Guingamp+vs+Rodez+-+27101621",
       "p1": "1.69",
-      "x": "3.88",
+      "x": "3.8",
       "p2": "4.7",
       "p1x": "1.18",
       "p12": "1.26",
@@ -5243,8 +5243,8 @@
       "team2": "Ле-Ман",
       "match_url": "https://www.marathonbet.ru/su/betting/Football/France/Ligue+2/Red+Star+vs+Le+Mans+-+27101629",
       "p1": "2.41",
-      "x": "3.1",
-      "p2": "3.15",
+      "x": "3.05",
+      "p2": "3.08",
       "p1x": "1.36",
       "p12": "1.37",
       "px2": "1.57"
@@ -5290,9 +5290,9 @@
       "team1": "Версаль",
       "team2": "Обань",
       "match_url": "https://www.marathonbet.ru/su/betting/Football/France/National/Versailles+vs+Aubagne+-+26807987",
-      "p1": "1.95",
+      "p1": "1.97",
       "x": "3.18",
-      "p2": "3.64",
+      "p2": "3.78",
       "p1x": "1.22",
       "p12": "1.32",
       "px2": "1.73"
@@ -5338,12 +5338,12 @@
       "team1": "Флери 91",
       "team2": "Конкарно",
       "match_url": "https://www.marathonbet.ru/su/betting/Football/France/National/Fleury+91+vs+Concarneau+-+26808004",
-      "p1": "1.94",
-      "x": "3.28",
-      "p2": "3.75",
+      "p1": "1.92",
+      "x": "3.2",
+      "p2": "3.62",
       "p1x": "1.22",
       "p12": "1.28",
-      "px2": "1.75"
+      "px2": "1.77"
     },
     {
       "sport": "football",
@@ -5408,6 +5408,22 @@
       "p1x": "1.47",
       "p12": "1.34",
       "px2": "1.35"
+    },
+    {
+      "sport": "football",
+      "league": "Франция. Лига 1",
+      "id": "27114036",
+      "date": "",
+      "time": "21:00",
+      "team1": "Ле Арбье",
+      "team2": "Сен-Мало",
+      "match_url": "https://www.marathonbet.ru/su/betting/Football/France/National+2/Les+Herbiers+vs+Saint-Malo+-+27114036",
+      "p1": "2.3",
+      "x": "3.2",
+      "p2": "2.89",
+      "p1x": "1.34",
+      "p12": "1.29",
+      "px2": "1.52"
     },
     {
       "sport": "football",
@@ -5564,7 +5580,7 @@
       "match_url": "https://www.marathonbet.ru/su/betting/Football/Netherlands/Eredivisie/Telstar+vs+NAC+Breda+-+26616550",
       "p1": "2.53",
       "x": "3.54",
-      "p2": "2.65",
+      "p2": "2.61",
       "p1x": "1.48",
       "p12": "1.3",
       "px2": "1.52"
@@ -5836,7 +5852,7 @@
       "match_url": "https://www.marathonbet.ru/su/betting/Football/Netherlands/Eerste+Divisie/ADO+Den+Haag+vs+Venlo+-+27080198",
       "p1": "1.31",
       "x": "5.6",
-      "p2": "7.6",
+      "p2": "8",
       "p1x": "1.06",
       "p12": "1.13",
       "px2": "3.3"
@@ -5914,8 +5930,8 @@
       "team1": "Йонг Утрехт",
       "team2": "Алмере Сити",
       "match_url": "https://www.marathonbet.ru/su/betting/Football/Netherlands/Eerste+Divisie/Jong+Utrecht+vs+Almere+City+-+27067802",
-      "p1": "2.82",
-      "x": "3.72",
+      "p1": "2.81",
+      "x": "3.74",
       "p2": "2.25",
       "p1x": "1.61",
       "p12": "1.25",
@@ -5963,10 +5979,10 @@
       "team2": "ФК Эйндховен",
       "match_url": "https://www.marathonbet.ru/su/betting/Football/Netherlands/Eerste+Divisie/RKC+Waalwijk+vs+FC+Eindhoven+-+27080193",
       "p1": "1.91",
-      "x": "3.7",
-      "p2": "3.54",
-      "p1x": "1.28",
-      "p12": "1.26",
+      "x": "3.76",
+      "p2": "3.6",
+      "p1x": "1.27",
+      "p12": "1.25",
       "px2": "1.85"
     },
     {
@@ -5978,11 +5994,11 @@
       "team1": "Эммен",
       "team2": "Виллем II",
       "match_url": "https://www.marathonbet.ru/su/betting/Football/Netherlands/Eerste+Divisie/Emmen+vs+Willem+II+-+27080195",
-      "p1": "2.53",
-      "x": "3.44",
+      "p1": "2.54",
+      "x": "3.42",
       "p2": "2.56",
       "p1x": "1.49",
-      "p12": "1.29",
+      "p12": "1.3",
       "px2": "1.49"
     },
     {
@@ -5994,12 +6010,12 @@
       "team1": "Порту",
       "team2": "Арока",
       "match_url": "https://www.marathonbet.ru/su/betting/Football/Portugal/Primeira+Liga/Porto+vs+Arouca+-+27050655",
-      "p1": "1.24",
-      "x": "6.1",
+      "p1": "1.23",
+      "x": "6.3",
       "p2": "12",
       "p1x": "1.03",
       "p12": "1.12",
-      "px2": "4.05"
+      "px2": "4.15"
     },
     {
       "sport": "football",
@@ -6011,7 +6027,7 @@
       "team2": "Эшторил",
       "match_url": "https://www.marathonbet.ru/su/betting/Football/Portugal/Primeira+Liga/Sporting+Lisboa+vs+Estoril+-+27052033",
       "p1": "1.16",
-      "x": "8",
+      "x": "8.1",
       "p2": "14.5",
       "p1x": "1.01",
       "p12": "1.07",
@@ -6058,12 +6074,12 @@
       "team1": "Витория Гимарайнш",
       "team2": "Алверка",
       "match_url": "https://www.marathonbet.ru/su/betting/Football/Portugal/Primeira+Liga/Vitoria+Guimaraes+vs+Alverca+-+27069437",
-      "p1": "1.77",
+      "p1": "1.78",
       "x": "3.58",
-      "p2": "4.5",
-      "p1x": "1.2",
+      "p2": "4.65",
+      "p1x": "1.19",
       "p12": "1.3",
-      "px2": "2.05"
+      "px2": "2.04"
     },
     {
       "sport": "football",
@@ -6458,12 +6474,12 @@
       "team1": "Истанбул Башакшехир",
       "team2": "Коньяспор",
       "match_url": "https://www.marathonbet.ru/su/betting/Football/Turkey/Super+Lig/Istanbul+Basaksehir+vs+Konyaspor+-+27048877",
-      "p1": "1.72",
-      "x": "3.86",
-      "p2": "4.45",
+      "p1": "1.74",
+      "x": "3.85",
+      "p2": "4.55",
       "p1x": "1.2",
-      "p12": "1.26",
-      "px2": "2.11"
+      "p12": "1.27",
+      "px2": "2.08"
     },
     {
       "sport": "football",
@@ -6475,10 +6491,10 @@
       "team2": "Фатих Карагюмрюк",
       "match_url": "https://www.marathonbet.ru/su/betting/Football/Turkey/Super+Lig/Trabzonspor+vs+Fatih+Karagumruk+-+27048883",
       "p1": "1.44",
-      "x": "4.5",
+      "x": "4.4",
       "p2": "6.85",
-      "p1x": "1.09",
-      "p12": "1.2",
+      "p1x": "1.1",
+      "p12": "1.21",
       "px2": "2.82"
     },
     {
@@ -6523,11 +6539,11 @@
       "team2": "Аланьяспор",
       "match_url": "https://www.marathonbet.ru/su/betting/Football/Turkey/Super+Lig/Galatasaray+vs+Alanyaspor+-+27067159",
       "p1": "1.28",
-      "x": "5.85",
-      "p2": "9.4",
-      "p1x": "1.05",
-      "p12": "1.13",
-      "px2": "3.62"
+      "x": "5.6",
+      "p2": "8.9",
+      "p1x": "1.06",
+      "p12": "1.14",
+      "px2": "3.66"
     },
     {
       "sport": "football",
@@ -6540,7 +6556,7 @@
       "match_url": "https://www.marathonbet.ru/su/betting/Football/Turkey/Super+Lig/Goztepe+vs+Eyupspor+-+27067360",
       "p1": "1.58",
       "x": "4",
-      "p2": "5.55",
+      "p2": "5.8",
       "p1x": "1.13",
       "p12": "1.25",
       "px2": "2.38"
@@ -6604,7 +6620,7 @@
       "match_url": "https://www.marathonbet.ru/su/betting/Football/Turkey/1+Lig/Erokspor+vs+Boluspor+-+27062872",
       "p1": "1.43",
       "x": "4.25",
-      "p2": "6.5",
+      "p2": "6.15",
       "p1x": "1.07",
       "p12": "1.17",
       "px2": "2.59"
@@ -6714,7 +6730,7 @@
       "team1": "Сакариспор",
       "team2": "Сарыер",
       "match_url": "https://www.marathonbet.ru/su/betting/Football/Turkey/1+Lig/Sakaryaspor+vs+Sariyer+-+27093560",
-      "p1": "3.14",
+      "p1": "3.22",
       "x": "3.62",
       "p2": "2",
       "p1x": "1.71",
@@ -6844,10 +6860,10 @@
       "match_url": "https://www.marathonbet.ru/su/betting/Football/Belgium/1st+Division+A/Genk+vs+Gent+-+27079084",
       "p1": "1.65",
       "x": "4.15",
-      "p2": "4.8",
+      "p2": "4.65",
       "p1x": "1.18",
       "p12": "1.24",
-      "px2": "2.23"
+      "px2": "2.25"
     },
     {
       "sport": "football",
@@ -7130,12 +7146,12 @@
       "team1": "Мерелбеке",
       "team2": "Серкль Брюгге II",
       "match_url": "https://www.marathonbet.ru/su/betting/Football/Belgium/1st+Amateur+League/Merelbeke+vs+Cercle+Brugge+II+-+27121622",
-      "p1": "2.81",
+      "p1": "2.76",
       "x": "3.42",
-      "p2": "2.25",
-      "p1x": "1.55",
+      "p2": "2.22",
+      "p1x": "1.56",
       "p12": "1.26",
-      "px2": "1.36"
+      "px2": "1.38"
     },
     {
       "sport": "football",
@@ -7146,12 +7162,12 @@
       "team1": "Лира ТСВ",
       "team2": "Нинове",
       "match_url": "https://www.marathonbet.ru/su/betting/Football/Belgium/1st+Amateur+League/Lyra+TSV+vs+Ninove+-+27121617",
-      "p1": "1.73",
-      "x": "3.7",
-      "p2": "4.1",
+      "p1": "1.74",
+      "x": "3.68",
+      "p2": "4.05",
       "p1x": "1.18",
-      "p12": "1.22",
-      "px2": "1.95"
+      "p12": "1.23",
+      "px2": "1.93"
     },
     {
       "sport": "football",
@@ -7164,7 +7180,7 @@
       "match_url": "https://www.marathonbet.ru/su/betting/Football/Belgium/1st+Amateur+League/RAEC+Mons+vs+Rochefort+-+27121620",
       "p1": "1.31",
       "x": "4.9",
-      "p2": "7.9",
+      "p2": "7.5",
       "p1x": "1.03",
       "p12": "1.12",
       "px2": "3.05"
@@ -7498,11 +7514,11 @@
       "team1": "Данфермлин",
       "team2": "Абердин",
       "match_url": "https://www.marathonbet.ru/su/betting/Football/Scotland/FA+Cup/Quarter+Final/Dunfermline+vs+Aberdeen+-+27153583",
-      "p1": "5.25",
-      "x": "3.98",
+      "p1": "5.3",
+      "x": "3.95",
       "p2": "1.58",
       "p1x": "2.31",
-      "p12": "1.23",
+      "p12": "1.24",
       "px2": "1.14"
     },
     {
@@ -7932,7 +7948,7 @@
       "match_url": "https://www.marathonbet.ru/su/betting/Football/Brazil/Serie+A/Sao+Paulo+vs+Chapecoense+-+26974979",
       "p1": "1.59",
       "x": "3.78",
-      "p2": "6.15",
+      "p2": "5.9",
       "p1x": "1.12",
       "p12": "1.27",
       "px2": "2.35"
@@ -8187,7 +8203,7 @@
       "team2": "Гама",
       "match_url": "https://www.marathonbet.ru/su/betting/Football/Brazil/Brasiliense/1st+Division/Capital+vs+Gama+-+27118846",
       "p1": "2.76",
-      "x": "3.08",
+      "x": "3.02",
       "p2": "2.47",
       "p1x": "1.46",
       "p12": "1.31",
@@ -8492,10 +8508,10 @@
       "match_url": "https://www.marathonbet.ru/su/betting/Football/Brazil/Mineiro/1st+Division/Semi+Final/2nd+Leg/Cruzeiro-MG+vs+Pouso+Alegre+-+27097813",
       "p1": "1.11",
       "x": "7.1",
-      "p2": "17",
+      "p2": "22",
       "p1x": "1.01",
       "p12": "1.06",
-      "px2": "5.3"
+      "px2": "5.4"
     },
     {
       "sport": "football",
@@ -9066,7 +9082,7 @@
       "team1": "Сан-Тельмо",
       "team2": "Акассусо",
       "match_url": "https://www.marathonbet.ru/su/betting/Football/Argentina/Primera+Nacional/San+Telmo+vs+Acassuso+-+27104111",
-      "p1": "2.5",
+      "p1": "2.46",
       "x": "2.67",
       "p2": "3.1",
       "p1x": "1.3",
@@ -9354,12 +9370,12 @@
       "team1": "Фландрия",
       "team2": "Тальерес Ремедиос",
       "match_url": "https://www.marathonbet.ru/su/betting/Football/Argentina/Primera+B+Metropolitana/Flandria+vs+Talleres+Remedios+-+27125409",
-      "p1": "2.2",
-      "x": "2.98",
+      "p1": "2.21",
+      "x": "2.97",
       "p2": "3.36",
       "p1x": "1.27",
       "p12": "1.33",
-      "px2": "1.59"
+      "px2": "1.58"
     },
     {
       "sport": "football",
@@ -9674,9 +9690,9 @@
       "team1": "Тихуана",
       "team2": "УНАМ",
       "match_url": "https://www.marathonbet.ru/su/betting/Football/Mexico/Primera+Division/Tijuana+vs+UNAM+-+26956669",
-      "p1": "2.25",
+      "p1": "2.26",
       "x": "3.34",
-      "p2": "3.1",
+      "p2": "3.08",
       "p1x": "1.35",
       "p12": "1.3",
       "px2": "1.61"
@@ -9738,12 +9754,12 @@
       "team1": "Монтеррей",
       "team2": "Крус Асуль",
       "match_url": "https://www.marathonbet.ru/su/betting/Football/Mexico/Primera+Division/Monterrey+vs+Cruz+Azul+-+26956644",
-      "p1": "2.19",
-      "x": "3.38",
+      "p1": "2.18",
+      "x": "3.42",
       "p2": "3.16",
       "p1x": "1.33",
-      "p12": "1.3",
-      "px2": "1.64"
+      "p12": "1.29",
+      "px2": "1.65"
     },
     {
       "sport": "football",
@@ -9932,7 +9948,7 @@
       "match_url": "https://www.marathonbet.ru/su/betting/Football/Mexico/Liga+de+Expansion/Mineros+de+Zacatecas+vs+Venados+-+26614935",
       "p1": "1.71",
       "x": "3.95",
-      "p2": "3.9",
+      "p2": "4",
       "p1x": "1.2",
       "p12": "1.2",
       "px2": "2"
@@ -10027,8 +10043,8 @@
       "team2": "Лос Кабос Юнайтед",
       "match_url": "https://www.marathonbet.ru/su/betting/Football/Mexico/Liga+Premier/Serie+A/Cimarrones+de+Sonora+vs+Los+Cabos+United+-+27122873",
       "p1": "1.27",
-      "x": "5.4",
-      "p2": "8.3",
+      "x": "5.45",
+      "p2": "8.2",
       "p1x": "1.03",
       "p12": "1.1",
       "px2": "3.28"
@@ -10058,11 +10074,11 @@
       "team1": "Депортиво Ирапуто Олимпо",
       "team2": "Валье де Хико",
       "match_url": "https://www.marathonbet.ru/su/betting/Football/Mexico/Liga+TDP/Deportivo+Irapuato+Olimpo+vs+Valle+de+Xico+-+27116876",
-      "p1": "3.45",
-      "x": "3.44",
+      "p1": "3.54",
+      "x": "3.52",
       "p2": "1.9",
       "p1x": "1.77",
-      "p12": "1.25",
+      "p12": "1.24",
       "px2": "1.24"
     },
     {
@@ -10106,12 +10122,12 @@
       "team1": "Херманос Бенитес",
       "team2": "Ахолотес Лерма",
       "match_url": "https://www.marathonbet.ru/su/betting/Football/Mexico/Liga+TDP/Hermanos+Benitez+vs+Ajolotes+Lerma+-+27116880",
-      "p1": "4.4",
+      "p1": "4.2",
       "x": "3.9",
-      "p2": "1.64",
-      "p1x": "2.07",
+      "p2": "1.67",
+      "p1x": "2.03",
       "p12": "1.2",
-      "px2": "1.16"
+      "px2": "1.17"
     },
     {
       "sport": "football",
@@ -10186,12 +10202,12 @@
       "team1": "Атлетико Тулансинго",
       "team2": "Реалес де Пуебла",
       "match_url": "https://www.marathonbet.ru/su/betting/Football/Mexico/Liga+TDP/Atletico+Tulancingo+vs+Reales+de+Puebla+-+27124994",
-      "p1": "1.44",
-      "x": "4.8",
-      "p2": "5.25",
+      "p1": "1.43",
+      "x": "4.85",
+      "p2": "5.3",
       "p1x": "1.11",
       "p12": "1.13",
-      "px2": "2.52"
+      "px2": "2.55"
     },
     {
       "sport": "football",
@@ -10474,12 +10490,12 @@
       "team1": "Гамба Осака",
       "team2": "Симидзу С-Палс",
       "match_url": "https://www.marathonbet.ru/su/betting/Football/Japan/J.League/Division+1/Gamba+Osaka+vs+Shimizu+S-Pulse+-+27096935",
-      "p1": "1.93",
-      "x": "3.68",
-      "p2": "3.54",
+      "p1": "1.94",
+      "x": "3.66",
+      "p2": "3.52",
       "p1x": "1.27",
       "p12": "1.26",
-      "px2": "1.81"
+      "px2": "1.8"
     },
     {
       "sport": "football",
@@ -10762,12 +10778,12 @@
       "team1": "Мельбурн Виктори",
       "team2": "Аделаида Юнайтед",
       "match_url": "https://www.marathonbet.ru/su/betting/Football/Australia/A-League/Melbourne+Victory+vs+Adelaide+United+-+26957459",
-      "p1": "1.59",
-      "x": "4.6",
-      "p2": "4.75",
-      "p1x": "1.19",
-      "p12": "1.2",
-      "px2": "2.35"
+      "p1": "1.57",
+      "x": "4.65",
+      "p2": "4.8",
+      "p1x": "1.17",
+      "p12": "1.19",
+      "px2": "2.43"
     },
     {
       "sport": "football",
@@ -10794,12 +10810,12 @@
       "team1": "Сентрал Кост Маринерс",
       "team2": "Ньюкасл Джетс",
       "match_url": "https://www.marathonbet.ru/su/betting/Football/Australia/A-League/Central+Coast+Mariners+vs+Newcastle+Jets+-+26957328",
-      "p1": "4.55",
-      "x": "4.55",
+      "p1": "4.4",
+      "x": "4.4",
       "p2": "1.63",
       "p1x": "2.28",
-      "p12": "1.2",
-      "px2": "1.2"
+      "p12": "1.21",
+      "px2": "1.21"
     },
     {
       "sport": "football",
@@ -10858,12 +10874,12 @@
       "team1": "Макартур ФК",
       "team2": "Сентрал Кост Маринерс",
       "match_url": "https://www.marathonbet.ru/su/betting/Football/Australia/A-League/Macarthur+FC+vs+Central+Coast+Mariners+-+27058633",
-      "p1": "1.72",
+      "p1": "1.76",
       "x": "4",
-      "p2": "4.45",
-      "p1x": "1.21",
+      "p2": "4.2",
+      "p1x": "1.22",
       "p12": "1.25",
-      "px2": "2.12"
+      "px2": "2.05"
     },
     {
       "sport": "football",
@@ -10875,9 +10891,9 @@
       "team2": "Веллингтон Феникс",
       "match_url": "https://www.marathonbet.ru/su/betting/Football/Australia/A-League/Adelaide+United+vs+Wellington+Phoenix+-+27083805",
       "p1": "1.88",
-      "x": "3.85",
-      "p2": "3.78",
-      "p1x": "1.27",
+      "x": "3.88",
+      "p2": "3.76",
+      "p1x": "1.28",
       "p12": "1.26",
       "px2": "1.92"
     },
@@ -10938,10 +10954,10 @@
       "team1": "Сент-Альбан Саинтс",
       "team2": "Оукли Кэннонс",
       "match_url": "https://www.marathonbet.ru/su/betting/Football/Australia/National+Premier+League/Victoria/St+Albans+Saints+vs+Oakleigh+Cannons+-+27116298",
-      "p1": "4.65",
-      "x": "4.15",
-      "p2": "1.57",
-      "p1x": "2.2",
+      "p1": "4.75",
+      "x": "4.2",
+      "p2": "1.55",
+      "p1x": "2.25",
       "p12": "1.17",
       "px2": "1.14"
     },
@@ -11146,12 +11162,12 @@
       "team1": "Лайонc",
       "team2": "Голд Кост Найтс",
       "match_url": "https://www.marathonbet.ru/su/betting/Football/Australia/National+Premier+League/Queensland/Lions+vs+Gold+Coast+Knights+-+27115957",
-      "p1": "1.44",
-      "x": "4.5",
-      "p2": "5.65",
+      "p1": "1.45",
+      "x": "4.45",
+      "p2": "5.6",
       "p1x": "1.09",
       "p12": "1.15",
-      "px2": "2.52"
+      "px2": "2.49"
     },
     {
       "sport": "football",
@@ -11242,12 +11258,12 @@
       "team1": "Сидней ФК до 21",
       "team2": "Маркони Сталлионс",
       "match_url": "https://www.marathonbet.ru/su/betting/Football/Australia/National+Premier+League/New+South+Wales/Sydney+FC+U-21+vs+Marconi+Stallions+-+27115945",
-      "p1": "4.05",
-      "x": "4.05",
-      "p2": "1.65",
-      "p1x": "2.03",
+      "p1": "3.96",
+      "x": "4.1",
+      "p2": "1.68",
+      "p1x": "2.02",
       "p12": "1.18",
-      "px2": "1.18"
+      "px2": "1.2"
     },
     {
       "sport": "football",
@@ -11258,12 +11274,12 @@
       "team1": "Сидней Юнайтед",
       "team2": "Мэнли Юнайтед",
       "match_url": "https://www.marathonbet.ru/su/betting/Football/Australia/National+Premier+League/New+South+Wales/Sydney+United+vs+Manly+United+-+27115951",
-      "p1": "1.86",
+      "p1": "1.83",
       "x": "3.8",
-      "p2": "3.42",
-      "p1x": "1.25",
+      "p2": "3.52",
+      "p1x": "1.24",
       "p12": "1.2",
-      "px2": "1.8"
+      "px2": "1.83"
     },
     {
       "sport": "football",
@@ -11322,12 +11338,12 @@
       "team1": "Сент-Джордж Саинтс",
       "team2": "Университи Нью Саут Уэльс",
       "match_url": "https://www.marathonbet.ru/su/betting/Football/Australia/National+Premier+League/New+South+Wales/St+George+Saints+vs+University+of+New+South+Wales+-+27124805",
-      "p1": "1.59",
-      "x": "4.15",
-      "p2": "4.5",
-      "p1x": "1.15",
-      "p12": "1.17",
-      "px2": "2.16"
+      "p1": "1.49",
+      "x": "4.33",
+      "p2": "5.25",
+      "p1x": "1.11",
+      "p12": "1.16",
+      "px2": "2.39"
     },
     {
       "sport": "football",
@@ -11659,10 +11675,10 @@
       "team2": "Порт Мельбурн Шаркс",
       "match_url": "https://www.marathonbet.ru/su/betting/Football/Australia/Victoria/Premier+League+1/Brunswick+City+vs+Port+Melbourne+Sharks+-+27116355",
       "p1": "1.37",
-      "x": "5.15",
-      "p2": "5.9",
+      "x": "5.1",
+      "p2": "5.95",
       "p1x": "1.08",
-      "p12": "1.11",
+      "p12": "1.12",
       "px2": "2.76"
     },
     {
@@ -11722,12 +11738,12 @@
       "team1": "Норт Джилонг Уорриорз",
       "team2": "Мелбурн Србия",
       "match_url": "https://www.marathonbet.ru/su/betting/Football/Australia/Victoria/Premier+League+1/North+Geelong+Warriors+vs+Melbourne+Srbija+-+27159999",
-      "p1": "2.95",
-      "x": "3.82",
-      "p2": "2.03",
-      "p1x": "1.67",
-      "p12": "1.2",
-      "px2": "1.33"
+      "p1": "2.34",
+      "x": "4.05",
+      "p2": "2.39",
+      "p1x": "1.49",
+      "p12": "1.18",
+      "px2": "1.51"
     },
     {
       "sport": "football",
@@ -11738,28 +11754,12 @@
       "team1": "Вестерн Юнайтед ФК Мельбурн 2",
       "team2": "Мэннингэм Юнайтед Блюз",
       "match_url": "https://www.marathonbet.ru/su/betting/Football/Australia/Victoria/Premier+League+1/Western+United+FC+Melbourne+2+vs+Manningham+United+Blues+-+27123350",
-      "p1": "2.97",
-      "x": "4.45",
-      "p2": "1.88",
-      "p1x": "1.79",
+      "p1": "3.1",
+      "x": "4.5",
+      "p2": "1.82",
+      "p1x": "1.84",
       "p12": "1.15",
-      "px2": "1.33"
-    },
-    {
-      "sport": "football",
-      "league": "Австралия. A-League",
-      "id": "27116262",
-      "date": "",
-      "time": "10:15",
-      "team1": "Мельбурн Найтс до 23",
-      "team2": "Норт Саншайн Иглс до 23",
-      "match_url": "https://www.marathonbet.ru/su/betting/Football/Australia/Victoria/Premier+League+1+U-23/Melbourne+Knights+U-23+vs+North+Sunshine+Eagles+U-23+-+27116262",
-      "p1": "1.69",
-      "x": "4.8",
-      "p2": "3.24",
-      "p1x": "1.27",
-      "p12": "1.12",
-      "px2": "2.01"
+      "px2": "1.3"
     },
     {
       "sport": "football",
@@ -11883,7 +11883,7 @@
       "team2": "Рух Львов",
       "match_url": "https://www.marathonbet.ru/su/betting/Football/Ukraine/Premier+League/Obolon+vs+Rukh+Lviv+-+27109546",
       "p1": "2.35",
-      "x": "3",
+      "x": "2.97",
       "p2": "3.24",
       "p1x": "1.32",
       "p12": "1.36",
@@ -11915,9 +11915,9 @@
       "team2": "Кудровка",
       "match_url": "https://www.marathonbet.ru/su/betting/Football/Ukraine/Premier+League/Poltava+vs+Kudrivka+-+27138223",
       "p1": "3.6",
-      "x": "3.45",
-      "p2": "2",
-      "p1x": "1.77",
+      "x": "3.42",
+      "p2": "2.01",
+      "p1x": "1.76",
       "p12": "1.29",
       "px2": "1.27"
     },
@@ -11994,10 +11994,10 @@
       "team1": "ГКС Катовице",
       "team2": "Гурник Забже",
       "match_url": "https://www.marathonbet.ru/su/betting/Football/Poland/Ekstraklasa/GKS+Katowice+vs+Gornik+Zabrze+-+27078365",
-      "p1": "3.02",
+      "p1": "2.98",
       "x": "3.3",
-      "p2": "2.31",
-      "p1x": "1.58",
+      "p2": "2.29",
+      "p1x": "1.59",
       "p12": "1.31",
       "px2": "1.36"
     },
@@ -12364,10 +12364,10 @@
       "match_url": "https://www.marathonbet.ru/su/betting/Football/Poland/III+Liga/Group+2/Zawisza+Bydgoszcz+vs+Notec+Czarnkow+-+27107467",
       "p1": "1.52",
       "x": "3.95",
-      "p2": "5.5",
+      "p2": "5.25",
       "p1x": "1.1",
       "p12": "1.19",
-      "px2": "2.3"
+      "px2": "2.33"
     },
     {
       "sport": "football",
@@ -12556,7 +12556,7 @@
       "match_url": "https://www.marathonbet.ru/su/betting/Football/Greece/Super+League/AEK+Athens+vs+Larissa+-+27147603",
       "p1": "1.23",
       "x": "5.75",
-      "p2": "12.8",
+      "p2": "14.8",
       "p1x": "1.01",
       "p12": "1.14",
       "px2": "4.15"
@@ -12570,12 +12570,12 @@
       "team1": "Астерас Триполи",
       "team2": "Пансерраикос",
       "match_url": "https://www.marathonbet.ru/su/betting/Football/Greece/Super+League/Asteras+Tripolis+vs+Panserraikos+-+27147615",
-      "p1": "1.67",
-      "x": "3.78",
-      "p2": "5.2",
+      "p1": "1.68",
+      "x": "3.76",
+      "p2": "5.15",
       "p1x": "1.16",
-      "p12": "1.27",
-      "px2": "2.2"
+      "p12": "1.28",
+      "px2": "2.19"
     },
     {
       "sport": "football",
@@ -13149,7 +13149,7 @@
       "p1": "2.6",
       "x": "3.82",
       "p2": "2.38",
-      "p1x": "1.55",
+      "p1x": "1.56",
       "p12": "1.25",
       "px2": "1.47"
     },
@@ -13211,10 +13211,10 @@
       "team2": "СР Донауфельд",
       "match_url": "https://www.marathonbet.ru/su/betting/Football/Austria/Regionalliga/East/Oberwart+vs+SR+Donaufeld+-+27125685",
       "p1": "1.6",
-      "x": "4.05",
-      "p2": "4.4",
-      "p1x": "1.15",
-      "p12": "1.18",
+      "x": "3.98",
+      "p2": "4.65",
+      "p1x": "1.14",
+      "p12": "1.19",
       "px2": "2.14"
     },
     {
@@ -13248,6 +13248,22 @@
       "p1x": "2.55",
       "p12": "1.14",
       "px2": "1.09"
+    },
+    {
+      "sport": "football",
+      "league": "Австрия. Бундеслига",
+      "id": "27115515",
+      "date": "",
+      "time": "21:00",
+      "team1": "Дитах",
+      "team2": "Трайбах",
+      "match_url": "https://www.marathonbet.ru/su/betting/Football/Austria/Regionalliga/Centre/Dietach+vs+Treibach+-+27115515",
+      "p1": "1.8",
+      "x": "3.72",
+      "p2": "3.7",
+      "p1x": "1.22",
+      "p12": "1.21",
+      "px2": "1.86"
     },
     {
       "sport": "football",
@@ -13530,12 +13546,12 @@
       "team1": "Виборг",
       "team2": "Норшелланн",
       "match_url": "https://www.marathonbet.ru/su/betting/Football/Denmark/Superliga/Viborg+vs+Nordsjaelland+-+27083110",
-      "p1": "2.36",
-      "x": "3.76",
-      "p2": "2.73",
+      "p1": "2.35",
+      "x": "3.78",
+      "p2": "2.74",
       "p1x": "1.45",
-      "p12": "1.28",
-      "px2": "1.59"
+      "p12": "1.27",
+      "px2": "1.6"
     },
     {
       "sport": "football",
@@ -13626,12 +13642,12 @@
       "team1": "Мидтъюлланн",
       "team2": "Орхус",
       "match_url": "https://www.marathonbet.ru/su/betting/Football/Denmark/Cup/Semi+Final/2nd+Leg/Midtjylland+vs+AGF+Aarhus+-+26116845",
-      "p1": "2.25",
-      "x": "3.65",
-      "p2": "2.88",
-      "p1x": "1.42",
+      "p1": "2.26",
+      "x": "3.64",
+      "p2": "2.95",
+      "p1x": "1.4",
       "p12": "1.29",
-      "px2": "1.63"
+      "px2": "1.64"
     },
     {
       "sport": "football",
@@ -14220,7 +14236,7 @@
       "match_url": "https://www.marathonbet.ru/su/betting/Football/Slovakia/3+Liga/Senec+vs+Slovan+Duslo+Sala+-+27107173",
       "p1": "1.64",
       "x": "3.84",
-      "p2": "4.3",
+      "p2": "4.45",
       "p1x": "1.15",
       "p12": "1.2",
       "px2": "2.07"
@@ -14347,11 +14363,11 @@
       "team2": "Карловац",
       "match_url": "https://www.marathonbet.ru/su/betting/Football/Croatia/1st+League/Sesvete+vs+Karlovac+-+27096820",
       "p1": "2.38",
-      "x": "2.64",
-      "p2": "3.2",
+      "x": "2.63",
+      "p2": "3.26",
       "p1x": "1.28",
       "p12": "1.39",
-      "px2": "1.49"
+      "px2": "1.48"
     },
     {
       "sport": "football",
@@ -14650,9 +14666,9 @@
       "team1": "Германштадт",
       "team2": "Ботошани",
       "match_url": "https://www.marathonbet.ru/su/betting/Football/Romania/Liga+I/Hermannstadt+vs+Botosani+-+27036027",
-      "p1": "3.18",
+      "p1": "3.14",
       "x": "2.97",
-      "p2": "2.4",
+      "p2": "2.38",
       "p1x": "1.55",
       "p12": "1.37",
       "px2": "1.33"
@@ -15194,12 +15210,12 @@
       "team1": "Сэнэтатя Сервичии Публиче Клуж",
       "team2": "Олимпия Сату-Маре",
       "match_url": "https://www.marathonbet.ru/su/betting/Football/Romania/Liga+III/Serie+8/Sanatatea+Servicii+Publice+Cluj+vs+Olimpia+Satu+Mare+-+27107388",
-      "p1": "1.11",
+      "p1": "1.12",
       "x": "7.5",
-      "p2": "13.5",
-      "p1x": "1.02",
+      "p2": "15.2",
+      "p1x": "1.01",
       "p12": "1.04",
-      "px2": "5.15"
+      "px2": "5.1"
     },
     {
       "sport": "football",
@@ -15471,7 +15487,7 @@
       "p2": "2.11",
       "p1x": "1.69",
       "p12": "1.33",
-      "px2": "1.27"
+      "px2": "1.28"
     },
     {
       "sport": "football",
@@ -15482,12 +15498,12 @@
       "team1": "Славия София",
       "team2": "ЦСКА 1948",
       "match_url": "https://www.marathonbet.ru/su/betting/Football/Bulgaria/1st+League/Slavia+Sofia+vs+CSKA+1948+-+26972603",
-      "p1": "3.82",
+      "p1": "3.76",
       "x": "3.4",
-      "p2": "1.95",
-      "p1x": "1.8",
+      "p2": "1.97",
+      "p1x": "1.79",
       "p12": "1.3",
-      "px2": "1.25"
+      "px2": "1.26"
     },
     {
       "sport": "football",
@@ -15500,7 +15516,7 @@
       "match_url": "https://www.marathonbet.ru/su/betting/Football/Bulgaria/1st+League/Botev+Vratsa+vs+Beroe+-+26972783",
       "p1": "1.72",
       "x": "3.4",
-      "p2": "5.2",
+      "p2": "5.1",
       "p1x": "1.14",
       "p12": "1.3",
       "px2": "2.06"
@@ -15866,11 +15882,11 @@
       "team1": "Омские Крылья",
       "team2": "Динамо Санкт-Петербург",
       "match_url": "",
-      "p1": "2.11",
+      "p1": "2.18",
       "x": "—",
-      "p2": "3.6",
+      "p2": "3.42",
       "p1x": "—",
-      "p12": "2",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -15882,11 +15898,11 @@
       "team1": "Металлург Бекабад",
       "team2": "Шуртан Гузар",
       "match_url": "",
-      "p1": "2.5",
+      "p1": "2.71",
       "x": "—",
-      "p2": "2.15",
+      "p2": "1.96",
       "p1x": "—",
-      "p12": "2.04",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -15898,11 +15914,11 @@
       "team1": "Мамтенг",
       "team2": "Толи",
       "match_url": "",
-      "p1": "2.58",
+      "p1": "2.83",
       "x": "—",
-      "p2": "2.06",
+      "p2": "1.83",
       "p1x": "—",
-      "p12": "1.96",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -15914,11 +15930,11 @@
       "team1": "Э.Бутвилас",
       "team2": "М.Имамура",
       "match_url": "",
-      "p1": "1",
+      "p1": "1.89",
       "x": "—",
-      "p2": "8.7",
+      "p2": "1.78",
       "p1x": "—",
-      "p12": "0.955",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -15930,27 +15946,11 @@
       "team1": "Даегу Когас II",
       "team2": "Чханвон Сэйкерс 2",
       "match_url": "",
-      "p1": "2.38",
+      "p1": "2.09",
       "x": "—",
-      "p2": "1.48",
+      "p2": "1.61",
       "p1x": "—",
-      "p12": "1.41",
-      "px2": "—"
-    },
-    {
-      "sport": "hockey",
-      "league": "КХЛ",
-      "id": "27152941",
-      "date": "",
-      "time": "",
-      "team1": "The Huns Esports",
-      "team2": "Lynn Vision Gaming",
-      "match_url": "",
-      "p1": "0.00",
-      "x": "—",
-      "p2": "0.00",
-      "p1x": "—",
-      "p12": "0.00",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -15962,11 +15962,11 @@
       "team1": "Хаята, Хина",
       "team2": "Куай, Ман",
       "match_url": "",
-      "p1": "2.7",
+      "p1": "5.3",
       "x": "—",
-      "p2": "1.39",
+      "p2": "1.11",
       "p1x": "—",
-      "p12": "1.32",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -15982,7 +15982,7 @@
       "x": "—",
       "p2": "4.35",
       "p1x": "—",
-      "p12": "2.16",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -15998,7 +15998,7 @@
       "x": "—",
       "p2": "4.05",
       "p1x": "—",
-      "p12": "2.35",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -16014,7 +16014,7 @@
       "x": "—",
       "p2": "4.25",
       "p1x": "—",
-      "p12": "2.12",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -16030,7 +16030,7 @@
       "x": "—",
       "p2": "5.55",
       "p1x": "—",
-      "p12": "5.27",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -16046,7 +16046,7 @@
       "x": "—",
       "p2": "4.75",
       "p1x": "—",
-      "p12": "1.48",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -16058,11 +16058,11 @@
       "team1": "Аль-Шабаб Эр-Рияд",
       "team2": "Аль-Хиляль Эр-Рияд",
       "match_url": "",
-      "p1": "5.85",
+      "p1": "5.55",
       "x": "—",
       "p2": "5.05",
       "p1x": "—",
-      "p12": "4.8",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -16078,7 +16078,7 @@
       "x": "—",
       "p2": "1.74",
       "p1x": "—",
-      "p12": "1.65",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -16094,7 +16094,7 @@
       "x": "—",
       "p2": "3.15",
       "p1x": "—",
-      "p12": "1.29",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -16106,11 +16106,11 @@
       "team1": "Ж.Паолини",
       "team2": "К.Бултер",
       "match_url": "",
-      "p1": "1.42",
+      "p1": "1.41",
       "x": "—",
-      "p2": "2.86",
+      "p2": "2.91",
       "p1x": "—",
-      "p12": "1.35",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -16126,7 +16126,7 @@
       "x": "—",
       "p2": "1.83",
       "p1x": "—",
-      "p12": "1.74",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -16138,11 +16138,11 @@
       "team1": "М.Френх",
       "team2": "М.Боузкова",
       "match_url": "",
-      "p1": "2.25",
+      "p1": "2.26",
       "x": "—",
       "p2": "1.64",
       "p1x": "—",
-      "p12": "1.56",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -16158,7 +16158,7 @@
       "x": "—",
       "p2": "2.95",
       "p1x": "—",
-      "p12": "1.33",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -16174,7 +16174,7 @@
       "x": "—",
       "p2": "4.3",
       "p1x": "—",
-      "p12": "1.16",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -16190,7 +16190,7 @@
       "x": "—",
       "p2": "1.16",
       "p1x": "—",
-      "p12": "1.1",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -16206,7 +16206,7 @@
       "x": "—",
       "p2": "1.49",
       "p1x": "—",
-      "p12": "1.42",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -16222,7 +16222,7 @@
       "x": "—",
       "p2": "1.68",
       "p1x": "—",
-      "p12": "1.6",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -16238,7 +16238,7 @@
       "x": "—",
       "p2": "1.53",
       "p1x": "—",
-      "p12": "1.46",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -16254,7 +16254,7 @@
       "x": "—",
       "p2": "4.05",
       "p1x": "—",
-      "p12": "2.35",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -16270,7 +16270,7 @@
       "x": "—",
       "p2": "4.15",
       "p1x": "—",
-      "p12": "2.19",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -16286,7 +16286,7 @@
       "x": "—",
       "p2": "4.15",
       "p1x": "—",
-      "p12": "2.12",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -16302,7 +16302,7 @@
       "x": "—",
       "p2": "4.15",
       "p1x": "—",
-      "p12": "2.15",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -16318,7 +16318,7 @@
       "x": "—",
       "p2": "2.91",
       "p1x": "—",
-      "p12": "1.34",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -16334,7 +16334,7 @@
       "x": "—",
       "p2": "9.8",
       "p1x": "—",
-      "p12": "0.998",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -16350,7 +16350,7 @@
       "x": "—",
       "p2": "1.33",
       "p1x": "—",
-      "p12": "1.26",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -16366,7 +16366,7 @@
       "x": "—",
       "p2": "2.88",
       "p1x": "—",
-      "p12": "1.35",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -16382,7 +16382,7 @@
       "x": "—",
       "p2": "3.48",
       "p1x": "—",
-      "p12": "1.24",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -16398,7 +16398,7 @@
       "x": "—",
       "p2": "1.38",
       "p1x": "—",
-      "p12": "1.31",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -16414,7 +16414,7 @@
       "x": "—",
       "p2": "1.18",
       "p1x": "—",
-      "p12": "1.12",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -16430,7 +16430,7 @@
       "x": "—",
       "p2": "2.06",
       "p1x": "—",
-      "p12": "1.63",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -16446,7 +16446,7 @@
       "x": "—",
       "p2": "2.78",
       "p1x": "—",
-      "p12": "1.34",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -16462,7 +16462,7 @@
       "x": "—",
       "p2": "1.52",
       "p1x": "—",
-      "p12": "1.44",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -16478,7 +16478,7 @@
       "x": "—",
       "p2": "1.26",
       "p1x": "—",
-      "p12": "1.2",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -16494,7 +16494,7 @@
       "x": "—",
       "p2": "3",
       "p1x": "—",
-      "p12": "1.27",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -16508,9 +16508,9 @@
       "match_url": "",
       "p1": "1.13",
       "x": "—",
-      "p2": "5.1",
+      "p2": "5.05",
       "p1x": "—",
-      "p12": "1.07",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -16526,7 +16526,7 @@
       "x": "—",
       "p2": "2.89",
       "p1x": "—",
-      "p12": "1.31",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -16542,7 +16542,7 @@
       "x": "—",
       "p2": "1.77",
       "p1x": "—",
-      "p12": "1.68",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -16558,7 +16558,7 @@
       "x": "—",
       "p2": "2.33",
       "p1x": "—",
-      "p12": "1.48",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -16574,7 +16574,7 @@
       "x": "—",
       "p2": "2.19",
       "p1x": "—",
-      "p12": "1.55",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -16590,7 +16590,7 @@
       "x": "—",
       "p2": "4.15",
       "p1x": "—",
-      "p12": "2.17",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -16606,7 +16606,7 @@
       "x": "—",
       "p2": "4.1",
       "p1x": "—",
-      "p12": "2.22",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -16622,7 +16622,7 @@
       "x": "—",
       "p2": "4.2",
       "p1x": "—",
-      "p12": "1.8",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -16638,7 +16638,7 @@
       "x": "—",
       "p2": "4.15",
       "p1x": "—",
-      "p12": "2.05",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -16654,7 +16654,7 @@
       "x": "—",
       "p2": "4.25",
       "p1x": "—",
-      "p12": "1.86",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -16670,7 +16670,7 @@
       "x": "—",
       "p2": "4.15",
       "p1x": "—",
-      "p12": "2.13",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -16686,7 +16686,7 @@
       "x": "—",
       "p2": "4.7",
       "p1x": "—",
-      "p12": "1.51",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -16702,7 +16702,7 @@
       "x": "—",
       "p2": "3.92",
       "p1x": "—",
-      "p12": "2.14",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -16718,7 +16718,7 @@
       "x": "—",
       "p2": "3.85",
       "p1x": "—",
-      "p12": "2.13",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -16734,7 +16734,7 @@
       "x": "—",
       "p2": "3.85",
       "p1x": "—",
-      "p12": "2.73",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -16750,7 +16750,7 @@
       "x": "—",
       "p2": "4.7",
       "p1x": "—",
-      "p12": "1.44",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -16766,7 +16766,7 @@
       "x": "—",
       "p2": "4",
       "p1x": "—",
-      "p12": "1.91",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -16782,7 +16782,7 @@
       "x": "—",
       "p2": "3.94",
       "p1x": "—",
-      "p12": "2.22",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -16798,7 +16798,7 @@
       "x": "—",
       "p2": "4.1",
       "p1x": "—",
-      "p12": "1.72",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -16814,7 +16814,7 @@
       "x": "—",
       "p2": "5.5",
       "p1x": "—",
-      "p12": "5.22",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -16830,7 +16830,7 @@
       "x": "—",
       "p2": "6.8",
       "p1x": "—",
-      "p12": "6.46",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -16846,7 +16846,7 @@
       "x": "—",
       "p2": "7.4",
       "p1x": "—",
-      "p12": "1.16",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -16862,7 +16862,7 @@
       "x": "—",
       "p2": "5.1",
       "p1x": "—",
-      "p12": "1.38",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -16878,7 +16878,7 @@
       "x": "—",
       "p2": "4.6",
       "p1x": "—",
-      "p12": "3.25",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -16894,7 +16894,7 @@
       "x": "—",
       "p2": "7.6",
       "p1x": "—",
-      "p12": "1.11",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -16910,7 +16910,7 @@
       "x": "—",
       "p2": "5.1",
       "p1x": "—",
-      "p12": "4.46",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -16926,7 +16926,7 @@
       "x": "—",
       "p2": "5",
       "p1x": "—",
-      "p12": "4.75",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -16942,7 +16942,7 @@
       "x": "—",
       "p2": "9.6",
       "p1x": "—",
-      "p12": "1.05",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -16958,7 +16958,7 @@
       "x": "—",
       "p2": "5.9",
       "p1x": "—",
-      "p12": "1.26",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -16974,7 +16974,7 @@
       "x": "—",
       "p2": "6.1",
       "p1x": "—",
-      "p12": "1.25",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -16990,7 +16990,7 @@
       "x": "—",
       "p2": "4.85",
       "p1x": "—",
-      "p12": "1.42",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -17006,7 +17006,7 @@
       "x": "—",
       "p2": "8.3",
       "p1x": "—",
-      "p12": "7.89",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -17022,7 +17022,7 @@
       "x": "—",
       "p2": "6.65",
       "p1x": "—",
-      "p12": "6.32",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -17038,7 +17038,7 @@
       "x": "—",
       "p2": "4.5",
       "p1x": "—",
-      "p12": "3.57",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -17054,7 +17054,7 @@
       "x": "—",
       "p2": "4.2",
       "p1x": "—",
-      "p12": "2.77",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -17070,7 +17070,7 @@
       "x": "—",
       "p2": "4.1",
       "p1x": "—",
-      "p12": "1.99",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -17086,7 +17086,7 @@
       "x": "—",
       "p2": "5.95",
       "p1x": "—",
-      "p12": "1.23",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -17098,11 +17098,11 @@
       "team1": "ХИФК",
       "team2": "Юкурит",
       "match_url": "https://www.marathonbet.ru/su/betting/Ice+Hockey/Finland/SM-Liiga/HIFK+vs+Jukurit+-+27065578",
-      "p1": "1.37",
+      "p1": "1.36",
       "x": "—",
       "p2": "5.5",
       "p1x": "—",
-      "p12": "1.3",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -17118,7 +17118,7 @@
       "x": "—",
       "p2": "4.1",
       "p1x": "—",
-      "p12": "2.32",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -17130,11 +17130,11 @@
       "team1": "Ювяскюля",
       "team2": "Коо Коо",
       "match_url": "https://www.marathonbet.ru/su/betting/Ice+Hockey/Finland/SM-Liiga/JYP+vs+KooKoo+-+27065572",
-      "p1": "2.53",
+      "p1": "2.56",
       "x": "—",
       "p2": "4.35",
       "p1x": "—",
-      "p12": "2.4",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -17150,7 +17150,7 @@
       "x": "—",
       "p2": "4.55",
       "p1x": "—",
-      "p12": "3.46",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -17166,7 +17166,7 @@
       "x": "—",
       "p2": "4",
       "p1x": "—",
-      "p12": "2.53",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -17182,7 +17182,7 @@
       "x": "—",
       "p2": "4.33",
       "p1x": "—",
-      "p12": "3.38",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -17198,7 +17198,7 @@
       "x": "—",
       "p2": "5.4",
       "p1x": "—",
-      "p12": "5.13",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -17214,7 +17214,7 @@
       "x": "—",
       "p2": "4.25",
       "p1x": "—",
-      "p12": "1.74",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -17230,7 +17230,7 @@
       "x": "—",
       "p2": "6.25",
       "p1x": "—",
-      "p12": "1.22",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -17246,7 +17246,7 @@
       "x": "—",
       "p2": "4.85",
       "p1x": "—",
-      "p12": "1.42",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -17262,7 +17262,7 @@
       "x": "—",
       "p2": "4.1",
       "p1x": "—",
-      "p12": "1.7",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -17278,7 +17278,7 @@
       "x": "—",
       "p2": "4.05",
       "p1x": "—",
-      "p12": "1.99",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -17294,7 +17294,7 @@
       "x": "—",
       "p2": "4.6",
       "p1x": "—",
-      "p12": "4.32",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -17310,7 +17310,7 @@
       "x": "—",
       "p2": "4.4",
       "p1x": "—",
-      "p12": "3.4",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -17326,7 +17326,7 @@
       "x": "—",
       "p2": "4.45",
       "p1x": "—",
-      "p12": "1.58",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -17342,7 +17342,7 @@
       "x": "—",
       "p2": "4.05",
       "p1x": "—",
-      "p12": "2.04",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -17354,11 +17354,11 @@
       "team1": "СКА",
       "team2": "Локомотив",
       "match_url": "https://www.marathonbet.ru/su/betting/Ice+Hockey/KHL/SKA+vs+Lokomotiv+-+25131060",
-      "p1": "3.25",
+      "p1": "3.26",
       "x": "—",
       "p2": "4.15",
       "p1x": "—",
-      "p12": "3.09",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -17374,7 +17374,7 @@
       "x": "—",
       "p2": "5.2",
       "p1x": "—",
-      "p12": "1.41",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -17386,11 +17386,11 @@
       "team1": "Адмирал",
       "team2": "Салават Юлаев",
       "match_url": "https://www.marathonbet.ru/su/betting/Ice+Hockey/KHL/Admiral+vs+Salavat+Yulaev+-+25131351",
-      "p1": "3.94",
+      "p1": "3.92",
       "x": "—",
       "p2": "4.5",
       "p1x": "—",
-      "p12": "3.74",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -17406,7 +17406,7 @@
       "x": "—",
       "p2": "4.05",
       "p1x": "—",
-      "p12": "2.28",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -17422,7 +17422,7 @@
       "x": "—",
       "p2": "4.15",
       "p1x": "—",
-      "p12": "2.41",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -17438,7 +17438,7 @@
       "x": "—",
       "p2": "4.15",
       "p1x": "—",
-      "p12": "2.3",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -17454,7 +17454,7 @@
       "x": "—",
       "p2": "4.25",
       "p1x": "—",
-      "p12": "2.75",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -17470,7 +17470,7 @@
       "x": "—",
       "p2": "4.65",
       "p1x": "—",
-      "p12": "4.08",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -17486,7 +17486,7 @@
       "x": "—",
       "p2": "4.2",
       "p1x": "—",
-      "p12": "2.69",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -17502,7 +17502,7 @@
       "x": "—",
       "p2": "5.35",
       "p1x": "—",
-      "p12": "1.36",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -17518,7 +17518,7 @@
       "x": "—",
       "p2": "4.35",
       "p1x": "—",
-      "p12": "2.56",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -17534,7 +17534,7 @@
       "x": "—",
       "p2": "4.1",
       "p1x": "—",
-      "p12": "1.94",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -17550,7 +17550,7 @@
       "x": "—",
       "p2": "4.15",
       "p1x": "—",
-      "p12": "2.51",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -17566,7 +17566,7 @@
       "x": "—",
       "p2": "4.15",
       "p1x": "—",
-      "p12": "2.16",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -17582,7 +17582,7 @@
       "x": "—",
       "p2": "4.35",
       "p1x": "—",
-      "p12": "3.15",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -17598,7 +17598,7 @@
       "x": "—",
       "p2": "4.05",
       "p1x": "—",
-      "p12": "2.38",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -17614,7 +17614,7 @@
       "x": "—",
       "p2": "4.15",
       "p1x": "—",
-      "p12": "2.1",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -17630,7 +17630,7 @@
       "x": "—",
       "p2": "4.9",
       "p1x": "—",
-      "p12": "1.47",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -17646,7 +17646,7 @@
       "x": "—",
       "p2": "4.25",
       "p1x": "—",
-      "p12": "1.85",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -17658,11 +17658,11 @@
       "team1": "Лос-Анджелес Кингз",
       "team2": "Калгари Флеймз",
       "match_url": "https://www.marathonbet.ru/su/betting/Ice+Hockey/NHL/Los+Angeles+Kings+vs+Calgary+Flames+-+26089781",
-      "p1": "1.92",
+      "p1": "1.91",
       "x": "—",
-      "p2": "4.3",
+      "p2": "4.35",
       "p1x": "—",
-      "p12": "1.82",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -17678,7 +17678,7 @@
       "x": "—",
       "p2": "4.2",
       "p1x": "—",
-      "p12": "2.09",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -17694,7 +17694,7 @@
       "x": "—",
       "p2": "4.55",
       "p1x": "—",
-      "p12": "1.72",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -17710,7 +17710,7 @@
       "x": "—",
       "p2": "4.25",
       "p1x": "—",
-      "p12": "2.21",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -17726,7 +17726,7 @@
       "x": "—",
       "p2": "4.4",
       "p1x": "—",
-      "p12": "1.76",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -17742,7 +17742,7 @@
       "x": "—",
       "p2": "4.25",
       "p1x": "—",
-      "p12": "1.88",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -17758,7 +17758,7 @@
       "x": "—",
       "p2": "4.45",
       "p1x": "—",
-      "p12": "4.23",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -17774,7 +17774,7 @@
       "x": "—",
       "p2": "3.94",
       "p1x": "—",
-      "p12": "1.9",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -17790,7 +17790,7 @@
       "x": "—",
       "p2": "4",
       "p1x": "—",
-      "p12": "1.97",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -17806,7 +17806,7 @@
       "x": "—",
       "p2": "4.15",
       "p1x": "—",
-      "p12": "1.69",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -17822,7 +17822,7 @@
       "x": "—",
       "p2": "3.9",
       "p1x": "—",
-      "p12": "2.2",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -17838,7 +17838,7 @@
       "x": "—",
       "p2": "4.5",
       "p1x": "—",
-      "p12": "1.5",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -17854,7 +17854,7 @@
       "x": "—",
       "p2": "3.95",
       "p1x": "—",
-      "p12": "2.18",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -17870,7 +17870,7 @@
       "x": "—",
       "p2": "4.45",
       "p1x": "—",
-      "p12": "3.99",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -17886,7 +17886,7 @@
       "x": "—",
       "p2": "3.88",
       "p1x": "—",
-      "p12": "2.3",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -17902,7 +17902,7 @@
       "x": "—",
       "p2": "3.76",
       "p1x": "—",
-      "p12": "2.13",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -17918,7 +17918,7 @@
       "x": "—",
       "p2": "4.45",
       "p1x": "—",
-      "p12": "3.42",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -17934,7 +17934,7 @@
       "x": "—",
       "p2": "8.2",
       "p1x": "—",
-      "p12": "1.09",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -17950,7 +17950,7 @@
       "x": "—",
       "p2": "5.2",
       "p1x": "—",
-      "p12": "4.94",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -17966,7 +17966,7 @@
       "x": "—",
       "p2": "5.85",
       "p1x": "—",
-      "p12": "1.23",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -17982,7 +17982,7 @@
       "x": "—",
       "p2": "6.25",
       "p1x": "—",
-      "p12": "5.94",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -17998,7 +17998,7 @@
       "x": "—",
       "p2": "4",
       "p1x": "—",
-      "p12": "2.36",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -18014,7 +18014,7 @@
       "x": "—",
       "p2": "7.4",
       "p1x": "—",
-      "p12": "1.11",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -18030,7 +18030,7 @@
       "x": "—",
       "p2": "4.5",
       "p1x": "—",
-      "p12": "1.52",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -18046,7 +18046,7 @@
       "x": "—",
       "p2": "5.1",
       "p1x": "—",
-      "p12": "1.35",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -18062,7 +18062,7 @@
       "x": "—",
       "p2": "4.15",
       "p1x": "—",
-      "p12": "1.76",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -18078,7 +18078,7 @@
       "x": "—",
       "p2": "6.1",
       "p1x": "—",
-      "p12": "5.79",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -18094,7 +18094,7 @@
       "x": "—",
       "p2": "4",
       "p1x": "—",
-      "p12": "3.17",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -18110,7 +18110,7 @@
       "x": "—",
       "p2": "3.92",
       "p1x": "—",
-      "p12": "2.69",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -18124,9 +18124,9 @@
       "match_url": "https://www.marathonbet.ru/su/betting/Ice+Hockey/Belarus/Extraleague/Shakhtyor+Soligorsk+vs+Aviator+-+27121355",
       "p1": "1.22",
       "x": "—",
-      "p2": "6.85",
+      "p2": "6.45",
       "p1x": "—",
-      "p12": "1.16",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -18142,7 +18142,7 @@
       "x": "—",
       "p2": "3.8",
       "p1x": "—",
-      "p12": "2.37",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -18158,7 +18158,7 @@
       "x": "—",
       "p2": "4.05",
       "p1x": "—",
-      "p12": "1.67",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -18174,7 +18174,7 @@
       "x": "—",
       "p2": "4.7",
       "p1x": "—",
-      "p12": "1.41",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -18190,7 +18190,7 @@
       "x": "—",
       "p2": "4.15",
       "p1x": "—",
-      "p12": "1.98",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -18206,7 +18206,7 @@
       "x": "—",
       "p2": "5.05",
       "p1x": "—",
-      "p12": "4.8",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -18222,7 +18222,7 @@
       "x": "—",
       "p2": "4.05",
       "p1x": "—",
-      "p12": "2.59",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -18238,7 +18238,7 @@
       "x": "—",
       "p2": "4.25",
       "p1x": "—",
-      "p12": "1.7",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -18254,7 +18254,7 @@
       "x": "—",
       "p2": "4.05",
       "p1x": "—",
-      "p12": "2.36",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -18270,7 +18270,7 @@
       "x": "—",
       "p2": "4.05",
       "p1x": "—",
-      "p12": "2.78",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -18286,7 +18286,7 @@
       "x": "—",
       "p2": "4.3",
       "p1x": "—",
-      "p12": "1.74",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -18302,7 +18302,7 @@
       "x": "—",
       "p2": "5.2",
       "p1x": "—",
-      "p12": "1.39",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -18318,7 +18318,7 @@
       "x": "—",
       "p2": "4.4",
       "p1x": "—",
-      "p12": "3.34",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -18334,7 +18334,7 @@
       "x": "—",
       "p2": "5.1",
       "p1x": "—",
-      "p12": "4.84",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -18350,7 +18350,7 @@
       "x": "—",
       "p2": "4.33",
       "p1x": "—",
-      "p12": "2.02",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -18366,7 +18366,7 @@
       "x": "—",
       "p2": "4.25",
       "p1x": "—",
-      "p12": "2.79",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -18382,7 +18382,7 @@
       "x": "—",
       "p2": "4.8",
       "p1x": "—",
-      "p12": "1.52",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -18398,7 +18398,7 @@
       "x": "—",
       "p2": "4.65",
       "p1x": "—",
-      "p12": "1.55",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -18414,7 +18414,7 @@
       "x": "—",
       "p2": "4.3",
       "p1x": "—",
-      "p12": "1.7",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -18430,7 +18430,7 @@
       "x": "—",
       "p2": "5.2",
       "p1x": "—",
-      "p12": "4.94",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -18446,7 +18446,7 @@
       "x": "—",
       "p2": "4.35",
       "p1x": "—",
-      "p12": "3.57",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -18462,7 +18462,7 @@
       "x": "—",
       "p2": "4.7",
       "p1x": "—",
-      "p12": "1.43",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -18478,7 +18478,7 @@
       "x": "—",
       "p2": "4.1",
       "p1x": "—",
-      "p12": "1.68",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -18494,7 +18494,7 @@
       "x": "—",
       "p2": "3.98",
       "p1x": "—",
-      "p12": "2.44",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -18510,7 +18510,7 @@
       "x": "—",
       "p2": "4.7",
       "p1x": "—",
-      "p12": "1.5",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -18526,7 +18526,7 @@
       "x": "—",
       "p2": "4.6",
       "p1x": "—",
-      "p12": "4.18",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -18542,7 +18542,7 @@
       "x": "—",
       "p2": "4.1",
       "p1x": "—",
-      "p12": "2.26",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -18558,7 +18558,7 @@
       "x": "—",
       "p2": "4.15",
       "p1x": "—",
-      "p12": "1.89",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -18574,7 +18574,7 @@
       "x": "—",
       "p2": "4",
       "p1x": "—",
-      "p12": "2.47",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -18590,7 +18590,7 @@
       "x": "—",
       "p2": "4.3",
       "p1x": "—",
-      "p12": "1.63",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -18606,7 +18606,7 @@
       "x": "—",
       "p2": "3.96",
       "p1x": "—",
-      "p12": "2.56",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -18622,7 +18622,7 @@
       "x": "—",
       "p2": "4.2",
       "p1x": "—",
-      "p12": "2.68",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -18638,7 +18638,7 @@
       "x": "—",
       "p2": "3.88",
       "p1x": "—",
-      "p12": "2.56",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -18654,7 +18654,7 @@
       "x": "—",
       "p2": "4.7",
       "p1x": "—",
-      "p12": "1.63",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -18670,7 +18670,7 @@
       "x": "—",
       "p2": "5.6",
       "p1x": "—",
-      "p12": "5.22",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -18686,7 +18686,7 @@
       "x": "—",
       "p2": "4.05",
       "p1x": "—",
-      "p12": "1.99",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -18702,7 +18702,7 @@
       "x": "—",
       "p2": "4.1",
       "p1x": "—",
-      "p12": "2.41",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -18718,7 +18718,7 @@
       "x": "—",
       "p2": "4.05",
       "p1x": "—",
-      "p12": "1.96",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -18734,7 +18734,7 @@
       "x": "—",
       "p2": "5.2",
       "p1x": "—",
-      "p12": "4.94",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -18750,7 +18750,7 @@
       "x": "—",
       "p2": "4",
       "p1x": "—",
-      "p12": "2.41",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -18766,7 +18766,7 @@
       "x": "—",
       "p2": "4.33",
       "p1x": "—",
-      "p12": "1.59",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -18780,9 +18780,9 @@
       "match_url": "https://www.marathonbet.ru/su/betting/Ice+Hockey/Slovakia/Extraliga/Slovan+Bratislava+vs+Trencin+-+27066723",
       "p1": "1.39",
       "x": "—",
-      "p2": "5.05",
+      "p2": "5.2",
       "p1x": "—",
-      "p12": "1.32",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -18798,7 +18798,7 @@
       "x": "—",
       "p2": "5.3",
       "p1x": "—",
-      "p12": "1.33",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -18814,7 +18814,7 @@
       "x": "—",
       "p2": "4.6",
       "p1x": "—",
-      "p12": "1.57",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -18830,7 +18830,7 @@
       "x": "—",
       "p2": "4.85",
       "p1x": "—",
-      "p12": "1.42",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -18846,7 +18846,7 @@
       "x": "—",
       "p2": "4.45",
       "p1x": "—",
-      "p12": "1.68",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -18862,7 +18862,7 @@
       "x": "—",
       "p2": "4.75",
       "p1x": "—",
-      "p12": "1.46",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -18878,7 +18878,7 @@
       "x": "—",
       "p2": "4.2",
       "p1x": "—",
-      "p12": "2.64",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -18894,7 +18894,7 @@
       "x": "—",
       "p2": "4.25",
       "p1x": "—",
-      "p12": "1.67",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -18910,7 +18910,7 @@
       "x": "—",
       "p2": "4.2",
       "p1x": "—",
-      "p12": "2.32",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -18926,7 +18926,7 @@
       "x": "—",
       "p2": "4.15",
       "p1x": "—",
-      "p12": "1.95",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -18942,7 +18942,7 @@
       "x": "—",
       "p2": "4.15",
       "p1x": "—",
-      "p12": "2.04",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -18958,7 +18958,7 @@
       "x": "—",
       "p2": "5.35",
       "p1x": "—",
-      "p12": "5.08",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -18974,7 +18974,7 @@
       "x": "—",
       "p2": "4.2",
       "p1x": "—",
-      "p12": "1.82",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -18990,7 +18990,7 @@
       "x": "—",
       "p2": "11.5",
       "p1x": "—",
-      "p12": "1.01",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -19002,11 +19002,11 @@
       "team1": "Сторхамар",
       "team2": "Фриск Аскер",
       "match_url": "https://www.marathonbet.ru/su/betting/Ice+Hockey/Norway/GET-Ligaen/Storhamar+vs+Frisk+Asker+-+27155826",
-      "p1": "1.5",
+      "p1": "1.49",
       "x": "—",
       "p2": "4.75",
       "p1x": "—",
-      "p12": "1.42",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -19022,7 +19022,7 @@
       "x": "—",
       "p2": "4.6",
       "p1x": "—",
-      "p12": "1.49",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -19038,7 +19038,7 @@
       "x": "—",
       "p2": "12.8",
       "p1x": "—",
-      "p12": "1.01",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -19054,7 +19054,7 @@
       "x": "—",
       "p2": "11",
       "p1x": "—",
-      "p12": "1.04",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -19070,7 +19070,7 @@
       "x": "—",
       "p2": "4.4",
       "p1x": "—",
-      "p12": "3.99",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -19082,11 +19082,11 @@
       "team1": "Эсбьерг",
       "team2": "Оденсе",
       "match_url": "https://www.marathonbet.ru/su/betting/Ice+Hockey/Denmark/Metal+Ligaen/Esbjerg+vs+Odense+-+27067608",
-      "p1": "1.89",
+      "p1": "1.88",
       "x": "—",
-      "p2": "4.4",
+      "p2": "4.45",
       "p1x": "—",
-      "p12": "1.8",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -19102,7 +19102,7 @@
       "x": "—",
       "p2": "3.98",
       "p1x": "—",
-      "p12": "2.02",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -19118,7 +19118,7 @@
       "x": "—",
       "p2": "4.3",
       "p1x": "—",
-      "p12": "1.93",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -19134,7 +19134,7 @@
       "x": "—",
       "p2": "10.5",
       "p1x": "—",
-      "p12": "1.04",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -19150,7 +19150,7 @@
       "x": "—",
       "p2": "5.15",
       "p1x": "—",
-      "p12": "4.66",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -19166,7 +19166,7 @@
       "x": "—",
       "p2": "4.33",
       "p1x": "—",
-      "p12": "2",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -19182,7 +19182,7 @@
       "x": "—",
       "p2": "5.25",
       "p1x": "—",
-      "p12": "4.99",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -19198,7 +19198,7 @@
       "x": "—",
       "p2": "5.9",
       "p1x": "—",
-      "p12": "5.61",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -19214,7 +19214,7 @@
       "x": "—",
       "p2": "6.85",
       "p1x": "—",
-      "p12": "1.16",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -19230,7 +19230,7 @@
       "x": "—",
       "p2": "5.95",
       "p1x": "—",
-      "p12": "1.26",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -19246,7 +19246,7 @@
       "x": "—",
       "p2": "5.15",
       "p1x": "—",
-      "p12": "1.37",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -19262,7 +19262,7 @@
       "x": "—",
       "p2": "5.3",
       "p1x": "—",
-      "p12": "1.33",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -19278,7 +19278,7 @@
       "x": "—",
       "p2": "4.2",
       "p1x": "—",
-      "p12": "1.62",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -19292,9 +19292,9 @@
       "match_url": "https://www.marathonbet.ru/su/betting/Ice+Hockey/France/Ligue+Magnus/Rouen+vs+Gap+-+27092325",
       "p1": "1.11",
       "x": "—",
-      "p2": "9.7",
+      "p2": "8.9",
       "p1x": "—",
-      "p12": "1.05",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -19310,7 +19310,7 @@
       "x": "—",
       "p2": "4.3",
       "p1x": "—",
-      "p12": "1.71",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -19326,7 +19326,7 @@
       "x": "—",
       "p2": "4.55",
       "p1x": "—",
-      "p12": "3.78",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -19342,7 +19342,7 @@
       "x": "—",
       "p2": "4.9",
       "p1x": "—",
-      "p12": "3.99",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -19358,7 +19358,7 @@
       "x": "—",
       "p2": "5.1",
       "p1x": "—",
-      "p12": "4.56",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -19374,7 +19374,7 @@
       "x": "—",
       "p2": "3.75",
       "p1x": "—",
-      "p12": "1.21",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -19390,7 +19390,7 @@
       "x": "—",
       "p2": "3.48",
       "p1x": "—",
-      "p12": "1.24",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -19406,7 +19406,7 @@
       "x": "—",
       "p2": "1.32",
       "p1x": "—",
-      "p12": "1.25",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -19422,7 +19422,7 @@
       "x": "—",
       "p2": "3.9",
       "p1x": "—",
-      "p12": "1.17",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -19438,7 +19438,7 @@
       "x": "—",
       "p2": "1.34",
       "p1x": "—",
-      "p12": "1.27",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -19454,7 +19454,7 @@
       "x": "—",
       "p2": "2.34",
       "p1x": "—",
-      "p12": "1.48",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -19470,7 +19470,7 @@
       "x": "—",
       "p2": "3.82",
       "p1x": "—",
-      "p12": "1.18",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -19486,7 +19486,7 @@
       "x": "—",
       "p2": "1.92",
       "p1x": "—",
-      "p12": "1.73",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -19502,7 +19502,7 @@
       "x": "—",
       "p2": "4.45",
       "p1x": "—",
-      "p12": "1.13",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -19518,7 +19518,7 @@
       "x": "—",
       "p2": "1.88",
       "p1x": "—",
-      "p12": "1.78",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -19534,7 +19534,7 @@
       "x": "—",
       "p2": "4.7",
       "p1x": "—",
-      "p12": "1.11",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -19550,7 +19550,7 @@
       "x": "—",
       "p2": "1.46",
       "p1x": "—",
-      "p12": "1.39",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -19562,11 +19562,11 @@
       "team1": "Исландия",
       "team2": "Литва",
       "match_url": "https://www.marathonbet.ru/su/betting/Basketball/Internationals/World+Cup/Men/2027/Qualification/Europe/1st+Round/Iceland+vs+Lithuania+-+27137490",
-      "p1": "3.48",
+      "p1": "3.65",
       "x": "—",
-      "p2": "1.28",
+      "p2": "1.26",
       "p1x": "—",
-      "p12": "1.22",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -19582,7 +19582,7 @@
       "x": "—",
       "p2": "1.64",
       "p1x": "—",
-      "p12": "1.56",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -19598,7 +19598,7 @@
       "x": "—",
       "p2": "1.95",
       "p1x": "—",
-      "p12": "1.71",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -19614,7 +19614,7 @@
       "x": "—",
       "p2": "1.91",
       "p1x": "—",
-      "p12": "1.75",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -19626,11 +19626,11 @@
       "team1": "Ливан",
       "team2": "Саудовская Аравия",
       "match_url": "https://www.marathonbet.ru/su/betting/Basketball/Internationals/World+Cup/Men/2027/Qualification/Asia/1st+Round/Lebanon+vs+Saudi+Arabia+-+27137185",
-      "p1": "1.08",
+      "p1": "1.07",
       "x": "—",
-      "p2": "7.1",
+      "p2": "7.3",
       "p1x": "—",
-      "p12": "1.02",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -19646,7 +19646,7 @@
       "x": "—",
       "p2": "1.89",
       "p1x": "—",
-      "p12": "1.77",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -19662,7 +19662,7 @@
       "x": "—",
       "p2": "1.73",
       "p1x": "—",
-      "p12": "1.64",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -19678,7 +19678,7 @@
       "x": "—",
       "p2": "1.86",
       "p1x": "—",
-      "p12": "1.77",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -19694,7 +19694,7 @@
       "x": "—",
       "p2": "1.55",
       "p1x": "—",
-      "p12": "1.47",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -19710,7 +19710,7 @@
       "x": "—",
       "p2": "1.64",
       "p1x": "—",
-      "p12": "1.56",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -19726,7 +19726,7 @@
       "x": "—",
       "p2": "7.4",
       "p1x": "—",
-      "p12": "1.02",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -19742,7 +19742,7 @@
       "x": "—",
       "p2": "2.9",
       "p1x": "—",
-      "p12": "1.31",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -19756,9 +19756,9 @@
       "match_url": "https://www.marathonbet.ru/su/betting/Basketball/China+PR/Men/NBL/Hefei+Kuangfeng+vs+Hubei+-+27094810",
       "p1": "1.18",
       "x": "—",
-      "p2": "4.25",
+      "p2": "4.3",
       "p1x": "—",
-      "p12": "1.12",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -19774,7 +19774,7 @@
       "x": "—",
       "p2": "1.85",
       "p1x": "—",
-      "p12": "1.76",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -19790,7 +19790,7 @@
       "x": "—",
       "p2": "2.88",
       "p1x": "—",
-      "p12": "1.29",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -19806,7 +19806,7 @@
       "x": "—",
       "p2": "2.54",
       "p1x": "—",
-      "p12": "1.41",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -19818,11 +19818,11 @@
       "team1": "Эмлак Конут",
       "team2": "Орманспор",
       "match_url": "https://www.marathonbet.ru/su/betting/Basketball/Turkey/Women/Super+Lig/Emlak+Konut+vs+Ormanspor+-+27096082",
-      "p1": "1.9",
+      "p1": "1.89",
       "x": "—",
-      "p2": "1.8",
+      "p2": "1.81",
       "p1x": "—",
-      "p12": "1.71",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -19838,7 +19838,7 @@
       "x": "—",
       "p2": "1.85",
       "p1x": "—",
-      "p12": "1.76",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -19854,7 +19854,7 @@
       "x": "—",
       "p2": "1.86",
       "p1x": "—",
-      "p12": "1.77",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -19870,7 +19870,23 @@
       "x": "—",
       "p2": "1.65",
       "p1x": "—",
-      "p12": "1.57",
+      "p12": "—",
+      "px2": "—"
+    },
+    {
+      "sport": "tennis",
+      "league": "Теннис (ATP/WTA/ITF)",
+      "id": "27160406",
+      "date": "28 фев",
+      "time": "03:00",
+      "team1": "Тиафо, Фрэнсис",
+      "team2": "Накасима, Брэндон",
+      "match_url": "https://www.marathonbet.ru/su/betting/Tennis/ATP+500/Acapulco%2C+Mexico/Singles/Semi+Final/F.Tiafoe+vs+B.Nakashima+-+27160406",
+      "p1": "1.8",
+      "x": "—",
+      "p2": "2.02",
+      "p1x": "—",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -19886,7 +19902,7 @@
       "x": "—",
       "p2": "2.02",
       "p1x": "—",
-      "p12": "1.71",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -19898,11 +19914,11 @@
       "team1": "Хименес-Касинцева, Виктория",
       "team2": "Чжан, Шуай",
       "match_url": "https://www.marathonbet.ru/su/betting/Tennis/WTA+500/Merida%2C+Mexico/Singles/Quarter+Final/V.Jimenez+Kasintseva+vs+S.Zhang+-+27160316",
-      "p1": "2.68",
+      "p1": "2.72",
       "x": "—",
-      "p2": "1.47",
+      "p2": "1.46",
       "p1x": "—",
-      "p12": "1.4",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -19914,11 +19930,11 @@
       "team1": "Табило, Алехандро",
       "team2": "Баэс, Себастьян",
       "match_url": "https://www.marathonbet.ru/su/betting/Tennis/ATP+250/Santiago%2C+Chile/Singles/Quarter+Final/A.Tabilo+vs+S.Baez+-+27160426",
-      "p1": "1.71",
+      "p1": "1.73",
       "x": "—",
-      "p2": "2.14",
+      "p2": "2.1",
       "p1x": "—",
-      "p12": "1.62",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -19934,7 +19950,7 @@
       "x": "—",
       "p2": "1.7",
       "p1x": "—",
-      "p12": "1.61",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -19950,7 +19966,7 @@
       "x": "—",
       "p2": "1.27",
       "p1x": "—",
-      "p12": "1.21",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -19962,11 +19978,11 @@
       "team1": "Брунольд, Мика",
       "team2": "Хюслер, Марк-Андреа",
       "match_url": "https://www.marathonbet.ru/su/betting/Tennis/ATP+Challenger+Tour/Lugano%2C+Switzerland/Singles/Quarter+Final/M.Brunold+vs+M.Huesler+-+27149575",
-      "p1": "2.31",
+      "p1": "2.26",
       "x": "—",
       "p2": "1.56",
       "p1x": "—",
-      "p12": "1.48",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -19982,7 +19998,7 @@
       "x": "—",
       "p2": "2.76",
       "p1x": "—",
-      "p12": "1.32",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -19994,11 +20010,11 @@
       "team1": "Шварцлер, Джоэл",
       "team2": "Штрикер, Доминик Штефан",
       "match_url": "https://www.marathonbet.ru/su/betting/Tennis/ATP+Challenger+Tour/Lugano%2C+Switzerland/Singles/Quarter+Final/J.Schwaerzler+vs+D.Stricker+-+27155052",
-      "p1": "3.15",
+      "p1": "3.08",
       "x": "—",
       "p2": "1.32",
       "p1x": "—",
-      "p12": "1.25",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -20014,7 +20030,7 @@
       "x": "—",
       "p2": "1.45",
       "p1x": "—",
-      "p12": "1.38",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -20030,7 +20046,7 @@
       "x": "—",
       "p2": "1.35",
       "p1x": "—",
-      "p12": "1.28",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -20046,7 +20062,7 @@
       "x": "—",
       "p2": "1.6",
       "p1x": "—",
-      "p12": "1.52",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -20062,7 +20078,7 @@
       "x": "—",
       "p2": "1.95",
       "p1x": "—",
-      "p12": "1.66",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -20078,7 +20094,7 @@
       "x": "—",
       "p2": "1.49",
       "p1x": "—",
-      "p12": "1.42",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -20094,7 +20110,7 @@
       "x": "—",
       "p2": "2.38",
       "p1x": "—",
-      "p12": "1.46",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -20110,7 +20126,7 @@
       "x": "—",
       "p2": "1.28",
       "p1x": "—",
-      "p12": "1.22",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -20126,7 +20142,7 @@
       "x": "—",
       "p2": "1.49",
       "p1x": "—",
-      "p12": "1.42",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -20142,7 +20158,7 @@
       "x": "—",
       "p2": "1.85",
       "p1x": "—",
-      "p12": "1.76",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -20158,7 +20174,7 @@
       "x": "—",
       "p2": "2.83",
       "p1x": "—",
-      "p12": "1.3",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -20174,7 +20190,7 @@
       "x": "—",
       "p2": "1.67",
       "p1x": "—",
-      "p12": "1.58",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -20190,7 +20206,7 @@
       "x": "—",
       "p2": "2.72",
       "p1x": "—",
-      "p12": "1.33",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -20206,7 +20222,7 @@
       "x": "—",
       "p2": "1.84",
       "p1x": "—",
-      "p12": "1.75",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -20222,7 +20238,7 @@
       "x": "—",
       "p2": "1.28",
       "p1x": "—",
-      "p12": "1.22",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -20238,7 +20254,7 @@
       "x": "—",
       "p2": "1.25",
       "p1x": "—",
-      "p12": "1.19",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -20254,7 +20270,7 @@
       "x": "—",
       "p2": "2.25",
       "p1x": "—",
-      "p12": "1.51",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -20270,7 +20286,7 @@
       "x": "—",
       "p2": "3.84",
       "p1x": "—",
-      "p12": "1.16",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -20282,11 +20298,11 @@
       "team1": "Тот, Амарисса Киара",
       "team2": "Шериф, Маяр",
       "match_url": "https://www.marathonbet.ru/su/betting/Tennis/WTA+125/Antalya%2C+Turkey/Singles/Quarter+Final/A.Toth+vs+M.Sherif+-+27147252",
-      "p1": "3.58",
+      "p1": "3.48",
       "x": "—",
-      "p2": "1.26",
+      "p2": "1.27",
       "p1x": "—",
-      "p12": "1.2",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -20302,7 +20318,7 @@
       "x": "—",
       "p2": "1.81",
       "p1x": "—",
-      "p12": "1.72",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -20318,7 +20334,7 @@
       "x": "—",
       "p2": "1.86",
       "p1x": "—",
-      "p12": "1.77",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -20334,7 +20350,7 @@
       "x": "—",
       "p2": "1.63",
       "p1x": "—",
-      "p12": "1.55",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -20350,7 +20366,7 @@
       "x": "—",
       "p2": "1.52",
       "p1x": "—",
-      "p12": "1.44",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -20366,7 +20382,7 @@
       "x": "—",
       "p2": "1.83",
       "p1x": "—",
-      "p12": "1.74",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -20382,7 +20398,7 @@
       "x": "—",
       "p2": "2.51",
       "p1x": "—",
-      "p12": "1.39",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -20398,7 +20414,7 @@
       "x": "—",
       "p2": "2.48",
       "p1x": "—",
-      "p12": "1.4",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -20414,7 +20430,7 @@
       "x": "—",
       "p2": "8.3",
       "p1x": "—",
-      "p12": "0.987",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -20430,7 +20446,7 @@
       "x": "—",
       "p2": "4.25",
       "p1x": "—",
-      "p12": "1.12",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -20442,11 +20458,11 @@
       "team1": "Маздрашки, Анас",
       "team2": "Закария, Фарис",
       "match_url": "https://www.marathonbet.ru/su/betting/Tennis/ITF/Egypt/Sharm+El+Sheikh/Men/Singles/Quarter+Final/A.Mazdrashki+vs+F.Zakaryia+-+27151075",
-      "p1": "1.97",
+      "p1": "1.95",
       "x": "—",
-      "p2": "1.74",
+      "p2": "1.75",
       "p1x": "—",
-      "p12": "1.65",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -20462,7 +20478,7 @@
       "x": "—",
       "p2": "3.78",
       "p1x": "—",
-      "p12": "1.16",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -20478,7 +20494,7 @@
       "x": "—",
       "p2": "7.4",
       "p1x": "—",
-      "p12": "1",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -20494,7 +20510,7 @@
       "x": "—",
       "p2": "1.16",
       "p1x": "—",
-      "p12": "1.1",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -20510,7 +20526,7 @@
       "x": "—",
       "p2": "3",
       "p1x": "—",
-      "p12": "1.27",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -20526,7 +20542,7 @@
       "x": "—",
       "p2": "7.6",
       "p1x": "—",
-      "p12": "0.998",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -20542,7 +20558,7 @@
       "x": "—",
       "p2": "1.84",
       "p1x": "—",
-      "p12": "1.75",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -20558,7 +20574,7 @@
       "x": "—",
       "p2": "1.31",
       "p1x": "—",
-      "p12": "1.24",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -20574,7 +20590,7 @@
       "x": "—",
       "p2": "1.85",
       "p1x": "—",
-      "p12": "1.76",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -20590,7 +20606,7 @@
       "x": "—",
       "p2": "8.4",
       "p1x": "—",
-      "p12": "0.986",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -20606,7 +20622,7 @@
       "x": "—",
       "p2": "1.73",
       "p1x": "—",
-      "p12": "1.64",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -20622,7 +20638,7 @@
       "x": "—",
       "p2": "2.54",
       "p1x": "—",
-      "p12": "1.38",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -20636,9 +20652,9 @@
       "match_url": "https://www.marathonbet.ru/su/betting/Tennis/ITF/Spain/Villena/Men/Singles/Quarter+Final/A.Juan+Mano+vs+E.Carrascosa+Diaz+-+27157928",
       "p1": "1.19",
       "x": "—",
-      "p2": "4.1",
+      "p2": "4.15",
       "p1x": "—",
-      "p12": "1.13",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -20652,9 +20668,9 @@
       "match_url": "https://www.marathonbet.ru/su/betting/Tennis/ITF/Spain/Manacor/Women/Singles/Quarter+Final/M.Garcia+Cid+vs+C.Gallardo+Guevara+-+27152301",
       "p1": "1.18",
       "x": "—",
-      "p2": "4.25",
+      "p2": "4.2",
       "p1x": "—",
-      "p12": "1.12",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -20670,7 +20686,7 @@
       "x": "—",
       "p2": "2.05",
       "p1x": "—",
-      "p12": "1.6",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -20686,7 +20702,7 @@
       "x": "—",
       "p2": "1.4",
       "p1x": "—",
-      "p12": "1.33",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -20700,9 +20716,9 @@
       "match_url": "https://www.marathonbet.ru/su/betting/Tennis/ITF/Spain/Manacor/Women/Singles/Quarter+Final/I.Spink+vs+E.Slavikova+-+27152307",
       "p1": "1.22",
       "x": "—",
-      "p2": "3.78",
+      "p2": "3.74",
       "p1x": "—",
-      "p12": "1.16",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -20718,7 +20734,7 @@
       "x": "—",
       "p2": "9",
       "p1x": "—",
-      "p12": "0.975",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -20734,7 +20750,7 @@
       "x": "—",
       "p2": "1.71",
       "p1x": "—",
-      "p12": "1.62",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -20750,7 +20766,7 @@
       "x": "—",
       "p2": "4.8",
       "p1x": "—",
-      "p12": "1.08",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -20766,7 +20782,7 @@
       "x": "—",
       "p2": "1.8",
       "p1x": "—",
-      "p12": "1.71",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -20782,7 +20798,7 @@
       "x": "—",
       "p2": "2.07",
       "p1x": "—",
-      "p12": "1.58",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -20798,7 +20814,7 @@
       "x": "—",
       "p2": "4.2",
       "p1x": "—",
-      "p12": "1.12",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -20814,7 +20830,7 @@
       "x": "—",
       "p2": "1.86",
       "p1x": "—",
-      "p12": "1.73",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -20830,7 +20846,7 @@
       "x": "—",
       "p2": "2.08",
       "p1x": "—",
-      "p12": "1.58",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -20846,7 +20862,7 @@
       "x": "—",
       "p2": "1.88",
       "p1x": "—",
-      "p12": "1.73",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -20862,7 +20878,7 @@
       "x": "—",
       "p2": "1.48",
       "p1x": "—",
-      "p12": "1.41",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -20878,7 +20894,7 @@
       "x": "—",
       "p2": "3.54",
       "p1x": "—",
-      "p12": "1.16",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -20894,7 +20910,7 @@
       "x": "—",
       "p2": "1.09",
       "p1x": "—",
-      "p12": "1.04",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -20906,11 +20922,11 @@
       "team1": "СиЭйчСи Экспрессвей",
       "team2": "Тэджон ККК",
       "match_url": "https://www.marathonbet.ru/su/betting/Volleyball/Korea+Republic/Women/V-League/CHC+Expressway+vs+Daejeon+KGC+-+27109943",
-      "p1": "1.49",
+      "p1": "1.5",
       "x": "—",
-      "p2": "2.43",
+      "p2": "2.4",
       "p1x": "—",
-      "p12": "1.42",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -20924,9 +20940,9 @@
       "match_url": "https://www.marathonbet.ru/su/betting/Volleyball/Thailand/Men/VTL/Regular+Season/Nakhon+Ratchasima+vs+Muangphon+-+27120885",
       "p1": "1.01",
       "x": "—",
-      "p2": "8.5",
+      "p2": "8.7",
       "p1x": "—",
-      "p12": "0.964",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -20942,7 +20958,7 @@
       "x": "—",
       "p2": "1.58",
       "p1x": "—",
-      "p12": "1.5",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -20958,7 +20974,7 @@
       "x": "—",
       "p2": "2.48",
       "p1x": "—",
-      "p12": "1.36",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -20970,11 +20986,11 @@
       "team1": "Крисс Кросс Кинг Кранчерс",
       "team2": "Альфа Иншурэнс Протекторс",
       "match_url": "https://www.marathonbet.ru/su/betting/Volleyball/Philippines/Men/Spiker%27s+Turf/Regular+Season/San+Juan/Criss+Cross+King+Crunchers+vs+Alpha+Insurance+Protectors+-+27142255",
-      "p1": "1.16",
+      "p1": "1.15",
       "x": "—",
-      "p2": "4.2",
+      "p2": "4.3",
       "p1x": "—",
-      "p12": "1.1",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -20988,9 +21004,9 @@
       "match_url": "https://www.marathonbet.ru/su/betting/Volleyball/Czech+Republic/Women/Cup/Semi+Final/Ceske+Budejovice/Brno+vs+Olymp+Praha+-+27155798",
       "p1": "1.04",
       "x": "—",
-      "p2": "6.95",
+      "p2": "6.85",
       "p1x": "—",
-      "p12": "0.991",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -21006,7 +21022,7 @@
       "x": "—",
       "p2": "1.26",
       "p1x": "—",
-      "p12": "1.2",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -21022,7 +21038,7 @@
       "x": "—",
       "p2": "2.93",
       "p1x": "—",
-      "p12": "1.28",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -21038,7 +21054,7 @@
       "x": "—",
       "p2": "1.1",
       "p1x": "—",
-      "p12": "1.05",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -21054,7 +21070,7 @@
       "x": "—",
       "p2": "1.39",
       "p1x": "—",
-      "p12": "1.32",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -21070,7 +21086,7 @@
       "x": "—",
       "p2": "5.2",
       "p1x": "—",
-      "p12": "1.07",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -21086,7 +21102,7 @@
       "x": "—",
       "p2": "2.34",
       "p1x": "—",
-      "p12": "1.45",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -21102,7 +21118,7 @@
       "x": "—",
       "p2": "5.45",
       "p1x": "—",
-      "p12": "1.06",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -21118,7 +21134,7 @@
       "x": "—",
       "p2": "5.35",
       "p1x": "—",
-      "p12": "1.08",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -21134,7 +21150,7 @@
       "x": "—",
       "p2": "4.1",
       "p1x": "—",
-      "p12": "1.16",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -21150,7 +21166,7 @@
       "x": "—",
       "p2": "3.54",
       "p1x": "—",
-      "p12": "1.22",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -21166,7 +21182,7 @@
       "x": "—",
       "p2": "4.4",
       "p1x": "—",
-      "p12": "1.14",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -21182,7 +21198,7 @@
       "x": "—",
       "p2": "1.32",
       "p1x": "—",
-      "p12": "1.25",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -21198,7 +21214,7 @@
       "x": "—",
       "p2": "2.7",
       "p1x": "—",
-      "p12": "1.37",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -21214,7 +21230,7 @@
       "x": "—",
       "p2": "2.89",
       "p1x": "—",
-      "p12": "1.29",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -21230,7 +21246,7 @@
       "x": "—",
       "p2": "2.44",
       "p1x": "—",
-      "p12": "1.42",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -21246,7 +21262,7 @@
       "x": "—",
       "p2": "2.89",
       "p1x": "—",
-      "p12": "1.29",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -21262,7 +21278,7 @@
       "x": "—",
       "p2": "2.76",
       "p1x": "—",
-      "p12": "1.32",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -21278,7 +21294,7 @@
       "x": "—",
       "p2": "2.69",
       "p1x": "—",
-      "p12": "1.34",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -21294,7 +21310,7 @@
       "x": "—",
       "p2": "5",
       "p1x": "—",
-      "p12": "1.08",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -21310,7 +21326,7 @@
       "x": "—",
       "p2": "1.54",
       "p1x": "—",
-      "p12": "1.46",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -21326,7 +21342,7 @@
       "x": "—",
       "p2": "1.59",
       "p1x": "—",
-      "p12": "1.51",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -21342,7 +21358,7 @@
       "x": "—",
       "p2": "1.65",
       "p1x": "—",
-      "p12": "1.57",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -21358,7 +21374,7 @@
       "x": "—",
       "p2": "2.49",
       "p1x": "—",
-      "p12": "1.4",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -21374,7 +21390,7 @@
       "x": "—",
       "p2": "2.44",
       "p1x": "—",
-      "p12": "1.45",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -21390,7 +21406,7 @@
       "x": "—",
       "p2": "1.44",
       "p1x": "—",
-      "p12": "1.37",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -21406,7 +21422,7 @@
       "x": "—",
       "p2": "2.89",
       "p1x": "—",
-      "p12": "1.29",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -21422,7 +21438,7 @@
       "x": "—",
       "p2": "1.17",
       "p1x": "—",
-      "p12": "1.11",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -21438,7 +21454,7 @@
       "x": "—",
       "p2": "3.2",
       "p1x": "—",
-      "p12": "1.26",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -21454,7 +21470,7 @@
       "x": "—",
       "p2": "1.79",
       "p1x": "—",
-      "p12": "1.7",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -21470,7 +21486,7 @@
       "x": "—",
       "p2": "1.35",
       "p1x": "—",
-      "p12": "1.28",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -21486,7 +21502,7 @@
       "x": "—",
       "p2": "2.72",
       "p1x": "—",
-      "p12": "1.33",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -21502,7 +21518,7 @@
       "x": "—",
       "p2": "1.28",
       "p1x": "—",
-      "p12": "1.22",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -21518,7 +21534,7 @@
       "x": "—",
       "p2": "1.49",
       "p1x": "—",
-      "p12": "1.42",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -21534,7 +21550,7 @@
       "x": "—",
       "p2": "7.3",
       "p1x": "—",
-      "p12": "1.01",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -21546,11 +21562,11 @@
       "team1": "Мачавейн, Эдсон",
       "team2": "Каримбоев, Сардор",
       "match_url": "https://www.marathonbet.ru/su/betting/MMA/One+FC/E.Machavane+vs+S.Karimboev+-+27111196",
-      "p1": "2.16",
+      "p1": "2.14",
       "x": "—",
-      "p2": "1.62",
+      "p2": "1.63",
       "p1x": "—",
-      "p12": "1.54",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -21566,7 +21582,7 @@
       "x": "—",
       "p2": "3.3",
       "p1x": "—",
-      "p12": "1.22",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -21582,7 +21598,7 @@
       "x": "—",
       "p2": "8.7",
       "p1x": "—",
-      "p12": "0.983",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -21598,7 +21614,7 @@
       "x": "—",
       "p2": "8.6",
       "p1x": "—",
-      "p12": "0.984",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -21614,7 +21630,7 @@
       "x": "—",
       "p2": "5.3",
       "p1x": "—",
-      "p12": "1.06",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -21630,7 +21646,7 @@
       "x": "—",
       "p2": "4.5",
       "p1x": "—",
-      "p12": "1.11",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -21646,7 +21662,7 @@
       "x": "—",
       "p2": "5.85",
       "p1x": "—",
-      "p12": "1.04",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -21662,7 +21678,7 @@
       "x": "—",
       "p2": "7.8",
       "p1x": "—",
-      "p12": "0.997",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -21678,7 +21694,7 @@
       "x": "—",
       "p2": "2.52",
       "p1x": "—",
-      "p12": "1.39",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -21694,7 +21710,7 @@
       "x": "—",
       "p2": "4.25",
       "p1x": "—",
-      "p12": "1.12",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -21710,7 +21726,7 @@
       "x": "—",
       "p2": "1.33",
       "p1x": "—",
-      "p12": "1.26",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -21726,7 +21742,7 @@
       "x": "—",
       "p2": "2.36",
       "p1x": "—",
-      "p12": "1.44",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -21742,7 +21758,7 @@
       "x": "—",
       "p2": "1.57",
       "p1x": "—",
-      "p12": "1.49",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -21758,7 +21774,7 @@
       "x": "—",
       "p2": "2.39",
       "p1x": "—",
-      "p12": "1.43",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -21774,7 +21790,7 @@
       "x": "—",
       "p2": "4.45",
       "p1x": "—",
-      "p12": "1.11",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -21790,7 +21806,7 @@
       "x": "—",
       "p2": "1.26",
       "p1x": "—",
-      "p12": "1.2",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -21806,7 +21822,7 @@
       "x": "—",
       "p2": "3.14",
       "p1x": "—",
-      "p12": "1.24",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -21822,7 +21838,7 @@
       "x": "—",
       "p2": "8.6",
       "p1x": "—",
-      "p12": "0.984",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -21838,7 +21854,7 @@
       "x": "—",
       "p2": "1.52",
       "p1x": "—",
-      "p12": "1.44",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -21854,7 +21870,7 @@
       "x": "—",
       "p2": "1.44",
       "p1x": "—",
-      "p12": "1.37",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -21870,7 +21886,7 @@
       "x": "—",
       "p2": "1.76",
       "p1x": "—",
-      "p12": "1.67",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -21886,7 +21902,7 @@
       "x": "—",
       "p2": "10.5",
       "p1x": "—",
-      "p12": "0.976",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -21902,7 +21918,7 @@
       "x": "—",
       "p2": "2.51",
       "p1x": "—",
-      "p12": "1.42",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -21918,7 +21934,7 @@
       "x": "—",
       "p2": "6.75",
       "p1x": "—",
-      "p12": "1.03",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -21934,7 +21950,7 @@
       "x": "—",
       "p2": "2.45",
       "p1x": "—",
-      "p12": "1.43",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -21950,7 +21966,7 @@
       "x": "—",
       "p2": "1.89",
       "p1x": "—",
-      "p12": "1.76",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -21966,7 +21982,7 @@
       "x": "—",
       "p2": "1.92",
       "p1x": "—",
-      "p12": "1.74",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -21982,7 +21998,7 @@
       "x": "—",
       "p2": "2.1",
       "p1x": "—",
-      "p12": "1.6",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -21998,7 +22014,7 @@
       "x": "—",
       "p2": "8",
       "p1x": "—",
-      "p12": "1.01",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -22014,7 +22030,7 @@
       "x": "—",
       "p2": "3.45",
       "p1x": "—",
-      "p12": "1.22",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -22030,7 +22046,7 @@
       "x": "—",
       "p2": "1.74",
       "p1x": "—",
-      "p12": "1.65",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -22046,7 +22062,7 @@
       "x": "—",
       "p2": "6.55",
       "p1x": "—",
-      "p12": "1.04",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -22062,7 +22078,7 @@
       "x": "—",
       "p2": "3.04",
       "p1x": "—",
-      "p12": "1.28",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -22078,7 +22094,7 @@
       "x": "—",
       "p2": "5.7",
       "p1x": "—",
-      "p12": "1.06",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -22094,7 +22110,7 @@
       "x": "—",
       "p2": "3.04",
       "p1x": "—",
-      "p12": "1.28",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -22110,7 +22126,7 @@
       "x": "—",
       "p2": "9.1",
       "p1x": "—",
-      "p12": "0.99",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -22126,7 +22142,7 @@
       "x": "—",
       "p2": "1.64",
       "p1x": "—",
-      "p12": "1.56",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -22142,7 +22158,7 @@
       "x": "—",
       "p2": "1.93",
       "p1x": "—",
-      "p12": "1.69",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -22154,11 +22170,11 @@
       "team1": "Fnatic",
       "team2": "BB Team",
       "match_url": "https://www.marathonbet.ru/su/betting/e-Sports/Counter-Strike+2/PGL/Bucharest/Closed+Qualification/Best+of+3+maps/Fnatic+vs+BB+Team+-+27159151",
-      "p1": "2.62",
+      "p1": "2.67",
       "x": "—",
-      "p2": "1.43",
+      "p2": "1.42",
       "p1x": "—",
-      "p12": "1.36",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -22174,7 +22190,7 @@
       "x": "—",
       "p2": "2.02",
       "p1x": "—",
-      "p12": "1.62",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -22190,7 +22206,7 @@
       "x": "—",
       "p2": "1.43",
       "p1x": "—",
-      "p12": "1.36",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -22206,7 +22222,7 @@
       "x": "—",
       "p2": "2.51",
       "p1x": "—",
-      "p12": "1.4",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -22222,7 +22238,7 @@
       "x": "—",
       "p2": "7.8",
       "p1x": "—",
-      "p12": "0.998",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -22238,7 +22254,7 @@
       "x": "—",
       "p2": "2.2",
       "p1x": "—",
-      "p12": "1.52",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -22254,7 +22270,7 @@
       "x": "—",
       "p2": "2.78",
       "p1x": "—",
-      "p12": "1.32",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -22270,7 +22286,7 @@
       "x": "—",
       "p2": "3.95",
       "p1x": "—",
-      "p12": "1.15",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -22286,7 +22302,7 @@
       "x": "—",
       "p2": "1.83",
       "p1x": "—",
-      "p12": "1.74",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -22302,7 +22318,7 @@
       "x": "—",
       "p2": "1.38",
       "p1x": "—",
-      "p12": "1.31",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -22314,11 +22330,11 @@
       "team1": "Marsborne",
       "team2": "9z Team",
       "match_url": "https://www.marathonbet.ru/su/betting/e-Sports/Counter-Strike+2/BB+RUSH+B%21/Play-Offs/Best+of+3+maps/Marsborne+vs+9z+Team+-+27160263",
-      "p1": "3.68",
+      "p1": "3.56",
       "x": "—",
-      "p2": "1.24",
+      "p2": "1.25",
       "p1x": "—",
-      "p12": "1.18",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -22334,7 +22350,7 @@
       "x": "—",
       "p2": "2.54",
       "p1x": "—",
-      "p12": "1.39",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -22350,7 +22366,7 @@
       "x": "—",
       "p2": "1.76",
       "p1x": "—",
-      "p12": "1.67",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -22366,7 +22382,7 @@
       "x": "—",
       "p2": "1.53",
       "p1x": "—",
-      "p12": "1.45",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -22382,7 +22398,7 @@
       "x": "—",
       "p2": "2.26",
       "p1x": "—",
-      "p12": "1.49",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -22398,7 +22414,7 @@
       "x": "—",
       "p2": "1.4",
       "p1x": "—",
-      "p12": "1.33",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -22414,7 +22430,7 @@
       "x": "—",
       "p2": "1.95",
       "p1x": "—",
-      "p12": "1.67",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -22430,7 +22446,7 @@
       "x": "—",
       "p2": "1.04",
       "p1x": "—",
-      "p12": "0.991",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -22446,7 +22462,7 @@
       "x": "—",
       "p2": "1.33",
       "p1x": "—",
-      "p12": "1.27",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -22462,7 +22478,7 @@
       "x": "—",
       "p2": "2.81",
       "p1x": "—",
-      "p12": "1.31",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -22478,7 +22494,7 @@
       "x": "—",
       "p2": "4.9",
       "p1x": "—",
-      "p12": "1.09",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -22494,7 +22510,7 @@
       "x": "—",
       "p2": "2.99",
       "p1x": "—",
-      "p12": "1.27",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -22506,11 +22522,11 @@
       "team1": "Players",
       "team2": "Damajuana",
       "match_url": "https://www.marathonbet.ru/su/betting/e-Sports/Counter-Strike+2/CCT/South+America/Main+Event/Best+of+3+maps/Players+vs+Damajuana+-+27159115",
-      "p1": "1.14",
+      "p1": "1.13",
       "x": "—",
-      "p2": "4.95",
+      "p2": "5.2",
       "p1x": "—",
-      "p12": "1.08",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -22526,7 +22542,7 @@
       "x": "—",
       "p2": "1.64",
       "p1x": "—",
-      "p12": "1.56",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -22542,7 +22558,7 @@
       "x": "—",
       "p2": "1.93",
       "p1x": "—",
-      "p12": "1.69",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -22558,7 +22574,7 @@
       "x": "—",
       "p2": "6.05",
       "p1x": "—",
-      "p12": "1.04",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -22574,7 +22590,7 @@
       "x": "—",
       "p2": "6.05",
       "p1x": "—",
-      "p12": "1.04",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -22590,7 +22606,7 @@
       "x": "—",
       "p2": "1.9",
       "p1x": "—",
-      "p12": "1.72",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -22606,7 +22622,7 @@
       "x": "—",
       "p2": "3.48",
       "p1x": "—",
-      "p12": "1.2",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -22622,7 +22638,7 @@
       "x": "—",
       "p2": "1.49",
       "p1x": "—",
-      "p12": "1.42",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -22638,7 +22654,7 @@
       "x": "—",
       "p2": "1.91",
       "p1x": "—",
-      "p12": "1.71",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -22654,7 +22670,7 @@
       "x": "—",
       "p2": "2.44",
       "p1x": "—",
-      "p12": "1.42",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -22670,7 +22686,7 @@
       "x": "—",
       "p2": "1.49",
       "p1x": "—",
-      "p12": "1.42",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -22686,7 +22702,7 @@
       "x": "—",
       "p2": "2.58",
       "p1x": "—",
-      "p12": "1.37",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -22702,7 +22718,7 @@
       "x": "—",
       "p2": "1.88",
       "p1x": "—",
-      "p12": "1.74",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -22718,7 +22734,7 @@
       "x": "—",
       "p2": "2.24",
       "p1x": "—",
-      "p12": "1.5",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -22734,7 +22750,7 @@
       "x": "—",
       "p2": "2.44",
       "p1x": "—",
-      "p12": "1.42",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -22750,7 +22766,7 @@
       "x": "—",
       "p2": "2.99",
       "p1x": "—",
-      "p12": "1.27",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -22766,7 +22782,7 @@
       "x": "—",
       "p2": "3.68",
       "p1x": "—",
-      "p12": "1.18",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -22782,7 +22798,7 @@
       "x": "—",
       "p2": "1.34",
       "p1x": "—",
-      "p12": "1.27",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -22798,7 +22814,7 @@
       "x": "—",
       "p2": "2.33",
       "p1x": "—",
-      "p12": "1.46",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -22814,7 +22830,7 @@
       "x": "—",
       "p2": "1.39",
       "p1x": "—",
-      "p12": "1.32",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -22830,7 +22846,7 @@
       "x": "—",
       "p2": "2.31",
       "p1x": "—",
-      "p12": "1.47",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -22846,7 +22862,7 @@
       "x": "—",
       "p2": "5.05",
       "p1x": "—",
-      "p12": "1.08",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -22862,7 +22878,7 @@
       "x": "—",
       "p2": "1.38",
       "p1x": "—",
-      "p12": "1.31",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -22878,7 +22894,7 @@
       "x": "—",
       "p2": "1.26",
       "p1x": "—",
-      "p12": "1.2",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -22894,7 +22910,7 @@
       "x": "—",
       "p2": "4.33",
       "p1x": "—",
-      "p12": "1.12",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -22910,7 +22926,7 @@
       "x": "—",
       "p2": "2.99",
       "p1x": "—",
-      "p12": "1.27",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -22926,7 +22942,7 @@
       "x": "—",
       "p2": "2.44",
       "p1x": "—",
-      "p12": "1.42",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -22942,7 +22958,7 @@
       "x": "—",
       "p2": "3.75",
       "p1x": "—",
-      "p12": "1.17",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -22958,7 +22974,7 @@
       "x": "—",
       "p2": "2.78",
       "p1x": "—",
-      "p12": "1.32",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -22974,7 +22990,7 @@
       "x": "—",
       "p2": "4.7",
       "p1x": "—",
-      "p12": "1.1",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -22990,7 +23006,7 @@
       "x": "—",
       "p2": "2.99",
       "p1x": "—",
-      "p12": "1.27",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -23006,7 +23022,7 @@
       "x": "—",
       "p2": "2.24",
       "p1x": "—",
-      "p12": "1.5",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -23022,7 +23038,7 @@
       "x": "—",
       "p2": "2.69",
       "p1x": "—",
-      "p12": "1.34",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -23038,7 +23054,7 @@
       "x": "—",
       "p2": "2.44",
       "p1x": "—",
-      "p12": "1.42",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -23054,7 +23070,7 @@
       "x": "—",
       "p2": "2.78",
       "p1x": "—",
-      "p12": "1.32",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -23070,7 +23086,7 @@
       "x": "—",
       "p2": "1.18",
       "p1x": "—",
-      "p12": "1.12",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -23086,7 +23102,7 @@
       "x": "—",
       "p2": "5.3",
       "p1x": "—",
-      "p12": "1.07",
+      "p12": "—",
       "px2": "—"
     },
     {
@@ -23102,7 +23118,7 @@
       "x": "—",
       "p2": "1.64",
       "p1x": "—",
-      "p12": "1.56",
+      "p12": "—",
       "px2": "—"
     }
   ]

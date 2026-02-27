@@ -406,7 +406,7 @@ def parse_2way_winner(html: str, sport: str) -> List[dict]:
             "x": "—",
             "p2": f"{p2_val:.3g}" if p2_val else "0.00",
             "p1x": "—",
-            "p12": f"{min(p1_val, p2_val)*0.95:.3g}" if p1_val and p2_val else "0.00",
+            "p12": "—",
             "px2": "—",
         })
 
