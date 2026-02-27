@@ -31,10 +31,16 @@ if %errorlevel% neq 0 (
 
 echo [%DT%] Parser OK >> "%LOG%"
 
+:: Запускаем парсер ставок (PRIZM транзакции → bets.json + Sheets)
+echo [%DT%] Running bet parser... >> "%LOG%"
+"%PYTHON%" bet_parser.py >> "%LOG%" 2>&1
+echo [%DT%] Bets OK >> "%LOG%"
+
 :: Git push через PowerShell (обходит проблему credential manager)
+:: git add -u = все изменённые отслеживаемые файлы (html, json, bat и т.д.)
 echo [%DT%] Pushing to GitHub... >> "%LOG%"
 powershell.exe -NoProfile -NonInteractive -Command ^
-    "Set-Location '%DIR%'; git add matches.json; git commit -m 'auto: %DT%'; git -c credential.helper=manager push origin main" >> "%LOG%" 2>&1
+    "Set-Location '%DIR%'; git add -u; if ((git status --porcelain) -ne $null) { git commit -m 'auto: %DT%' } else { Write-Host 'nothing to commit' }; git -c credential.helper=manager push origin main" >> "%LOG%" 2>&1
 
 if %errorlevel% equ 0 (
     echo [%DT%] OK: Pushed to GitHub >> "%LOG%"
