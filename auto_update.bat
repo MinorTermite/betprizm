@@ -20,37 +20,39 @@ if not exist "%PYTHON%" (
     exit /b 1
 )
 
-:: Запускаем парсер
-echo [%DT%] Running parser... >> "%LOG%"
+:: Запускаем основной парсер
+echo [%DT%] Running marathon parser... >> "%LOG%"
 "%PYTHON%" marathon_parser_real.py >> "%LOG%" 2>&1
-
 if %errorlevel% neq 0 (
-    echo [%DT%] ERROR: Parser failed >> "%LOG%"
+    echo [%DT%] ERROR: Marathon parser failed >> "%LOG%"
     exit /b 1
 )
+echo [%DT%] Marathon Parser OK >> "%LOG%"
 
-echo [%DT%] Parser OK >> "%LOG%"
-
-:: Запускаем парсер ставок (PRIZM транзакции → bets.json + Sheets)
+:: Запускаем парсер ставок
 echo [%DT%] Running bet parser... >> "%LOG%"
 "%PYTHON%" bet_parser.py >> "%LOG%" 2>&1
+if %errorlevel% neq 0 (
+    echo [%DT%] ERROR: Bet parser failed >> "%LOG%"
+    :: Выходим, чтобы не пушить битые или неполные данные
+    exit /b 1 
+)
 echo [%DT%] Bets OK >> "%LOG%"
 
-:: Git push через PowerShell (обходит проблему credential manager)
-:: git add -u = все изменённые отслеживаемые файлы (html, json, bat и т.д.)
+:: Git push через PowerShell с использованием полного пути к GIT
 echo [%DT%] Pushing to GitHub... >> "%LOG%"
 powershell.exe -NoProfile -NonInteractive -Command ^
-    "Set-Location '%DIR%'; git add -u; if ((git status --porcelain) -ne $null) { git commit -m 'auto: %DT%' } else { Write-Host 'nothing to commit' }; git -c credential.helper=manager push origin main" >> "%LOG%" 2>&1
+    "Set-Location '%DIR%'; & '%GIT%' add .; if ((& '%GIT%' status --porcelain) -ne $null) { & '%GIT%' commit -m 'auto: %DT%' } else { Write-Host 'nothing to commit' }; & '%GIT%' -c credential.helper=manager push origin main" >> "%LOG%" 2>&1
 
 if %errorlevel% equ 0 (
     echo [%DT%] OK: Pushed to GitHub >> "%LOG%"
 ) else (
-    echo [%DT%] WARNING: Push failed (will retry in 30 min) >> "%LOG%"
+    echo [%DT%] WARNING: Push failed (will retry next time) >> "%LOG%"
 )
 
-:: Обрезаем лог до 300 строк
+:: Оптимизированная обрезка лога до 300 строк
 powershell.exe -NoProfile -NonInteractive -Command ^
-    "if ((Get-Content '%LOG%').Count -gt 300) { Get-Content '%LOG%' | Select-Object -Last 300 | Set-Content '%LOG%' }"
+    "$lines = Get-Content '%LOG%'; if ($lines.Count -gt 300) { $lines[-300..-1] | Set-Content '%LOG%' }"
 
 echo [%DT%] === DONE === >> "%LOG%"
 exit /b 0
