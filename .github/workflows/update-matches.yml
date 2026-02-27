@@ -2,8 +2,8 @@ name: Auto-update matches
 
 on:
   schedule:
-    # Каждые 2 часа
-    - cron: '0 */2 * * *'
+    # Каждые 30 минут
+    - cron: '*/30 * * * *'
   workflow_dispatch:
 
 permissions:
