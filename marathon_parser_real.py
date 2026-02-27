@@ -43,7 +43,7 @@ POPULAR_FALLBACK = [
     ("football", "Франция. Лига 1", f"{BASE}/su/popular/Football/France/Ligue%2B1%2B-%2B21533?interval=ALL_TIME"),
     
     # Футбол - Другие популярные лиги
-    ("football", "Россия. Премьер-лига", f"{BASE}/su/betting/Football/Russia/Premier%2BLiga%2B-%2B26492"),
+    ("football", "Россия. Премьер-лига", f"{BASE}/su/betting/Football/Russia/Premier%2BLeague%2B-%2B22433"),
     ("football", "Англия. Чемпионшип", f"{BASE}/su/betting/Football/England/Championship%2B-%2B21521"),
     ("football", "Испания. Сегунда", f"{BASE}/su/betting/Football/Spain/Segunda%2BDivision%2B-%2B8737"),
     ("football", "Италия. Серия B", f"{BASE}/su/betting/Football/Italy/Serie%2BB%2B-%2B22435"),
@@ -64,7 +64,7 @@ POPULAR_FALLBACK = [
     ("football", "Австралия. A-League", f"{BASE}/su/betting/Football/Australia/A-League%2B-%2B21517"),
     ("football", "Украина. Премьер-лига", f"{BASE}/su/betting/Football/Ukraine/Premier%2BLiga%2B-%2B26491"),
     ("football", "Польша. Экстракласа", f"{BASE}/su/betting/Football/Poland/Extraklasa%2B-%2B21530"),
-    ("football", "Греция. Суперлига", f"{BASE}/su/betting/Football/Greece/Super%2BLiga%2B-%2B22433"),
+    ("football", "Греция. Суперлига", f"{BASE}/su/betting/Football/Greece/Super%2BLeague%2B-%2B22445"),
     ("football", "Австрия. Бундеслига", f"{BASE}/su/betting/Football/Austria/Bundesliga%2B-%2B21518"),
     ("football", "Швейцария. Суперлига", f"{BASE}/su/betting/Football/Switzerland/Super%2BLeague%2B-%2B21536"),
     ("football", "Дания. Суперлига", f"{BASE}/su/betting/Football/Denmark/Superliga%2B-%2B21524"),
