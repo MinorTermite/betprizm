@@ -1,46 +1,50 @@
 @echo off
 chcp 65001 >nul
 
-:: Путь к папке скрипта
-cd /d "%~dp0"
+set PYTHON=C:\Python312\python.exe
+set GIT=C:\Program Files\Git\bin\git.exe
+set DIR=%~dp0
+set LOG=%DIR%auto_update.log
 
-:: Лог-файл
-set LOG=%~dp0auto_update.log
-set DT=%DATE% %TIME:~0,8%
+cd /d "%DIR%"
 
-echo [%DT%] === Запуск авто-обновления === >> "%LOG%"
+:: Дата и время для лога
+for /f "tokens=2 delims==" %%I in ('wmic os get localdatetime /value') do set DT=%%I
+set DT=%DT:~0,4%-%DT:~4,2%-%DT:~6,2% %DT:~8,2%:%DT:~10,2%
 
-:: Проверяем есть ли Python
-python --version >nul 2>&1
-if %errorlevel% neq 0 (
-    echo [%DT%] ОШИБКА: Python не найден >> "%LOG%"
+echo [%DT%] === START === >> "%LOG%"
+
+:: Проверяем Python
+if not exist "%PYTHON%" (
+    echo [%DT%] ERROR: Python not found at %PYTHON% >> "%LOG%"
     exit /b 1
 )
 
 :: Запускаем парсер
-echo [%DT%] Запускаем парсер... >> "%LOG%"
-python marathon_parser_real.py >> "%LOG%" 2>&1
+echo [%DT%] Running parser... >> "%LOG%"
+"%PYTHON%" marathon_parser_real.py >> "%LOG%" 2>&1
 
 if %errorlevel% neq 0 (
-    echo [%DT%] ОШИБКА: Парсер завершился с ошибкой >> "%LOG%"
+    echo [%DT%] ERROR: Parser failed >> "%LOG%"
     exit /b 1
 )
 
-echo [%DT%] Парсер завершён успешно >> "%LOG%"
+echo [%DT%] Parser OK >> "%LOG%"
 
-:: Git push
-git add matches.json >> "%LOG%" 2>&1
-git commit -m "auto: matches %DATE% %TIME:~0,5%" >> "%LOG%" 2>&1
-
-git -c credential.helper=manager push origin main >> "%LOG%" 2>&1
+:: Git push через PowerShell (обходит проблему credential manager)
+echo [%DT%] Pushing to GitHub... >> "%LOG%"
+powershell.exe -NoProfile -NonInteractive -Command ^
+    "Set-Location '%DIR%'; git add matches.json; git commit -m 'auto: %DT%'; git -c credential.helper=manager push origin main" >> "%LOG%" 2>&1
 
 if %errorlevel% equ 0 (
-    echo [%DT%] OK: Запушено на GitHub >> "%LOG%"
+    echo [%DT%] OK: Pushed to GitHub >> "%LOG%"
 ) else (
-    echo [%DT%] ОШИБКА: Git push не удался >> "%LOG%"
+    echo [%DT%] WARNING: Push failed (will retry in 30 min) >> "%LOG%"
 )
 
-:: Обрезаем лог до 500 строк чтобы не раздувался
-powershell -Command "if ((Get-Content '%LOG%').Count -gt 500) { Get-Content '%LOG%' | Select-Object -Last 500 | Set-Content '%LOG%' }"
+:: Обрезаем лог до 300 строк
+powershell.exe -NoProfile -NonInteractive -Command ^
+    "if ((Get-Content '%LOG%').Count -gt 300) { Get-Content '%LOG%' | Select-Object -Last 300 | Set-Content '%LOG%' }"
 
+echo [%DT%] === DONE === >> "%LOG%"
 exit /b 0

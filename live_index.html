@@ -2341,7 +2341,7 @@
                     function oddBtn(label, value) {
                         const raw = value || '';
                         const val = escapeHtml(raw);
-                        const dt = escapeHtml((match.date || '') + ' ' + (match.time || ''));
+                        const dt = escapeHtml((match.date || 'Сегодня') + ' ' + (match.time || ''));
                         const lg = escapeHtml(match.league || '');
                         if (val === '0.00' || val === '—') {
                             return `<div class="odd-item odd-item--na">
@@ -2372,18 +2372,18 @@
                     card.id = `match-${eid}`;
                     card.innerHTML = `
                         <div class="match-header">
-                            <a class="match-id" href="#match-${eid}" onclick="shareMatch('${eid}','${teams.replace(/'/g, "\\'")}','${escapeHtml((match.date || '') + ' ' + (match.time || ''))}'); return false;" title="Скопировать ссылку на матч">#${eid}</a>
+                            <a class="match-id" href="#match-${eid}" onclick="shareMatch('${eid}','${teams.replace(/'/g, "\\'")}','${escapeHtml((match.date || 'Сегодня') + ' ' + (match.time || ''))}'); return false;" title="Скопировать ссылку на матч">#${eid}</a>
                             ${bkBadge}
                             <div style="display:flex;align-items:center;gap:4px;margin-left:auto;">
                                 ${verifyLink}
-                                <button class="share-btn" onclick="shareMatch('${eid}','${teams.replace(/'/g, "\\'")}','${escapeHtml((match.date || '') + ' ' + (match.time || ''))}')" title="Поделиться матчем">🔗</button>
+                                <button class="share-btn" onclick="shareMatch('${eid}','${teams.replace(/'/g, "\\'")}','${escapeHtml((match.date || 'Сегодня') + ' ' + (match.time || ''))}')" title="Поделиться матчем">🔗</button>
                                 <button class="favorite-btn ${isFavorite ? 'active' : ''}" onclick="toggleFavorite('${eid}')">
                                     ${isFavorite ? '⭐' : '☆'}
                                 </button>
                             </div>
                         </div>
                         <div class="match-time">
-                            ${escapeHtml(match.date || '')} ${escapeHtml(match.time || '')}
+                            ${escapeHtml(match.date || 'Сегодня')} ${escapeHtml(match.time || '')}
                             ${countdown ? `<span class="countdown">${countdown}</span>` : ''}
                         </div>
                         <div class="match-teams">${t1} <span class="vs">—</span> ${t2}</div>
