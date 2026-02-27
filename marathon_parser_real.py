@@ -389,22 +389,27 @@ def parse_2way_winner(html: str, sport: str) -> List[dict]:
         else:
             time_str = time_txt if ":" in time_txt else ""
 
-        # Для 2-way обычно просто первые две котировки в ряду
+        # Котировки: хоккей/волейбол/MMA может давать 2 или 3 исхода
         odds_btns = row.select(".selection-link")
         if len(odds_btns) < 2:
             odds_btns = row.select(".price")
-        p1_val = p2_val = 0.0
-        if len(odds_btns) >= 2:
+        p1_val = x_val = p2_val = 0.0
+        if len(odds_btns) >= 3:
+            # 3 кнопки: [П1, X, П2]
+            p1_val = as_float(odds_btns[0].get_text())
+            x_val  = as_float(odds_btns[1].get_text())
+            p2_val = as_float(odds_btns[2].get_text())
+        elif len(odds_btns) == 2:
+            # 2 кнопки: [П1, П2] — теннис, MMA, esports
             p1_val = as_float(odds_btns[0].get_text())
             p2_val = as_float(odds_btns[1].get_text())
-
 
         out.append({
             "sport": sport, "league": "", "id": event_id,
             "date": date_str, "time": time_str, "team1": t1, "team2": t2,
             "match_url": match_url,
             "p1": f"{p1_val:.3g}" if p1_val else "0.00",
-            "x": "—",
+            "x": f"{x_val:.3g}" if x_val else "—",
             "p2": f"{p2_val:.3g}" if p2_val else "0.00",
             "p1x": "—",
             "p12": "—",
@@ -467,11 +472,15 @@ def parse_live_matches(html: str, sport: str) -> List[dict]:
             odds_btns = row.select(".selection-link")
             if len(odds_btns) >= 2:
                 try:
-                    p1_val = odds_btns[0].get_text().strip()
-                    p2_val = odds_btns[-1].get_text().strip()
-                    p1 = as_float(p1_val)
-                    p2 = as_float(p2_val)
+                    p1 = as_float(odds_btns[0].get_text())
+                    if len(odds_btns) >= 3:
+                        x  = as_float(odds_btns[1].get_text())
+                        p2 = as_float(odds_btns[2].get_text())
+                    else:
+                        x  = 0.0
+                        p2 = as_float(odds_btns[1].get_text())
                     if p1: out[-1]["p1"] = f"{p1:.3g}"
+                    if x:  out[-1]["x"]  = f"{x:.3g}"
                     if p2: out[-1]["p2"] = f"{p2:.3g}"
                 except:
                     pass

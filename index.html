@@ -882,31 +882,40 @@
         }
 
         .favorite-btn {
-            background: transparent;
-            border: none;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 8px;
             cursor: pointer;
-            font-size: 1.15rem;
-            padding: 4px;
-            transition: all 0.25s;
-            color: var(--text-tertiary);
+            font-size: 1.1rem;
+            padding: 5px 8px;
+            min-width: 36px;
+            min-height: 32px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            color: rgba(241,240,245,0.7);
             line-height: 1;
+            flex-shrink: 0;
         }
 
         .favorite-btn:hover {
-            transform: scale(1.25);
+            background: rgba(245,158,11,0.15);
+            border-color: var(--amber);
             color: var(--amber);
-            filter: drop-shadow(0 0 4px var(--amber));
         }
 
         .favorite-btn.active {
+            background: rgba(245,158,11,0.18);
+            border-color: var(--amber);
             color: var(--amber);
-            filter: drop-shadow(0 0 8px var(--amber));
-            animation: starPulse 0.4s ease-out;
+            filter: drop-shadow(0 0 6px rgba(245,158,11,0.5));
+            animation: starPulse 0.35s ease-out;
         }
 
         @keyframes starPulse {
-            0% { transform: scale(0.8); }
-            50% { transform: scale(1.3); }
+            0%   { transform: scale(0.75); }
+            55%  { transform: scale(1.25); }
             100% { transform: scale(1); }
         }
 
@@ -1447,6 +1456,20 @@
             .brand-name {
                 letter-spacing: 4px;
             }
+
+                /* На мобильном скрываем текст "Проверить", оставляем только иконку */
+            .match-link .link-text { display: none; }
+            .match-link { padding: 5px 7px; font-size: 0.85rem; }
+
+            /* Кнопку share скрываем на мобильном — экономим место */
+            .share-btn { display: none; }
+
+            /* Звездочка крупнее на мобильном */
+            .favorite-btn {
+                font-size: 1.25rem;
+                min-width: 40px;
+                min-height: 36px;
+            }
         }
 
         @media (max-width: 360px) {
@@ -1733,7 +1756,7 @@
             <h1 class="brand-name">PRIZMBET</h1>
             <p class="tagline">Ставки на PRIZM</p>
             <div class="header-actions">
-                <button class="btn-icon" onclick="requestNotificationPermission()" title="Уведомления об избранных">🔔</button>
+                <button id="notifBtn" class="btn-icon" onclick="requestNotificationPermission()" title="Уведомления об избранных">🔔</button>
                 <a href="https://t.me/+PMrQ9Nbzu08wYmI0" target="_blank" rel="noopener" class="btn-icon"
                     title="Telegram">✈️</a>
                 <button class="btn-icon" onclick="openHistory()" title="История">📜</button>
@@ -1940,128 +1963,144 @@
             try { const f = localStorage.getItem('prizmbet_favorites'); return f ? JSON.parse(f) : []; }
             catch { return []; }
         }
-
         function saveFavorites(favorites) {
             try { localStorage.setItem('prizmbet_favorites', JSON.stringify(favorites)); } catch { }
         }
 
+        // Сохраняем детали матчей избранного (команды, лига) для уведомлений
+        function getFavDetails() {
+            try { const d = localStorage.getItem('prizmbet_fav_details'); return d ? JSON.parse(d) : {}; }
+            catch { return {}; }
+        }
+        function saveFavDetails(details) {
+            try { localStorage.setItem('prizmbet_fav_details', JSON.stringify(details)); } catch { }
+        }
+
         function toggleFavorite(matchId) {
             let favorites = getFavorites();
+            let details = getFavDetails();
             if (favorites.includes(matchId)) {
                 favorites = favorites.filter(id => id !== matchId);
+                delete details[matchId];
+                showToast('Убрано из избранного');
             } else {
                 favorites.push(matchId);
+                // Сохраняем детали матча для будущих уведомлений
+                const match = (window.__ALL_MATCHES__ || []).find(m => m.id === matchId);
+                if (match) {
+                    details[matchId] = { team1: match.team1, team2: match.team2, league: match.league };
+                }
+                showToast('⭐ Добавлено в избранное');
             }
             saveFavorites(favorites);
+            saveFavDetails(details);
             if (window.__ALL_MATCHES__) renderMatches(window.__ALL_MATCHES__);
         }
 
-        // ===== Web Push Notifications for Favorites =====
-        function requestNotificationPermission() {
-            if (!('Notification' in window)) return;
-            if (Notification.permission === 'granted') return;
-            if (Notification.permission !== 'denied') {
-                Notification.requestPermission();
+        // ===== Уведомления об избранных матчах =====
+        function updateNotifBell() {
+            const btn = document.getElementById('notifBtn');
+            if (!btn) return;
+            if (!('Notification' in window)) { btn.style.opacity = '0.3'; return; }
+            if (Notification.permission === 'granted') {
+                btn.textContent = '🔔';
+                btn.title = 'Уведомления включены';
+                btn.style.opacity = '1';
+            } else if (Notification.permission === 'denied') {
+                btn.textContent = '🔕';
+                btn.title = 'Уведомления заблокированы — разрешите в настройках браузера';
+                btn.style.opacity = '0.5';
+            } else {
+                btn.textContent = '🔔';
+                btn.title = 'Нажмите, чтобы включить уведомления';
+                btn.style.opacity = '0.6';
             }
+        }
+
+        function requestNotificationPermission() {
+            if (!('Notification' in window)) {
+                showToast('Уведомления не поддерживаются');
+                return;
+            }
+            if (Notification.permission === 'granted') {
+                showToast('🔔 Уведомления уже включены!');
+                return;
+            }
+            if (Notification.permission === 'denied') {
+                showToast('🔕 Уведомления заблокированы. Разрешите в настройках браузера.');
+                return;
+            }
+            Notification.requestPermission().then(result => {
+                updateNotifBell();
+                if (result === 'granted') {
+                    showToast('🔔 Уведомления включены!');
+                    if (navigator.vibrate) navigator.vibrate(100);
+                } else {
+                    showToast('Уведомления отклонены');
+                }
+            });
         }
 
         function playNotificationSound() {
-            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-            const now = audioContext.currentTime;
-            const duration = 0.3;
-
-            // Two beeps
-            for (let i = 0; i < 2; i++) {
-                const osc = audioContext.createOscillator();
-                const gain = audioContext.createGain();
-                osc.connect(gain);
-                gain.connect(audioContext.destination);
-                osc.frequency.value = 800 + (i * 200);
-                osc.type = 'sine';
-                gain.gain.setValueAtTime(0.3, now + i * duration);
-                gain.gain.exponentialRampToValueAtTime(0.01, now + i * duration + duration);
-                osc.start(now + i * duration);
-                osc.stop(now + i * duration + duration);
-            }
-        }
-
-        function notifyFinishedMatch(matchId, team1, team2, league) {
-            requestNotificationPermission();
-
-            const title = '✅ Матч завершен!';
-            const options = {
-                body: `${team1} vs ${team2}\n${league}`,
-                icon: '/betprizm/prizmbet-logo.webp',
-                badge: '/betprizm/prizmbet-logo.webp',
-                tag: `match-${matchId}`,
-                requireInteraction: true,
-                actions: [
-                    { action: 'open', title: 'Открыть' }
-                ]
-            };
-
             try {
-                if (Notification.permission === 'granted') {
-                    const notification = new Notification(title, options);
-                    notification.onclick = () => {
-                        window.focus();
-                        notification.close();
-                    };
-                }
-            } catch (e) {
-                console.log('Notification error:', e);
-            }
-
-            // Sound + Vibration
-            try {
-                playNotificationSound();
-            } catch (e) {
-                console.log('Audio error:', e);
-            }
-
-            if (navigator.vibrate) {
-                navigator.vibrate([200, 100, 200, 100, 300]);
-            }
-        }
-
-        // Track which favorites we've already notified
-        function getNotifiedMatches() {
-            try {
-                const n = localStorage.getItem('prizmbet_notified');
-                return n ? JSON.parse(n) : [];
-            } catch {
-                return [];
-            }
-        }
-
-        function saveNotifiedMatches(ids) {
-            try {
-                localStorage.setItem('prizmbet_notified', JSON.stringify(ids));
-            } catch { }
+                const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                const now = ctx.currentTime;
+                [880, 1100].forEach((freq, i) => {
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+                    osc.frequency.value = freq;
+                    osc.type = 'sine';
+                    gain.gain.setValueAtTime(0.35, now + i * 0.28);
+                    gain.gain.exponentialRampToValueAtTime(0.01, now + i * 0.28 + 0.25);
+                    osc.start(now + i * 0.28);
+                    osc.stop(now + i * 0.28 + 0.25);
+                });
+            } catch (e) { /* silent fail */ }
         }
 
         function checkFinishedFavorites(allMatches) {
             const favorites = getFavorites();
-            const notified = getNotifiedMatches();
-            const activeIds = (allMatches || []).map(m => m.id);
+            if (!favorites.length) return;
+            const details = getFavDetails();
+            const activeIds = new Set((allMatches || []).map(m => m.id));
+            const notifiedKey = 'prizmbet_notified_v2';
+            let notified = [];
+            try { notified = JSON.parse(localStorage.getItem(notifiedKey) || '[]'); } catch { }
 
             favorites.forEach(favId => {
-                if (!activeIds.includes(favId) && !notified.includes(favId)) {
-                    // This favorite match is no longer in the list (finished!)
-                    const match = window.__LAST_ALL_MATCHES__?.find(m => m.id === favId);
-                    if (match) {
-                        notifyFinishedMatch(
-                            match.id,
-                            match.team1 || 'Team 1',
-                            match.team2 || 'Team 2',
-                            match.league || 'Unknown'
-                        );
-                        notified.push(favId);
+                if (!activeIds.has(favId) && !notified.includes(favId)) {
+                    const d = details[favId] || {};
+                    const team1 = d.team1 || '?';
+                    const team2 = d.team2 || '?';
+                    const league = d.league || '';
+
+                    // Показываем toast всегда
+                    showToast(`✅ Матч завершён: ${team1} — ${team2}`);
+
+                    // Push-уведомление если разрешено
+                    if ('Notification' in window && Notification.permission === 'granted') {
+                        try {
+                            const n = new Notification('✅ Матч завершён — PRIZMBET', {
+                                body: `${team1} — ${team2}\n${league}`,
+                                icon: '/betprizm/prizmbet-logo.webp',
+                                tag: `fin-${favId}`,
+                                requireInteraction: false,
+                            });
+                            n.onclick = () => { window.focus(); n.close(); };
+                        } catch (e) { /* silent */ }
                     }
+
+                    // Звук + вибрация
+                    playNotificationSound();
+                    if (navigator.vibrate) navigator.vibrate([200, 80, 200, 80, 350]);
+
+                    notified.push(favId);
                 }
             });
 
-            saveNotifiedMatches(notified);
+            try { localStorage.setItem(notifiedKey, JSON.stringify(notified)); } catch { }
         }
 
         // ===== Scroll progress =====
@@ -2475,7 +2514,7 @@
 
                     if (matchUrl) {
                         bkBadge = `<span class="bk-badge bk-badge--marathon">Marathon</span>`;
-                        verifyLink = `<a href="${escapeHtml(matchUrl)}" target="_blank" rel="noopener" class="match-link" title="Проверить коэффициент на Marathon" onclick="event.stopPropagation()">🔍 Проверить</a>`;
+                        verifyLink = `<a href="${escapeHtml(matchUrl)}" target="_blank" rel="noopener" class="match-link" title="Проверить коэффициент на Marathon" onclick="event.stopPropagation()">🔍<span class="link-text"> Проверить</span></a>`;
                     } else if (eid) {
                         const mUrl = 'https://www.marathonbet.ru/su/betting/' + eid;
                         bkBadge = `<span class="bk-badge bk-badge--marathon">Marathon</span>`;
@@ -2489,8 +2528,8 @@
                             <div style="display:flex;align-items:center;gap:4px;margin-left:auto;">
                                 ${verifyLink}
                                 <button class="share-btn" onclick="shareMatch('${eid}','${teams.replace(/'/g, "\\'")}','${escapeHtml((match.date || 'Сегодня') + ' ' + (match.time || ''))}')" title="Поделиться матчем">🔗</button>
-                                <button class="favorite-btn ${isFavorite ? 'active' : ''}" onclick="toggleFavorite('${eid}')">
-                                    ${isFavorite ? '⭐' : '☆'}
+                                <button class="favorite-btn ${isFavorite ? 'active' : ''}" onclick="toggleFavorite('${eid}')" title="${isFavorite ? 'Убрать из избранного' : 'В избранное'}">
+                                    ${isFavorite ? '★' : '★'}
                                 </button>
                             </div>
                         </div>
@@ -2675,6 +2714,7 @@
         setInterval(() => { if (window.__ALL_MATCHES__) renderMatches(window.__ALL_MATCHES__); }, 60000);
 
         window.addEventListener('load', () => {
+            updateNotifBell();
             loadData().then(() => {
                 // После загрузки — проверяем якорь в URL
                 if (window.location.hash && window.location.hash.startsWith('#match-')) {
