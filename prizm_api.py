@@ -13,7 +13,7 @@ PRIZM_NODES = [
 ]
 WALLET = "PRIZM-4N7T-L2A7-RQZA-5BETW"
 CACHE_FILE = "prizm_last_tx.json"
-NQT = 100  # 1 PRIZM = 100 NQT (2 decimal places)
+NQT = 100_000_000  # 1 PRIZM = 100,000,000 NQT
 
 
 def _get(params: dict, timeout=12) -> dict | None:
@@ -122,12 +122,49 @@ def parse_bet_comment(comment: str) -> dict | None:
 
 
 def prizm_amount(tx: dict) -> float:
-    """Перевести внутренние единицы PRIZM → реальные монеты (1 PRIZM = 100 NQT)"""
+    """Перевести внутренние единицы PRIZM → реальные монеты (1 PRIZM = 100,000,000 NQT)"""
     raw = tx.get("amountNQT", 0)
     try:
         return int(raw) / NQT
     except Exception:
         return 0.0
+
+
+def get_coef(match: dict, outcome: str) -> float:
+    """
+    Получить коэффициент для исхода из данных матча.
+    Поддерживает:
+    1. Текущий плоский формат (p1, x, p2, p1x, p12, px2)
+    2. Legacy формат (odds: {"1": ..., "X": ..., "2": ...})
+    """
+    if not match:
+        return 0.0
+
+    # Отображение исходов на плоские поля и ключи словаря odds
+    flat_map = {"П1": "p1", "П2": "p2", "X": "x", "1X": "p1x", "X2": "px2", "12": "p12"}
+    odds_map = {"П1": "1", "П2": "2", "X": "X", "1X": "1X", "X2": "X2", "12": "12"}
+
+    # 1. Пробуем плоский формат
+    field = flat_map.get(outcome)
+    if field and field in match:
+        val = match.get(field)
+        if val and val not in ("—", "-", "0.00", ""):
+            try:
+                return float(val)
+            except (ValueError, TypeError):
+                pass
+
+    # 2. Пробуем вложенный словарь odds (legacy)
+    odds = match.get("odds") or {}
+    key = odds_map.get(outcome, outcome)
+    val = odds.get(key)
+    if val and val not in ("—", "-", "0.00", ""):
+        try:
+            return float(val)
+        except (ValueError, TypeError):
+            pass
+
+    return 0.0
 
 
 def get_sender_address(tx: dict) -> str:

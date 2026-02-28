@@ -11,50 +11,22 @@ import json
 import os
 import re
 import requests
-from datetime import datetime, timezone
+import prizm_api
 
 # ===== КОНФИГУРАЦИЯ =====
 SCRIPT_DIR  = os.path.dirname(os.path.abspath(__file__))
-WALLET      = "PRIZM-4N7T-L2A7-RQZA-5BETW"
-PRIZM_NODES = [
-    "https://core.prizm.vip",   # рабочая нода (проверено 2026-02-28)
-    "https://blockchain.prizm.vip",
-]
-PRIZM_EPOCH = 1511654400   # 2017-11-26 00:00:00 UTC (genesis PRIZM)
-NQT         = 100           # 1 PRIZM = 100 NQT (2 decimal places)
+WALLET      = prizm_api.WALLET
+NQT         = prizm_api.NQT
 
 BETS_FILE    = os.path.join(SCRIPT_DIR, "bets.json")
 MATCHES_FILE = os.path.join(SCRIPT_DIR, "matches.json")
 CREDS_FILE   = os.path.join(SCRIPT_DIR, "credentials.json")
 SHEET_ID     = "1QkVj51WMKSd6-LU4vZK3dYPk6QLQIO014ydpACtThNk"
 
-# ===== PRIZM API =====
-
-def prizm_request(params, timeout=15):
-    """Выполнить запрос к PRIZM-ноде (пробует несколько нод)"""
-    for node in PRIZM_NODES:
-        try:
-            r = requests.get(f"{node}/prizm", params=params, timeout=timeout, verify=False)
-            data = r.json()
-            if "errorCode" not in data:
-                return data
-        except Exception:
-            continue
-    return {}
-
-
+# Использование функций из prizm_api
 def get_transactions(first_index=0, last_index=99):
     """Получить входящие транзакции на кошелёк"""
-    data = prizm_request({
-        "requestType":      "getAccountTransactions",
-        "account":          WALLET,
-        "type":             0,       # обычный платёж
-        "subtype":          0,
-        "firstIndex":       first_index,
-        "lastIndex":        last_index,
-        "includeIndirect":  "false",
-    })
-    return data.get("transactions", [])
+    return prizm_api.get_transactions(first_index, last_index)
 
 
 # ===== ВСПОМОГАТЕЛЬНЫЕ =====
@@ -130,11 +102,8 @@ def load_matches_index():
 
 
 def get_coef(match, outcome):
-    """Получить коэффициент для исхода"""
-    odds = match.get("odds") or {}
-    # ключи в odds: "1", "X", "2", "1X", "X2", "12"
-    key_map = {"П1": "1", "П2": "2", "X": "X", "1X": "1X", "X2": "X2", "12": "12"}
-    return float(odds.get(key_map.get(outcome, outcome), 0) or 0)
+    """Использует централизованную логику из prizm_api"""
+    return prizm_api.get_coef(match, outcome)
 
 
 # ===== СТАВКИ =====

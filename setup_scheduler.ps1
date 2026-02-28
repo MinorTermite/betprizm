@@ -24,7 +24,7 @@ if (Get-ScheduledTask -TaskName $TaskName -ErrorAction SilentlyContinue) {
 # Действие: запуск bat-файла
 $Action = New-ScheduledTaskAction `
     -Execute "cmd.exe" `
-    -Argument "/c `"$BatFile`"" `
+    -Argument "/c \`"$BatFile\`"" `
     -WorkingDirectory $ScriptPath
 
 # Триггер: каждые 30 минут, начиная с текущего момента

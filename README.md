@@ -16,7 +16,7 @@
 - **live_index.html** — Специальная версия для LIVE-событий
 - **marathon_parser_real.py** — Основной парсер Marathonbet (использует числовые ID категорий)
 - **matches.json** — База данных матчей (обновляется автоматически)
-- **.github/workflows/update-matches.yml** — Автоматизация парсинга каждые 2 часа
+- **.github/workflows/update-matches.yml** — Автоматизация парсинга каждые 30 минут
 
 ---
 
@@ -60,8 +60,13 @@
 # Установка зависимостей
 pip install requests beautifulsoup4 lxml
 
-# Запуск парсера
-python marathon_parser_real.py
+# Запуск бота
+# 1. Установите токен в окружение
+set BOT_TOKEN=ваш_токен (Windows)
+export BOT_TOKEN=ваш_токен (Linux/Mac)
+
+# 2. Запуск
+python telegram_bot.py
 
 # Просмотр сайта
 python -m http.server 8000

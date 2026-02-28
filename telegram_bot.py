@@ -28,8 +28,8 @@ from telegram.ext import (
 import prizm_api
 
 # ── Конфиг ──────────────────────────────────────────────────
-BOT_TOKEN    = "8560914086:AAFGDc70pfIwBX0FhwQDWmFjcnnpVvKOxps"
-ADMIN_ID     = 984705599
+BOT_TOKEN    = os.getenv("BOT_TOKEN")
+ADMIN_ID     = int(os.getenv("ADMIN_ID", "984705599"))
 WALLET       = "PRIZM-4N7T-L2A7-RQZA-5BETW"
 BETS_FILE    = Path("bets.json")
 MATCHES_FILE = Path("matches.json")
@@ -468,9 +468,7 @@ async def check_prizm_transactions(bot=None):
 
         # Найти матч и коэффициент
         match = matches.get(match_id, {})
-        coef_map = {"П1":"p1","П2":"p2","X":"x","1X":"p1x","X2":"px2","12":"p12"}
-        coef_key = coef_map.get(bet_type, "")
-        coef = float(match.get(coef_key, 0) or 0)
+        coef = prizm_api.get_coef(match, bet_type)
         payout = round(amount * coef, 2) if coef > 0 else 0
 
         bet = {
@@ -514,6 +512,13 @@ async def check_prizm_transactions(bot=None):
 
 # ── Запуск ───────────────────────────────────────────────────
 def main():
+    if not BOT_TOKEN:
+        log.critical("ERROR: BOT_TOKEN is not set in environment variables!")
+        print("\n\033[91mCRITICAL ERROR: BOT_TOKEN is not set!\033[0m")
+        print("Please set the BOT_TOKEN environment variable before running the bot.")
+        print("Example: set BOT_TOKEN=your_token_here (Windows) or export BOT_TOKEN=your_token_here (Linux/Mac)")
+        sys.exit(1)
+
     log.info("Starting PRIZMBET Bot...")
     app = Application.builder().token(BOT_TOKEN).build()
 
