@@ -522,18 +522,52 @@
             z-index: 10;
         }
 
+        .tabs-wrap {
+            position: relative;
+            margin-bottom: 16px;
+        }
+
+        .tabs-wrap::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 0;
+            bottom: 8px;
+            width: 48px;
+            background: linear-gradient(to right, transparent, var(--bg-card));
+            pointer-events: none;
+            border-radius: 0 12px 12px 0;
+            transition: opacity 0.3s;
+        }
+
+        .tabs-wrap.scrolled-end::after {
+            opacity: 0;
+        }
+
         .tabs {
             display: flex;
             gap: 8px;
-            margin-bottom: 16px;
             overflow-x: auto;
             padding-bottom: 8px;
+            padding-right: 48px;
             scrollbar-width: none;
             -ms-overflow-style: none;
         }
 
         .tabs::-webkit-scrollbar {
             display: none;
+        }
+
+        @keyframes tabsSwipeHint {
+            0%   { transform: translateX(0); }
+            30%  { transform: translateX(-28px); }
+            60%  { transform: translateX(0); }
+            80%  { transform: translateX(-12px); }
+            100% { transform: translateX(0); }
+        }
+
+        .tabs.swipe-hint {
+            animation: tabsSwipeHint 0.9s cubic-bezier(0.4, 0, 0.2, 1) forwards;
         }
 
         /* Chrome/Safari */
@@ -1867,7 +1901,7 @@
         <a href="https://t.me/PrizmBet2bot" target="_blank" rel="noopener" class="tg-bot-banner">
             <span class="tg-bot-icon">🤖</span>
             <div class="tg-bot-text">
-                <strong>Telegram-бот @PrizmBet2bot</strong>
+                <strong>Telegram-бот</strong>
                 <span>Уведомления о ставках • Правила • Статистика</span>
             </div>
             <span class="tg-bot-arrow">→</span>
@@ -1875,7 +1909,8 @@
 
         <!-- FILTERS -->
         <div class="filters-bar">
-            <div class="tabs">
+            <div class="tabs-wrap" id="tabsWrap">
+            <div class="tabs" id="tabsRow">
                 <button class="tab" data-sport="all">Все</button>
                 <button class="tab active" data-sport="football">⚽ Футбол</button>
                 <button class="tab" data-sport="hockey">🏒 Хоккей</button>
@@ -1886,6 +1921,7 @@
                 <button class="tab" data-sport="mma">🥊 MMA</button>
                 <button class="tab" data-sport="esports">🎮 Киберспорт</button>
                 <button class="tab" data-sport="favs">⭐ Избранное</button>
+            </div>
             </div>
             <div class="filters">
                 <select id="gameFilter" class="select">
@@ -2205,6 +2241,42 @@
                     ((document.documentElement.scrollTop / h) * 100) + '%';
             }
         });
+
+        // ===== Tabs swipe hint =====
+        (function initTabsHint() {
+            const tabs = document.getElementById('tabsRow');
+            const wrap = document.getElementById('tabsWrap');
+            if (!tabs || !wrap) return;
+
+            // Hide fade when scrolled to end
+            tabs.addEventListener('scroll', () => {
+                const atEnd = tabs.scrollLeft + tabs.clientWidth >= tabs.scrollWidth - 8;
+                wrap.classList.toggle('scrolled-end', atEnd);
+            }, { passive: true });
+
+            // Swipe hint animation on first load (mobile only, once per session)
+            const hintKey = 'prizm_tabs_hint_shown';
+            if (!sessionStorage.getItem(hintKey)) {
+                sessionStorage.setItem(hintKey, '1');
+                setTimeout(() => {
+                    // Scroll tabs to show there's more, then back
+                    const scrollTo = (target, dur) => {
+                        const start = tabs.scrollLeft;
+                        const diff = target - start;
+                        const t0 = performance.now();
+                        const step = now => {
+                            const p = Math.min((now - t0) / dur, 1);
+                            const ease = p < 0.5 ? 2*p*p : -1+(4-2*p)*p;
+                            tabs.scrollLeft = start + diff * ease;
+                            if (p < 1) requestAnimationFrame(step);
+                        };
+                        requestAnimationFrame(step);
+                    };
+                    scrollTo(80, 500);
+                    setTimeout(() => scrollTo(0, 400), 700);
+                }, 800);
+            }
+        })();
 
         // ===== Filters state =====
         let currentSportFilter = 'football';
