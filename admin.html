@@ -156,7 +156,9 @@
     <div class="stat-chip">Всего: <span id="stat-total">0</span></div>
     <div class="stat-chip">Pending: <span id="stat-pending">0</span></div>
     <div class="stat-chip">Выплатить: <span id="stat-payout" style="color:var(--orange)">0 PZM</span></div>
+    <div class="stat-chip" id="chip-balance" style="color:var(--green);cursor:pointer;" onclick="checkWalletBalance()" title="Нажмите для проверки баланса">💰 Баланс: <span id="stat-balance">—</span></div>
     <button class="btn btn-gold ml-auto" onclick="reloadBets()">🔄 Обновить</button>
+    <button class="btn btn-gray" onclick="checkWalletBalance()">💰 Баланс</button>
     <button class="btn btn-gray" onclick="doLogout()">Выйти</button>
   </header>
 
@@ -231,6 +233,18 @@ let sortField    = 'time';
 let sortAsc      = false;
 let localChanges = {};   // tx_id → новый статус
 
+// ===== НОРМАЛИЗАЦИЯ ПОЛЕЙ (бот пишет bet_type/coef/payout/sender, парсер — outcome/coefficient/potential_win/from_wallet) =====
+function normBet(b) {
+  return {
+    ...b,
+    outcome:       b.outcome      || b.bet_type   || '—',
+    coefficient:   b.coefficient  != null ? b.coefficient : (b.coef != null ? b.coef : '—'),
+    potential_win: b.potential_win != null ? b.potential_win : (b.payout != null ? b.payout : 0),
+    from_wallet:   b.from_wallet  || b.sender     || '—',
+    match_name:    b.match_name   || ((b.team1 && b.team2) ? `${b.team1} — ${b.team2}` : (b.match_id || '—')),
+  };
+}
+
 // ===== ЛОГИН =====
 function doLogin() {
   const v = document.getElementById('pwd-input').value;
@@ -290,9 +304,10 @@ function applyFilters() {
   const outcome = document.getElementById('filter-outcome').value;
 
   filtered = allBets.filter(b => {
-    if (sport   && b.sport   !== sport)   return false;
-    if (status  && b.status  !== status)  return false;
-    if (outcome && b.outcome !== outcome) return false;
+    const betOutcome = b.outcome || b.bet_type || '';
+    if (sport   && b.sport  !== sport)    return false;
+    if (status  && b.status !== status)   return false;
+    if (outcome && betOutcome !== outcome) return false;
     if (q && !JSON.stringify(b).toLowerCase().includes(q)) return false;
     return true;
   });
@@ -340,7 +355,8 @@ function renderTable() {
   }
   empty.style.display = 'none';
 
-  tbody.innerHTML = filtered.map(b => {
+  tbody.innerHTML = filtered.map(raw => {
+    const b = normBet(raw);
     const outcomeClass = {
       'П1': 'outcome-1', 'П2': 'outcome-2', 'X': 'outcome-x'
     }[b.outcome] || 'outcome-other';
@@ -350,23 +366,20 @@ function renderTable() {
       'loss': 's-loss', 'cancelled': 's-cancelled'
     }[b.status] || 's-pending';
 
-    const statusLabel = {
-      'pending': '⏳ Ожидание', 'win': '✅ Победа',
-      'loss': '❌ Проигрыш', 'cancelled': '🚫 Отмена'
-    }[b.status] || b.status;
-
     const txShort = (b.tx_id || '').substring(0, 12) + '...';
     const walletShort = (b.from_wallet || '').substring(0, 18) + '...';
+    const coefDisplay = b.coefficient !== '—' ? Number(b.coefficient).toFixed(2) : '—';
+    const payoutDisplay = typeof b.potential_win === 'number' ? b.potential_win.toFixed(2) : b.potential_win;
 
     return `<tr>
       <td style="white-space:nowrap;font-size:12px;color:var(--text2)">${b.time || '—'}</td>
       <td class="wallet-cell" title="${b.from_wallet}">${walletShort}</td>
-      <td title="${b.match_name}">${b.match_name || '—'}</td>
+      <td title="${b.match_name || ''}">${b.match_name || '—'}</td>
       <td style="color:var(--text2);font-size:12px">${b.sport || '—'}</td>
       <td><span class="outcome-pill ${outcomeClass}">${b.outcome}</span></td>
-      <td style="font-weight:700">${b.coefficient || '—'}</td>
-      <td style="color:var(--gold);font-weight:700">${b.amount} <small>PZM</small></td>
-      <td style="color:var(--green)">${b.potential_win} <small>PZM</small></td>
+      <td style="font-weight:700">${coefDisplay}</td>
+      <td style="color:var(--gold);font-weight:700">${b.amount != null ? Number(b.amount).toFixed(2) : '—'} <small>PZM</small></td>
+      <td style="color:var(--green)">${payoutDisplay} <small>PZM</small></td>
       <td>
         <span class="status-badge ${statusClass}">
           <select class="status-select" onchange="changeStatus('${b.tx_id}', this.value)"
@@ -397,9 +410,10 @@ function updateStats() {
   const pending = allBets.filter(b => b.status === 'pending');
   const wins    = allBets.filter(b => b.status === 'win');
 
+  const getPayout = b => b.potential_win != null ? b.potential_win : (b.payout || 0);
   const totalIn    = allBets.reduce((s, b) => s + (b.amount || 0), 0);
-  const winExpect  = pending.reduce((s, b) => s + (b.potential_win || 0), 0);
-  const paid       = wins.reduce((s, b) => s + (b.potential_win || 0), 0);
+  const winExpect  = pending.reduce((s, b) => s + getPayout(b), 0);
+  const paid       = wins.reduce((s, b) => s + getPayout(b), 0);
   const profit     = totalIn - paid;
 
   document.getElementById('stat-total').textContent   = allBets.length;
@@ -417,10 +431,10 @@ function round2(v) { return Math.round(v * 100) / 100; }
 function exportCSV() {
   const rows = [
     ['Время','Кошелёк','Матч','Спорт','Исход','Коэф','Ставка PZM','Выигрыш PZM','Статус','TX ID'],
-    ...filtered.map(b => [
-      b.time, b.from_wallet, b.match_name, b.sport,
-      b.outcome, b.coefficient, b.amount, b.potential_win, b.status, b.tx_id
-    ])
+    ...filtered.map(raw => {
+      const b = normBet(raw);
+      return [b.time, b.from_wallet, b.match_name, b.sport, b.outcome, b.coefficient, b.amount, b.potential_win, b.status, b.tx_id];
+    })
   ];
   const csv = rows.map(r => r.map(v => `"${(v||'').toString().replace(/"/g,'""')}"`).join(',')).join('\n');
   const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
@@ -428,6 +442,33 @@ function exportCSV() {
   a.href = URL.createObjectURL(blob);
   a.download = 'prizmbet_bets_' + new Date().toISOString().slice(0,10) + '.csv';
   a.click();
+}
+
+// ===== БАЛАНС КОШЕЛЬКА =====
+const PRIZM_WALLET  = 'PRIZM-4N7T-L2A7-RQZA-5BETW';
+const PRIZM_NODES   = [
+  'https://blockchain.prizm.space',
+  'https://node1.prizm.space',
+  'https://node2.prizm.space',
+];
+
+async function checkWalletBalance() {
+  document.getElementById('stat-balance').textContent = '...';
+  for (const node of PRIZM_NODES) {
+    try {
+      const r = await fetch(`${node}/prizm?requestType=getAccount&account=${PRIZM_WALLET}`, { signal: AbortSignal.timeout(8000) });
+      if (!r.ok) continue;
+      const data = await r.json();
+      if (data.errorCode) continue;
+      const bal = (parseInt(data.balanceNQT || 0) / 100).toFixed(2);
+      const unconf = (parseInt(data.unconfirmedBalanceNQT || 0) / 100).toFixed(2);
+      document.getElementById('stat-balance').textContent = bal + ' PZM';
+      showToast(`💰 Баланс: ${bal} PZM (неподтв.: ${unconf} PZM) | Нода: ${node}`);
+      return;
+    } catch { continue; }
+  }
+  document.getElementById('stat-balance').textContent = 'ошибка';
+  showToast('Не удалось получить баланс — все ноды недоступны', true);
 }
 
 // ===== ТОСТ =====

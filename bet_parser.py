@@ -268,6 +268,10 @@ def main():
 
     if not txs:
         print("  Нет новых транзакций или API недоступен")
+        # Всё равно сохраняем bets.json (обновляем временную метку)
+        bets_data["last_update"] = now
+        save_json(BETS_FILE, bets_data)
+        print("  Done.")
         return
 
     new_bets = process_transactions(txs, matches_idx, existing)

@@ -108,3 +108,34 @@ def prizm_amount(tx: dict) -> float:
 
 def get_sender_address(tx: dict) -> str:
     return tx.get("senderRS", tx.get("sender", "unknown"))
+
+
+def get_balance() -> dict:
+    """
+    Получить баланс кошелька PRIZM.
+    Возвращает: {"balance": float, "unconfirmed": float, "wallet": str, "node": str}
+    """
+    for node in PRIZM_NODES:
+        try:
+            r = requests.get(
+                f"{node}/prizm",
+                params={"requestType": "getAccount", "account": WALLET},
+                timeout=10,
+            )
+            if not r.ok:
+                continue
+            data = r.json()
+            if "errorCode" in data:
+                continue
+            # balanceNQT и unconfirmedBalanceNQT — в NQT (делим на 100)
+            balance_nqt     = int(data.get("balanceNQT", 0))
+            unconfirmed_nqt = int(data.get("unconfirmedBalanceNQT", 0))
+            return {
+                "balance":     balance_nqt / 100,
+                "unconfirmed": unconfirmed_nqt / 100,
+                "wallet":      WALLET,
+                "node":        node,
+            }
+        except Exception:
+            continue
+    return {"balance": None, "unconfirmed": None, "wallet": WALLET, "node": None}

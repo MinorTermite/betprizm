@@ -90,6 +90,8 @@ async def cmd_start(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
         "   Пример: `27080379 П1 10`\n\n"
         "📊 Команды:\n"
         "/mybets — мои ставки\n"
+        "/rules — правила приёма ставок\n"
+        "/advantages — наши преимущества\n"
         "/help — помощь"
     )
     await update.message.reply_text(text, parse_mode="Markdown", disable_web_page_preview=True)
@@ -109,7 +111,62 @@ async def cmd_help(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
         "*Пример:* отправь `10 PRIZM` на кошелёк\n"
         f"`{WALLET}`\n"
         "с комментарием `27080379 П1 10`\n\n"
-        "✅ Ставка фиксируется автоматически в течение 5 минут"
+        "✅ Ставка фиксируется автоматически в течение 5 минут\n\n"
+        "📋 /rules — правила приёма ставок\n"
+        "⭐ /advantages — преимущества PRIZMBET"
+    )
+    await update.message.reply_text(text, parse_mode="Markdown")
+
+
+async def cmd_rules(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
+    text = (
+        "📋 *ПРАВИЛА PRIZMBET*\n\n"
+        "━━━━━━━━━━━━━━━━━━━━\n"
+        "🪙 *Ставки принимаются ТОЛЬКО в монетах PRIZM*\n\n"
+        "При переводе обязательно указывайте в комментарии:\n"
+        "*ID события + тип ставки + сумма*\n\n"
+        "━━━━━━━━━━━━━━━━━━━━\n"
+        "🎯 *Обозначения ставок:*\n\n"
+        "▸ `П1` — победа первой команды (хозяева)\n"
+        "▸ `П2` — победа второй команды\n"
+        "▸ `X` — ничья\n"
+        "▸ `1X` — первая команда победит или ничья\n"
+        "▸ `X2` — вторая команда победит или ничья\n"
+        "▸ `12` — победа любой команды (ничьей нет)\n\n"
+        "━━━━━━━━━━━━━━━━━━━━\n"
+        "💡 *Пример ставки:*\n"
+        "Матч ЛЧ, Галатасарай — Ювентус, П1 @ 1.41\n"
+        "Ставка: `10 000 PRIZM`\n"
+        "Выигрыш: `10 000 × 1.41 = 14 100 PRIZM`\n\n"
+        "Отправь `10000 PRIZM` на кошелёк:\n"
+        f"`{WALLET}`\n"
+        "Комментарий: `27080379 П1 10000`\n\n"
+        "━━━━━━━━━━━━━━━━━━━━\n"
+        "⚠️ *Важно:*\n"
+        "• В случае проигрыша ставка НЕ возвращается\n"
+        "• После начала матча ставки НЕ принимаются\n"
+        "• Ставка засчитывается только при верном комментарии"
+    )
+    await update.message.reply_text(text, parse_mode="Markdown")
+
+
+async def cmd_advantages(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
+    text = (
+        "⭐ *ПРЕИМУЩЕСТВА PRIZMBET*\n\n"
+        "━━━━━━━━━━━━━━━━━━━━\n\n"
+        "✅  *Не требуется верификация*\n"
+        "    Никаких документов и паспортов\n\n"
+        "🕵️  *Анонимные платежи без проверки KYC*\n"
+        "    Полная конфиденциальность\n\n"
+        "🔓  *Нет условий по минимальному обороту*\n"
+        "    Выводи средства в любое время\n\n"
+        "🌍  *Нет ограничений по гео*\n"
+        "    Доступно из любой страны\n\n"
+        "₿  *Баланс счёта в криптовалюте PRIZM*\n"
+        "    Децентрализованная блокчейн-монета\n\n"
+        "━━━━━━━━━━━━━━━━━━━━\n"
+        "🎰 Начни играть: /start\n"
+        "📋 Правила: /rules"
     )
     await update.message.reply_text(text, parse_mode="Markdown")
 
@@ -141,6 +198,8 @@ async def cmd_bets(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
     kb = InlineKeyboardMarkup([[
         InlineKeyboardButton("🔄 Обновить", callback_data="refresh_bets"),
         InlineKeyboardButton("📥 Проверить PRIZM", callback_data="check_prizm"),
+    ], [
+        InlineKeyboardButton("💰 Баланс кошелька", callback_data="check_balance"),
     ]])
     await update.message.reply_text("\n\n".join(lines), parse_mode="Markdown", reply_markup=kb)
 
@@ -224,6 +283,28 @@ async def cmd_loss(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
             return
     await update.message.reply_text(f"Ставка {bet_id} не найдена")
 
+async def cmd_balance(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
+    """Проверить баланс кошелька PRIZM — только для админа"""
+    if update.effective_user.id != ADMIN_ID:
+        return
+    msg = await update.message.reply_text("🔍 Запрашиваю баланс кошелька...")
+    try:
+        info = prizm_api.get_balance()
+        if info["balance"] is None:
+            await msg.edit_text("❌ Не удалось получить баланс — все ноды недоступны.")
+            return
+        text = (
+            f"💰 *Баланс кошелька PRIZMBET*\n\n"
+            f"Кошелёк: `{info['wallet']}`\n"
+            f"Баланс: `{info['balance']:.2f} PRIZM`\n"
+            f"Неподтверждённый: `{info['unconfirmed']:.2f} PRIZM`\n"
+            f"Нода: `{info['node']}`"
+        )
+        await msg.edit_text(text, parse_mode="Markdown")
+    except Exception as e:
+        await msg.edit_text(f"❌ Ошибка: {e}")
+
+
 async def callback_handler(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
     q = update.callback_query
     await q.answer()
@@ -232,6 +313,21 @@ async def callback_handler(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
     elif q.data == "check_prizm":
         await q.message.reply_text("🔍 Проверяю транзакции PRIZM...")
         await check_prizm_transactions(ctx.bot)
+    elif q.data == "check_balance":
+        try:
+            info = prizm_api.get_balance()
+            if info["balance"] is None:
+                await q.message.reply_text("❌ Не удалось получить баланс — все ноды недоступны.")
+            else:
+                text = (
+                    f"💰 *Баланс кошелька*\n\n"
+                    f"`{info['wallet']}`\n"
+                    f"Баланс: `{info['balance']:.2f} PRIZM`\n"
+                    f"Неподтверждённый: `{info['unconfirmed']:.2f} PRIZM`"
+                )
+                await q.message.reply_text(text, parse_mode="Markdown")
+        except Exception as e:
+            await q.message.reply_text(f"❌ Ошибка: {e}")
 
 # ── Проверка транзакций PRIZM (запускается по расписанию) ────
 async def check_prizm_transactions(bot=None):
@@ -316,20 +412,24 @@ def main():
     log.info("Starting PRIZMBET Bot...")
     app = Application.builder().token(BOT_TOKEN).build()
 
-    app.add_handler(CommandHandler("start",   cmd_start))
-    app.add_handler(CommandHandler("help",    cmd_help))
-    app.add_handler(CommandHandler("mybets",  cmd_mybets))
-    app.add_handler(CommandHandler("bets",    cmd_bets))
-    app.add_handler(CommandHandler("stats",   cmd_stats))
-    app.add_handler(CommandHandler("win",     cmd_win))
-    app.add_handler(CommandHandler("loss",    cmd_loss))
+    app.add_handler(CommandHandler("start",      cmd_start))
+    app.add_handler(CommandHandler("help",       cmd_help))
+    app.add_handler(CommandHandler("rules",      cmd_rules))
+    app.add_handler(CommandHandler("advantages", cmd_advantages))
+    app.add_handler(CommandHandler("mybets",     cmd_mybets))
+    app.add_handler(CommandHandler("bets",       cmd_bets))
+    app.add_handler(CommandHandler("stats",      cmd_stats))
+    app.add_handler(CommandHandler("win",        cmd_win))
+    app.add_handler(CommandHandler("loss",       cmd_loss))
+    app.add_handler(CommandHandler("balance",    cmd_balance))
     app.add_handler(CallbackQueryHandler(callback_handler))
 
+    # ── ВАЖНО: job_queue требует async-функцию, не lambda ──
+    async def _check_tx_job(ctx: ContextTypes.DEFAULT_TYPE):
+        await check_prizm_transactions(ctx.bot)
+
     # Проверка PRIZM каждые 5 минут через job_queue
-    app.job_queue.run_repeating(
-        lambda ctx: check_prizm_transactions(ctx.bot),
-        interval=300, first=30
-    )
+    app.job_queue.run_repeating(_check_tx_job, interval=300, first=30)
 
     log.info(f"Bot started | Admin: {ADMIN_ID} | Wallet: {WALLET}")
     app.run_polling(drop_pending_updates=True)

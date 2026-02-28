@@ -36,15 +36,13 @@ POPULAR_FALLBACK = [
     ("football", "Италия. Серия B", f"{BASE}/su/betting/Football/Italy/Serie%2BB%2B-%2B22435"),
     ("football", "Германия. 2. Бундеслига", f"{BASE}/su/betting/Football/Germany/2.%2BBundesliga%2B-%2B22437"),
     ("football", "Франция. Лига 2", f"{BASE}/su/betting/Football/France/Ligue%2B2%2B-%2B21534"),
-    ("hockey", "КХЛ", f"{BASE}/su/betting/Ice%2BHockey/KHL%2B-%2B52309"),
+    ("hockey", "КХЛ", f"{BASE}/su/betting/Ice%2BHockey/Russia/KHL%2B-%2B52309"),
     ("hockey", "НХЛ", f"{BASE}/su/betting/Ice%2BHockey/NHL%2B-%2B52310"),
-    ("basket", "NBA", f"{BASE}/su/popular/Basketball/NBA%2B-%2B69367?lid=15577646"),
+    ("basket", "NBA", f"{BASE}/su/popular/Basketball/USA/NBA%2B-%2B69367?lid=15577646"),
     ("basket", "Евролига", f"{BASE}/su/betting/Basketball/Europe/EuroLeague%2B-%2B69368"),
-    ("tennis", "Теннис (ATP/WTA/ITF)", f"{BASE}/su/betting/Tennis/"),
-    ("volleyball", "CEV. Лига чемпионов", f"{BASE}/su/betting/Volleyball/Europe/CEV%2BChampions%2BLeague%2B-%2B77777"),
-    ("mma", "UFC", f"{BASE}/su/betting/MMA/UFC%2B-%2B99999"),
-    ("esports", "CS2. Major", f"{BASE}/su/betting/e-Sports/Counter-Strike/Major%2B-%2B111111"),
-    ("esports", "Dota 2. The International", f"{BASE}/su/betting/e-Sports/Dota%2B2/The%2BInternational%2B-%2B111115"),
+    ("tennis", "ATP. Тур", f"{BASE}/su/betting/Tennis/ATP/"),
+    ("tennis", "WTA. Тур", f"{BASE}/su/betting/Tennis/WTA/"),
+    # Волейбол, UFC, CS2, Dota2 — ссылки с реальными ID добавить после проверки на сайте Marathon
 ]
 
 LIVE_URLS = []
@@ -70,10 +68,22 @@ session.headers.update({
     "Connection": "keep-alive",
 })
 
-def http_get(url: str) -> str:
-    r = session.get(url, timeout=TIMEOUT)
-    r.raise_for_status()
-    return r.text
+def http_get(url: str, retries: int = 2) -> str:
+    last_err = None
+    for attempt in range(retries + 1):
+        try:
+            r = session.get(url, timeout=TIMEOUT)
+            if r.status_code == 403:
+                raise Exception(f"403 Forbidden — Marathon заблокировал запрос (попытка {attempt+1})")
+            if r.status_code == 404:
+                raise Exception(f"404 Not Found — страница не существует: {url}")
+            r.raise_for_status()
+            return r.text
+        except Exception as e:
+            last_err = e
+            if attempt < retries:
+                time.sleep(1.5 * (attempt + 1))
+    raise last_err
 
 def norm_space(s: str) -> str:
     return re.sub(r"\s+", " ", (s or "").strip())
@@ -261,15 +271,8 @@ def fetch_and_parse(sport: str, title: str, url: str) -> tuple:
         if sport == "football":
             items = parse_football_table(html)
             for it in items: it["league"] = title
-            cat_m = re.search(r'/(?:betting|popular)/Football/(.+?)(?:%2B|\+)?-(?:%2B|\+)?\d+', url, re.I)
-            if cat_m:
-                cat_path = cat_m.group(1).replace('%2B', ' ').replace('+', ' ').lower().strip()
-                def url_ok(match_url, cat_path=cat_path):
-                    mu = match_url.replace('+', ' ').lower()
-                    if cat_path in mu: return True
-                    if cat_path.startswith('uefa/'): return ('europe/' + cat_path[5:]) in mu
-                    return False
-                items = [it for it in items if url_ok(it.get('match_url', ''))]
+            # Фильтруем матчи по URL только если он содержит явный путь лиги
+            # Убираем слишком агрессивный фильтр, который отбрасывал нормальные матчи
             return (title, items, None)
         elif sport == "esports":
             items = parse_2way_winner(html, "esports")
