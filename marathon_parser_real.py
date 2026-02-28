@@ -15,6 +15,7 @@ from typing import List, Optional
 from urllib.parse import urljoin
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
+import threading
 import requests
 from bs4 import BeautifulSoup
 
@@ -56,23 +57,27 @@ CREDS_FILE = os.getenv("CREDS_FILE", "credentials.json")
 UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
       "(KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36")
 TIMEOUT = 25
+_local = threading.local()
 
-# Настраиваем сессию под многопоточность
-session = requests.Session()
-adapter = requests.adapters.HTTPAdapter(pool_connections=3, pool_maxsize=3)
-session.mount('https://', adapter)
-session.headers.update({
-    "User-Agent": UA,
-    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-    "Accept-Language": "ru,en;q=0.9",
-    "Connection": "keep-alive",
-})
+def _get_session() -> requests.Session:
+    """Потокобезопасная сессия: каждый поток получает свою."""
+    if not hasattr(_local, "session"):
+        s = requests.Session()
+        s.mount('https://', requests.adapters.HTTPAdapter(pool_connections=1, pool_maxsize=1))
+        s.headers.update({
+            "User-Agent": UA,
+            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+            "Accept-Language": "ru,en;q=0.9",
+            "Connection": "keep-alive",
+        })
+        _local.session = s
+    return _local.session
 
 def http_get(url: str, retries: int = 2) -> str:
     last_err = None
     for attempt in range(retries + 1):
         try:
-            r = session.get(url, timeout=TIMEOUT)
+            r = _get_session().get(url, timeout=TIMEOUT)
             if r.status_code == 403:
                 raise Exception(f"403 Forbidden — Marathon заблокировал запрос (попытка {attempt+1})")
             if r.status_code == 404:

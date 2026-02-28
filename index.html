@@ -1863,6 +1863,16 @@
             </div>
         </div>
 
+        <!-- TELEGRAM BOT BANNER -->
+        <a href="https://t.me/PrizmBet2bot" target="_blank" rel="noopener" class="tg-bot-banner">
+            <span class="tg-bot-icon">🤖</span>
+            <div class="tg-bot-text">
+                <strong>Telegram-бот @PrizmBet2bot</strong>
+                <span>Уведомления о ставках • Правила • Статистика</span>
+            </div>
+            <span class="tg-bot-arrow">→</span>
+        </a>
+
         <!-- FILTERS -->
         <div class="filters-bar">
             <div class="tabs">
@@ -1875,6 +1885,7 @@
                 <button class="tab" data-sport="volleyball"> Волейбол</button>
                 <button class="tab" data-sport="mma">🥊 MMA</button>
                 <button class="tab" data-sport="esports">🎮 Киберспорт</button>
+                <button class="tab" data-sport="favs">⭐ Избранное</button>
             </div>
             <div class="filters">
                 <select id="gameFilter" class="select">
@@ -2408,7 +2419,9 @@
                         if (/(dota|cs2|valorant)/.test(combined)) return false;
                     }
                 }
-                if (filters.favOnly && !filters.favs.includes(m.id)) return false;
+                if (filters.favOnly || filters.sport === 'favs') {
+                    if (!filters.favs.includes(m.id)) return false;
+                }
                 if (filters.q) {
                     const blob = ((m.id || '') + ' ' + (m.league || '') + ' ' + (m.team1 || '') + ' ' + (m.team2 || '') + ' ' + game).toLowerCase();
                     if (!blob.includes(filters.q)) return false;
@@ -2750,8 +2763,8 @@
 
         function copyBetSlipData() {
             if (!currentBet) return;
-            const amt = document.getElementById('bsInput').value.trim();
-            const msg = `${currentBet.teams} ${currentBet.datetime} ${currentBet.betType} ${currentBet.coef}`;
+            const amt = document.getElementById('bsInput').value.trim() || '0';
+            const msg = `${currentBet.teams}, ${currentBet.betType} @ ${currentBet.coef}\nСтавка: ${amt} PRIZM\nID: ${currentBet.id}`;
 
             navigator.clipboard.writeText(msg).then(() => {
                 // Сохраняем в локальную историю

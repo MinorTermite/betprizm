@@ -11,7 +11,13 @@ import json
 import os
 import re
 import requests
+from datetime import datetime, timezone
 import prizm_api
+
+# PRIZM timestamp = seconds since PRIZM genesis block (Unix epoch offset)
+# PRIZM genesis: 2018-01-01 00:00:00 UTC = 1514764800
+# Если ts выглядит как Unix-timestamp (>1500000000) — epoch=0
+PRIZM_EPOCH = 0  # транзакции уже содержат Unix-подобные метки
 
 # ===== КОНФИГУРАЦИЯ =====
 SCRIPT_DIR  = os.path.dirname(os.path.abspath(__file__))
