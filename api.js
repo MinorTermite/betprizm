@@ -44,16 +44,19 @@ async function loadData() {
         showStatus(cached.last_update, 'cache');
     }
 
+    // Округляем до 10-минутного интервала — CDN и браузер могут кэшировать ответ
+    const cacheBust = Math.floor(Date.now() / 600000);
+
     let data = null, source = 'static';
     // 2. Пробуем статичный matches.json (основной источник на GitHub Pages)
     try {
-        const r = await fetch('matches.json?t=' + Date.now());
+        const r = await fetch('matches.json?v=' + cacheBust);
         if (r.ok) data = await r.json();
     } catch (e) { console.warn('static fail:', e.message); }
     // 3. Fallback — пробуем абсолютный URL (GitHub Pages)
     if (!data?.matches?.length) {
         try {
-            const r = await fetch(NETLIFY_FN_URL + '?t=' + Date.now());
+            const r = await fetch(NETLIFY_FN_URL + '?v=' + cacheBust);
             if (r.ok) {
                 const live = await r.json();
                 if (live?.matches?.length) { data = live; source = 'live'; }

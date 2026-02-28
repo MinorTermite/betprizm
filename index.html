@@ -2155,7 +2155,7 @@
 
         function requestNotificationPermission() {
             if (!('Notification' in window)) {
-                showToast('Уведомления не поддерживаются');
+                showToast('Уведомления не поддерживаются в этом браузере');
                 return;
             }
             if (Notification.permission === 'granted') {
@@ -2163,14 +2163,32 @@
                 return;
             }
             if (Notification.permission === 'denied') {
-                showToast('🔕 Уведомления заблокированы. Разрешите в настройках браузера.');
+                // Показываем модалку с инструкцией как разблокировать
+                const msg = document.createElement('div');
+                msg.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#1a1a2e;border:1px solid rgba(139,92,246,0.5);border-radius:16px;padding:24px;z-index:9999;max-width:320px;width:90%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.7)';
+                msg.innerHTML = `
+                    <div style="font-size:2rem;margin-bottom:12px">🔕</div>
+                    <div style="font-weight:700;margin-bottom:8px;color:#fff">Уведомления заблокированы</div>
+                    <div style="color:#aaa;font-size:0.85rem;margin-bottom:16px;line-height:1.5">
+                        Chrome: нажми 🔒 в адресной строке → <b>Уведомления</b> → <b>Разрешить</b>
+                    </div>
+                    <button onclick="this.closest('div[style]').remove()" style="background:rgba(139,92,246,0.3);border:1px solid rgba(139,92,246,0.5);color:#fff;padding:8px 24px;border-radius:8px;cursor:pointer;font-size:0.9rem">Понятно</button>
+                `;
+                document.body.appendChild(msg);
+                msg.addEventListener('click', e => { if (e.target === msg) msg.remove(); });
                 return;
             }
+            // permission === 'default' — запрашиваем у браузера
             Notification.requestPermission().then(result => {
                 updateNotifBell();
                 if (result === 'granted') {
                     showToast('🔔 Уведомления включены!');
                     if (navigator.vibrate) navigator.vibrate(100);
+                    // Показываем тестовое уведомление
+                    new Notification('PRIZMBET', {
+                        body: 'Уведомления включены! Теперь вы будете получать обновления.',
+                        icon: 'prizmbet-logo.webp'
+                    });
                 } else {
                     showToast('Уведомления отклонены');
                 }

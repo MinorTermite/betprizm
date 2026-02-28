@@ -22,28 +22,28 @@ from bs4 import BeautifulSoup
 BASE = "https://www.marathonbet.ru"
 
 POPULAR_FALLBACK = [
-    ("football", "Лига чемпионов УЕФА", f"{BASE}/su/popular/Football/UEFA/Champions%2BLeague%2B-%2B26493"),
-    ("football", "Лига Европы УЕФА", f"{BASE}/su/popular/Football/UEFA/Europa%2BLeague%2B-%2B26494"),
-    ("football", "Лига конференций УЕФА", f"{BASE}/su/popular/Football/UEFA/Conference%2BLeague%2B-%2B26495"),
+    # UEFA — одна страница со всеми матчами UEFA (CL+EL+ECL перемешаны на popular-странице)
+    ("football", "Лига чемпионов УЕФА", f"{BASE}/su/betting/Football/UEFA/Champions%2BLeague%2B-%2B26493"),
+    ("football", "Лига Европы УЕФА",    f"{BASE}/su/betting/Football/UEFA/Europa%2BLeague%2B-%2B26494"),
+    ("football", "Лига конференций УЕФА", f"{BASE}/su/betting/Football/UEFA/Conference%2BLeague%2B-%2B26495"),
     ("football", "Англия. Премьер-лига", f"{BASE}/su/popular/Football/England/Premier%2BLeague%2B-%2B21520?lid=15600999"),
-    ("football", "Испания. Ла Лига", f"{BASE}/su/popular/Football/Spain/Primera%2BDivision%2B-%2B8736?lid=26570477"),
-    ("football", "Италия. Серия A", f"{BASE}/su/popular/Football/Italy/Serie%2BA%2B-%2B22434?lid=15601013"),
+    ("football", "Испания. Ла Лига",    f"{BASE}/su/popular/Football/Spain/Primera%2BDivision%2B-%2B8736?lid=26570477"),
+    ("football", "Италия. Серия A",     f"{BASE}/su/popular/Football/Italy/Serie%2BA%2B-%2B22434?lid=15601013"),
     ("football", "Германия. Бундеслига", f"{BASE}/su/popular/Football/Germany/Bundesliga%2B-%2B22436"),
-    ("football", "Франция. Лига 1", f"{BASE}/su/popular/Football/France/Ligue%2B1%2B-%2B21533?interval=ALL_TIME"),
+    ("football", "Франция. Лига 1",     f"{BASE}/su/popular/Football/France/Ligue%2B1%2B-%2B21533?interval=ALL_TIME"),
     ("football", "Россия. Премьер-лига", f"{BASE}/su/betting/Football/Russia/Premier%2BLeague%2B-%2B22433"),
-    ("football", "Россия. 1-я лига", f"{BASE}/su/betting/Football/Russia/1st%2BLeague%2B-%2B45766"),
-    ("football", "Англия. Чемпионшип", f"{BASE}/su/betting/Football/England/Championship%2B-%2B21521"),
-    ("football", "Испания. Сегунда", f"{BASE}/su/betting/Football/Spain/Segunda%2BDivision%2B-%2B8737"),
-    ("football", "Италия. Серия B", f"{BASE}/su/betting/Football/Italy/Serie%2BB%2B-%2B22435"),
+    ("football", "Россия. 1-я лига",    f"{BASE}/su/betting/Football/Russia/1st%2BLeague%2B-%2B45766"),
+    ("football", "Англия. Чемпионшип",  f"{BASE}/su/betting/Football/England/Championship%2B-%2B21521"),
+    ("football", "Испания. Сегунда",    f"{BASE}/su/betting/Football/Spain/Segunda%2BDivision%2B-%2B8737"),
+    ("football", "Италия. Серия B",     f"{BASE}/su/betting/Football/Italy/Serie%2BB%2B-%2B22435"),
     ("football", "Германия. 2. Бундеслига", f"{BASE}/su/betting/Football/Germany/2.%2BBundesliga%2B-%2B22437"),
-    ("football", "Франция. Лига 2", f"{BASE}/su/betting/Football/France/Ligue%2B2%2B-%2B21534"),
-    ("hockey", "КХЛ", f"{BASE}/su/betting/Ice%2BHockey/Russia/KHL%2B-%2B52309"),
-    ("hockey", "НХЛ", f"{BASE}/su/betting/Ice%2BHockey/NHL%2B-%2B52310"),
-    ("basket", "NBA", f"{BASE}/su/popular/Basketball/USA/NBA%2B-%2B69367?lid=15577646"),
-    ("basket", "Евролига", f"{BASE}/su/betting/Basketball/Europe/EuroLeague%2B-%2B69368"),
-    ("tennis", "ATP. Тур", f"{BASE}/su/betting/Tennis/ATP/"),
-    ("tennis", "WTA. Тур", f"{BASE}/su/betting/Tennis/WTA/"),
-    # Волейбол, UFC, CS2, Dota2 — ссылки с реальными ID добавить после проверки на сайте Marathon
+    ("football", "Франция. Лига 2",     f"{BASE}/su/betting/Football/France/Ligue%2B2%2B-%2B21534"),
+    ("hockey",   "КХЛ",                 f"{BASE}/su/betting/Ice-Hockey/Russia/KHL+-+52309"),
+    ("hockey",   "НХЛ",                 f"{BASE}/su/betting/Ice-Hockey/NHL+-+52310"),
+    ("basket",   "NBA",                 f"{BASE}/su/popular/Basketball/USA/NBA%2B-%2B69367?lid=15577646"),
+    # Евролига убрана — Marathon popular/Basketball возвращает те же NBA-матчи
+    ("tennis",   "ATP. Тур",            f"{BASE}/su/betting/Tennis/ATP/"),
+    ("tennis",   "WTA. Тур",            f"{BASE}/su/betting/Tennis/WTA/"),
 ]
 
 LIVE_URLS = []
