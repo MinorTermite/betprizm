@@ -168,11 +168,16 @@ def parse_2way_winner(html: str, sport: str) -> List[dict]:
     soup = BeautifulSoup(html, "lxml")
     out = []
 
-    # Ключи основного рынка результата матча (одинаковы для всех видов спорта)
+    # Ключи основного рынка результата матча
+    # Match_Result - для футбола и стандартных рынков
+    # Match_Winner_Including_All_OT - для баскетбола/NBA
     KEY_MAP = {
-        "Match_Result.1":    "p1",
-        "Match_Result.draw": "x",
-        "Match_Result.3":    "p2",
+        "Match_Result.1":                   "p1",
+        "Match_Result.draw":                "x",
+        "Match_Result.3":                   "p2",
+        "Match_Winner_Including_All_OT.HB_H": "p1",
+        "Match_Winner_Including_All_OT.HB_A": "p2",
+        "To_Win_Match_With_Handicap.HB_H":  "h1_fake", # Игнорируем форы
     }
 
     # Виды спорта без ничьей: x всегда "—"
@@ -234,18 +239,28 @@ def parse_2way_winner(html: str, sport: str) -> List[dict]:
         p2_val = odds_dict.get("p2") or 0.0
 
         # Fallback: позиционное извлечение если ключи не найдены
-        # (резервный вариант для нестандартных страниц)
+        # ВНИМАНИЕ: Для баскетбола в строке может быть 6 кнопок:
+        # П1, П2, Фора1, Фора2, ТоталМ, ТоталБ.
         if not p1_val and not p2_val:
             odds_btns = row.select(".selection-link")
-            if len(odds_btns) < 2:
+            if not odds_btns:
                 odds_btns = row.select(".price")
-            if len(odds_btns) >= 3:
-                p1_val = as_float(odds_btns[0].get_text().strip()) or 0.0
-                x_val  = as_float(odds_btns[1].get_text().strip()) or 0.0
-                p2_val = as_float(odds_btns[2].get_text().strip()) or 0.0
-            elif len(odds_btns) >= 2:
-                p1_val = as_float(odds_btns[0].get_text().strip()) or 0.0
-                p2_val = as_float(odds_btns[1].get_text().strip()) or 0.0
+                
+            btn_count = len(odds_btns)
+            # Если 3 кнопки (П1, X, П2) - футбол/хоккей
+            if btn_count >= 3:
+                # Если спорт без ничьей (баскет), но кнопок >= 2, берем П1=0, П2=1
+                if sport in NO_DRAW_SPORTS:
+                   p1_val = as_float(odds_btns[0].get_text()) or 0.0
+                   p2_val = as_float(odds_btns[1].get_text()) or 0.0
+                else:
+                   p1_val = as_float(odds_btns[0].get_text()) or 0.0
+                   x_val  = as_float(odds_btns[1].get_text()) or 0.0
+                   p2_val = as_float(odds_btns[2].get_text()) or 0.0
+            # Если 2 кнопки (П1, П2) - теннис/NBA/киберспорт
+            elif btn_count >= 2:
+                p1_val = as_float(odds_btns[0].get_text()) or 0.0
+                p2_val = as_float(odds_btns[1].get_text()) or 0.0
 
         # Для видов без ничьей — принудительно убираем X.
         # Marathon показывает Match_Result.draw для "основного времени"
