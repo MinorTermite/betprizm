@@ -46,13 +46,27 @@ log = logging.getLogger(__name__)
 
 # ── Хранилище ставок ─────────────────────────────────────────
 def load_bets() -> list:
+    """Загрузить ставки. Поддерживает оба формата: plain list [] и {"bets": [...]}"""
     try:
-        return json.loads(BETS_FILE.read_text(encoding="utf-8")) if BETS_FILE.exists() else []
+        if not BETS_FILE.exists():
+            return []
+        data = json.loads(BETS_FILE.read_text(encoding="utf-8"))
+        if isinstance(data, list):
+            return data
+        if isinstance(data, dict):
+            return data.get("bets", [])
+        return []
     except Exception:
         return []
 
 def save_bets(bets: list):
-    BETS_FILE.write_text(json.dumps(bets, ensure_ascii=False, indent=2), encoding="utf-8")
+    """Сохранить ставки в формате совместимом с bet_parser.py и admin.html"""
+    data = {
+        "last_update": datetime.now().strftime("%Y-%m-%d %H:%M"),
+        "total_bets": len(bets),
+        "bets": bets,
+    }
+    BETS_FILE.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
 
 def load_matches() -> dict:
     """Загрузить матчи по ID для быстрого поиска"""
