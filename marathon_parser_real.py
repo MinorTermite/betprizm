@@ -185,6 +185,11 @@ def parse_2way_winner(html: str, sport: str) -> List[dict]:
             p1_val = as_float(odds_btns[0].get_text())
             p2_val = as_float(odds_btns[1].get_text())
 
+        # Пропускаем матчи без ссылки — это LIVE-матчи других видов спорта,
+        # которые MarathonBet показывает вверху популярных страниц
+        if not match_url:
+            continue
+
         out.append({
             "sport": sport, "league": "", "id": event_id,
             "date": date_str, "time": time_str, "team1": t1, "team2": t2,
@@ -215,6 +220,7 @@ def fetch_and_parse(sport: str, title: str, url: str) -> tuple:
             return (title, items, None)
         elif sport == "esports":
             items = parse_2way_winner(html, "esports")
+            for it in items: it["league"] = title  # исправляем: лига не устанавливалась
             return (title, items, None)
         else:
             items = parse_2way_winner(html, sport)

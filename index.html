@@ -2312,6 +2312,8 @@
 
         function filterMatches(matches, filters) {
             let filtered = matches.filter(isValidMatch);
+            // Убираем live-матчи: показываем только предстоящие
+            filtered = filtered.filter(m => !isMatchLive(m));
             filtered = filtered.filter(m => {
                 const sport = getMatchSport(m);
                 const game = getMatchGame(m);
@@ -2543,10 +2545,12 @@
                             ${oddBtn('П1', match.p1)}
                             ${oddBtn('X', match.x)}
                             ${oddBtn('П2', match.p2)}
+                            ${(match.sport || '') === 'football' ? `
                             <div class="odds-section-title">Двойной шанс</div>
                             ${oddBtn('1X', match.p1x)}
                             ${oddBtn('12', match.p12)}
                             ${oddBtn('X2', match.px2)}
+                            ` : ''}
                         </div>
                         `;
                     section.appendChild(card);
