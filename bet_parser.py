@@ -17,12 +17,11 @@ from datetime import datetime, timezone
 SCRIPT_DIR  = os.path.dirname(os.path.abspath(__file__))
 WALLET      = "PRIZM-4N7T-L2A7-RQZA-5BETW"
 PRIZM_NODES = [
-    "https://n1.prizm.space:9976",
-    "https://n2.prizm.space:9976",
-    "http://node1.prizm.space:9976",
+    "https://core.prizm.vip",   # рабочая нода (проверено 2026-02-28)
+    "https://blockchain.prizm.vip",
 ]
 PRIZM_EPOCH = 1511654400   # 2017-11-26 00:00:00 UTC (genesis PRIZM)
-NQT         = 100_000_000  # 1 PRIZM = 100000000 NQT
+NQT         = 100           # 1 PRIZM = 100 NQT (2 decimal places)
 
 BETS_FILE    = os.path.join(SCRIPT_DIR, "bets.json")
 MATCHES_FILE = os.path.join(SCRIPT_DIR, "matches.json")

@@ -348,16 +348,44 @@ async def check_prizm_transactions(bot=None):
         if tx_id in bet_ids:
             continue
 
-        comment = tx.get("attachment", {}).get("message", "")
+        # Пропускаем исходящие транзакции
+        if tx.get("senderRS") == WALLET:
+            continue
+
+        amount = prizm_api.prizm_amount(tx)
+        sender = prizm_api.get_sender_address(tx)
+
+        # Пробуем прочитать plain-text сообщение
+        comment = prizm_api.get_message(tx)
         parsed  = prizm_api.parse_bet_comment(comment)
+
         if not parsed:
-            log.info(f"TX {tx_id}: unparseable comment '{comment}'")
+            # Транзакция без распознаваемой ставки
+            has_enc = prizm_api.has_encrypted_message(tx)
+            if has_enc and bot:
+                # Уведомляем админа — транзакция есть, но сообщение зашифровано
+                try:
+                    await bot.send_message(
+                        chat_id=ADMIN_ID,
+                        text=(
+                            f"💸 *Входящий перевод* (зашифровано)\n\n"
+                            f"От: `{sender}`\n"
+                            f"Сумма: `{amount:.2f} PRIZM`\n"
+                            f"TX: `{tx_id[:16]}...`\n\n"
+                            f"⚠️ Сообщение зашифровано — ставка не распознана.\n"
+                            f"Попросите игрока отправить *незашифрованный* (plain text) комментарий."
+                        ),
+                        parse_mode="Markdown"
+                    )
+                except Exception as e:
+                    log.error(f"Admin enc notify error: {e}")
+            else:
+                log.info(f"TX {tx_id[:12]}: no bet comment '{comment}'")
+            bet_ids.add(tx_id)  # помечаем как обработанный, не добавляем как ставку
             continue
 
         match_id = parsed["match_id"]
         bet_type = parsed["bet_type"]
-        amount   = prizm_api.prizm_amount(tx)
-        sender   = prizm_api.get_sender_address(tx)
 
         # Найти матч и коэффициент
         match = matches.get(match_id, {})
@@ -378,7 +406,7 @@ async def check_prizm_transactions(bot=None):
             "amount":   amount,
             "payout":   payout,
             "sender":   sender,
-            "tg_id":    "",  # будет заполнено если игрок написал боту
+            "tg_id":    "",
             "status":   "pending",
             "time":     datetime.now().strftime("%d.%m.%Y %H:%M"),
         }
@@ -387,7 +415,7 @@ async def check_prizm_transactions(bot=None):
         added += 1
         log.info(f"New bet: {bet['id']} — {match.get('team1','?')} {bet_type} {amount} PRIZM")
 
-        # Уведомить админа
+        # Уведомить админа о новой ставке
         if bot:
             try:
                 await bot.send_message(
@@ -424,12 +452,38 @@ def main():
     app.add_handler(CommandHandler("balance",    cmd_balance))
     app.add_handler(CallbackQueryHandler(callback_handler))
 
-    # ── ВАЖНО: job_queue требует async-функцию, не lambda ──
+    # ── job_queue требует async-функцию ──
     async def _check_tx_job(ctx: ContextTypes.DEFAULT_TYPE):
         await check_prizm_transactions(ctx.bot)
 
-    # Проверка PRIZM каждые 5 минут через job_queue
+    async def _balance_report_job(ctx: ContextTypes.DEFAULT_TYPE):
+        """Отправлять баланс кошелька админу каждый час"""
+        try:
+            info = prizm_api.get_balance()
+            if info["balance"] is None:
+                return  # нода недоступна — молча пропускаем
+            bets = load_bets()
+            pending_count = sum(1 for b in bets if b.get("status") == "pending")
+            pending_sum   = sum(b.get("amount", 0) for b in bets if b.get("status") == "pending")
+            await ctx.bot.send_message(
+                chat_id=ADMIN_ID,
+                text=(
+                    f"📊 *Ежечасный отчёт PRIZMBET*\n\n"
+                    f"💰 Баланс: `{info['balance']:.2f} PRIZM`\n"
+                    f"⏳ Ожидают: `{info['unconfirmed']:.2f} PRIZM`\n\n"
+                    f"🎰 Активных ставок: `{pending_count}`\n"
+                    f"💵 Сумма в игре: `{pending_sum:.2f} PRIZM`\n\n"
+                    f"Нода: `{info['node']}`"
+                ),
+                parse_mode="Markdown"
+            )
+        except Exception as e:
+            log.error(f"Balance report error: {e}")
+
+    # Проверка транзакций каждые 5 минут
     app.job_queue.run_repeating(_check_tx_job, interval=300, first=30)
+    # Отчёт о балансе каждый час (first=60 — через минуту после старта)
+    app.job_queue.run_repeating(_balance_report_job, interval=3600, first=60)
 
     log.info(f"Bot started | Admin: {ADMIN_ID} | Wallet: {WALLET}")
     app.run_polling(drop_pending_updates=True)

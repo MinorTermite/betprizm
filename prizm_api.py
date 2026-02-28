@@ -6,21 +6,24 @@ import json
 import time
 import requests
 
+# Подтверждённые рабочие ноды (core.prizm.vip — основная, проверено 2026-02-28)
 PRIZM_NODES = [
-    "https://blockchain.prizm.space",
-    "https://node1.prizm.space",
-    "https://node2.prizm.space",
+    "https://core.prizm.vip",
+    "https://blockchain.prizm.vip",
 ]
 WALLET = "PRIZM-4N7T-L2A7-RQZA-5BETW"
 CACHE_FILE = "prizm_last_tx.json"
+NQT = 100  # 1 PRIZM = 100 NQT (2 decimal places)
 
 
-def _get(params: dict, timeout=10) -> dict | None:
+def _get(params: dict, timeout=12) -> dict | None:
     for node in PRIZM_NODES:
         try:
-            r = requests.get(f"{node}/prizm", params=params, timeout=timeout)
+            r = requests.get(f"{node}/prizm", params=params, timeout=timeout, verify=True)
             if r.ok:
-                return r.json()
+                data = r.json()
+                if "errorCode" not in data:
+                    return data
         except Exception:
             continue
     return None
@@ -42,7 +45,6 @@ def get_transactions(first_index=0, last_index=99) -> list[dict]:
 
 def get_new_transactions() -> list[dict]:
     """Вернуть только новые транзакции (после последней проверки)"""
-    # Загружаем последний известный timestamp
     last_ts = 0
     try:
         with open(CACHE_FILE) as f:
@@ -51,7 +53,9 @@ def get_new_transactions() -> list[dict]:
         pass
 
     txs = get_transactions()
-    new_txs = [t for t in txs if t.get("timestamp", 0) > last_ts]
+    # Фильтруем только входящие на наш кошелёк (senderRS != WALLET)
+    incoming = [t for t in txs if t.get("recipientRS") == WALLET or t.get("senderRS") != WALLET]
+    new_txs = [t for t in incoming if t.get("timestamp", 0) > last_ts]
 
     if new_txs:
         new_last = max(t.get("timestamp", 0) for t in new_txs)
@@ -62,6 +66,27 @@ def get_new_transactions() -> list[dict]:
             pass
 
     return new_txs
+
+
+def get_message(tx: dict) -> str:
+    """
+    Извлечь текстовое сообщение из транзакции.
+    Поддерживает plain text (attachment.message).
+    Зашифрованные сообщения (encryptedMessage) возвращают пустую строку —
+    они не могут быть прочитаны без приватного ключа кошелька.
+    """
+    att = tx.get("attachment") or {}
+    msg = att.get("message", "")
+    is_text = att.get("messageIsText", True)
+    if msg and is_text:
+        return str(msg).strip()
+    return ""
+
+
+def has_encrypted_message(tx: dict) -> bool:
+    """Проверить есть ли зашифрованное сообщение (ставка с шифрованием)"""
+    att = tx.get("attachment") or {}
+    return "encryptedMessage" in att
 
 
 def parse_bet_comment(comment: str) -> dict | None:
@@ -82,7 +107,6 @@ def parse_bet_comment(comment: str) -> dict | None:
 
     bet_type = parts[1].upper()
     valid_types = {"П1", "П2", "X", "1X", "X2", "12", "P1", "P2"}
-    # Нормализуем P1/P2 → П1/П2
     bet_type = bet_type.replace("P1", "П1").replace("P2", "П2")
     if bet_type not in valid_types:
         return None
@@ -90,7 +114,7 @@ def parse_bet_comment(comment: str) -> dict | None:
     amount = 0.0
     if len(parts) >= 3:
         try:
-            amount = float(parts[2])
+            amount = float(parts[2].replace(",", "."))
         except ValueError:
             pass
 
@@ -98,10 +122,10 @@ def parse_bet_comment(comment: str) -> dict | None:
 
 
 def prizm_amount(tx: dict) -> float:
-    """Перевести внутренние единицы PRIZM → реальные монеты"""
+    """Перевести внутренние единицы PRIZM → реальные монеты (1 PRIZM = 100 NQT)"""
     raw = tx.get("amountNQT", 0)
     try:
-        return int(raw) / 100  # 1 PRIZM = 100 NQT
+        return int(raw) / NQT
     except Exception:
         return 0.0
 
@@ -120,19 +144,19 @@ def get_balance() -> dict:
             r = requests.get(
                 f"{node}/prizm",
                 params={"requestType": "getAccount", "account": WALLET},
-                timeout=10,
+                timeout=12,
+                verify=True,
             )
             if not r.ok:
                 continue
             data = r.json()
             if "errorCode" in data:
                 continue
-            # balanceNQT и unconfirmedBalanceNQT — в NQT (делим на 100)
             balance_nqt     = int(data.get("balanceNQT", 0))
             unconfirmed_nqt = int(data.get("unconfirmedBalanceNQT", 0))
             return {
-                "balance":     balance_nqt / 100,
-                "unconfirmed": unconfirmed_nqt / 100,
+                "balance":     balance_nqt / NQT,
+                "unconfirmed": unconfirmed_nqt / NQT,
                 "wallet":      WALLET,
                 "node":        node,
             }
