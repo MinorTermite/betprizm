@@ -2748,6 +2748,9 @@
             const leagues = {};
             filtered.forEach(m => { (leagues[m.league] = leagues[m.league] || []).push(m); });
 
+            // Убираем спиннер и прочие не-секции (например, начальный div "Загрузка линии...")
+            content.querySelectorAll(':scope > :not(.section)').forEach(el => el.remove());
+
             // Карта уже отрисованных карточек
             const existingCards = {};
             content.querySelectorAll('.match-card[id]').forEach(c => {
