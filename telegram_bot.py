@@ -19,7 +19,10 @@ from datetime import datetime
 from pathlib import Path
 
 from apscheduler.schedulers.background import BackgroundScheduler
-from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
+from telegram import (
+    Update, InlineKeyboardButton, InlineKeyboardMarkup,
+    ReplyKeyboardMarkup, ReplyKeyboardRemove
+)
 from telegram.ext import (
     Application, CommandHandler, MessageHandler,
     filters, ContextTypes, CallbackQueryHandler
@@ -97,6 +100,18 @@ def load_matches() -> dict:
         return {}
 
 # ── Хелперы ──────────────────────────────────────────────────
+def get_main_keyboard(is_admin=False) -> ReplyKeyboardMarkup:
+    """Вернуть главное меню кнопок"""
+    buttons = [
+        ["🎰 Сделать ставку", "📋 Мои ставки"],
+        ["📖 Правила", "⭐ Преимущества"],
+        ["📖 Помощь"]
+    ]
+    if is_admin:
+        buttons.append(["📊 Ставки (Админ)", "📈 Статистика (Админ)"])
+        buttons.append(["💰 Баланс", "📢 Настройка канала"])
+    return ReplyKeyboardMarkup(buttons, resize_keyboard=True)
+
 def fmt_bet(bet: dict, idx: int = None) -> str:
     prefix = f"#{idx} " if idx is not None else ""
     status_emoji = {"pending": "⏳", "win": "✅", "loss": "❌", "cancelled": "🚫"}.get(bet.get("status"), "⏳")
@@ -112,7 +127,11 @@ def fmt_bet(bet: dict, idx: int = None) -> str:
 
 # ── Команды бота ─────────────────────────────────────────────
 async def cmd_start(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
+    user = update.effective_user
+    is_admin = (user.id == ADMIN_ID)
+    
     text = (
+        f"👋 Привет, {user.first_name}!\n\n"
         "🎰 *PRIZMBET — Криптобукмекер*\n\n"
         "Как сделать ставку:\n"
         "1️⃣ Открой сайт: [minortermite.github.io/betprizm](https://minortermite.github.io/betprizm)\n"
@@ -122,13 +141,14 @@ async def cmd_start(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
         f"   `{WALLET}`\n"
         "5️⃣ В комментарии укажи: `ID П1/П2/X сумма`\n"
         "   Пример: `27080379 П1 10`\n\n"
-        "📊 Команды:\n"
-        "/mybets — мои ставки\n"
-        "/rules — правила приёма ставок\n"
-        "/advantages — наши преимущества\n"
-        "/help — помощь"
+        "📌 Используйте кнопки меню для навигации."
     )
-    await update.message.reply_text(text, parse_mode="Markdown", disable_web_page_preview=True)
+    await update.message.reply_text(
+        text, 
+        parse_mode="Markdown", 
+        disable_web_page_preview=True,
+        reply_markup=get_main_keyboard(is_admin)
+    )
 
 async def cmd_help(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
     text = (
@@ -386,7 +406,6 @@ async def cmd_chatid(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
         parse_mode="Markdown"
     )
 
-
 async def callback_handler(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
     q = update.callback_query
     await q.answer()
@@ -410,6 +429,29 @@ async def callback_handler(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
                 await q.message.reply_text(text, parse_mode="Markdown")
         except Exception as e:
             await q.message.reply_text(f"❌ Ошибка: {e}")
+
+
+# ── Обработка текстовых кнопок ───────────────────────────────
+async def handle_message(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
+    text = update.message.text
+    if text == "🎰 Сделать ставку":
+        await cmd_start(update, ctx)
+    elif text == "📋 Мои ставки":
+        await cmd_mybets(update, ctx)
+    elif text == "📖 Правила":
+        await cmd_rules(update, ctx)
+    elif text == "⭐ Преимущества":
+        await cmd_advantages(update, ctx)
+    elif text == "📖 Помощь":
+        await cmd_help(update, ctx)
+    elif text == "📊 Ставки (Админ)":
+        await cmd_bets(update, ctx)
+    elif text == "📈 Статистика (Админ)":
+        await cmd_stats(update, ctx)
+    elif text == "💰 Баланс":
+        await cmd_balance(update, ctx)
+    elif text == "📢 Настройка канала":
+        await cmd_setgroup(update, ctx)
 
 # ── Проверка транзакций PRIZM (запускается по расписанию) ────
 async def check_prizm_transactions(bot=None):
@@ -500,11 +542,17 @@ async def check_prizm_transactions(bot=None):
                 f"✅ `/win {bet['id']}`\n"
                 f"❌ `/loss {bet['id']}`"
             )
-            for cid in get_notify_ids():
+            notify_ids = get_notify_ids()
+            log.info(f"Target notify IDs: {notify_ids}")
+            for cid in notify_ids:
                 try:
                     await bot.send_message(chat_id=cid, text=bet_text, parse_mode="Markdown")
+                    log.info(f"Notification sent to {cid}")
                 except Exception as e:
                     log.error(f"Notify {cid} error: {e}")
+                    # Если админа не может уведомить — это плохо
+                    if cid == ADMIN_ID:
+                        log.critical(f"Admin notification failed! Check BOT_TOKEN or if bot is blocked.")
 
     if added:
         save_bets(bets)
@@ -535,6 +583,9 @@ def main():
     app.add_handler(CommandHandler("setgroup",   cmd_setgroup))
     app.add_handler(CommandHandler("chatid",     cmd_chatid))
     app.add_handler(CallbackQueryHandler(callback_handler))
+    
+    # Обработчик текстовых кнопок
+    app.add_handler(MessageHandler(filters.TEXT & (~filters.COMMAND), handle_message))
 
     # Проверка PRIZM транзакций каждые 5 минут
     async def _check_tx_job(ctx: ContextTypes.DEFAULT_TYPE):
@@ -543,6 +594,7 @@ def main():
     app.job_queue.run_repeating(_check_tx_job, interval=300, first=30)
 
     log.info(f"Bot started | Admin: {ADMIN_ID} | Wallet: {WALLET}")
+    log.info(f"Initial notify IDs: {get_notify_ids()}")
     app.run_polling(drop_pending_updates=True)
 
 if __name__ == "__main__":
