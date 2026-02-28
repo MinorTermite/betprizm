@@ -28,11 +28,31 @@ from telegram.ext import (
 import prizm_api
 
 # ── Конфиг ──────────────────────────────────────────────────
-BOT_TOKEN   = "8560914086:AAFGDc70pfIwBX0FhwQDWmFjcnnpVvKOxps"
-ADMIN_ID    = 984705599
-WALLET      = "PRIZM-4N7T-L2A7-RQZA-5BETW"
-BETS_FILE   = Path("bets.json")
-MATCHES_FILE= Path("matches.json")
+BOT_TOKEN    = "8560914086:AAFGDc70pfIwBX0FhwQDWmFjcnnpVvKOxps"
+ADMIN_ID     = 984705599
+WALLET       = "PRIZM-4N7T-L2A7-RQZA-5BETW"
+BETS_FILE    = Path("bets.json")
+MATCHES_FILE = Path("matches.json")
+CONFIG_FILE  = Path("bot_config.json")
+
+
+def load_config() -> dict:
+    try:
+        return json.loads(CONFIG_FILE.read_text(encoding="utf-8")) if CONFIG_FILE.exists() else {}
+    except Exception:
+        return {}
+
+def save_config(cfg: dict):
+    CONFIG_FILE.write_text(json.dumps(cfg, ensure_ascii=False, indent=2), encoding="utf-8")
+
+def get_notify_ids() -> list[int]:
+    """Вернуть список chat_id для уведомлений: всегда включает ADMIN_ID + сохранённые группы/каналы"""
+    cfg = load_config()
+    ids = [ADMIN_ID]
+    group_id = cfg.get("group_chat_id")
+    if group_id and group_id not in ids:
+        ids.append(group_id)
+    return ids
 
 logging.basicConfig(
     format="%(asctime)s [%(levelname)s] %(message)s",
@@ -319,6 +339,54 @@ async def cmd_balance(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
         await msg.edit_text(f"❌ Ошибка: {e}")
 
 
+async def cmd_setgroup(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
+    """Установить группу/канал для уведомлений: /setgroup <chat_id>"""
+    if update.effective_user.id != ADMIN_ID:
+        return
+    if not ctx.args:
+        cfg = load_config()
+        current = cfg.get("group_chat_id", "не задан")
+        await update.message.reply_text(
+            f"📢 *Канал/группа уведомлений*\n\n"
+            f"Текущий: `{current}`\n\n"
+            f"Чтобы задать:\n"
+            f"1. Добавь бота в группу/канал как администратора\n"
+            f"2. Напиши `/chatid` в той группе чтобы узнать ID\n"
+            f"3. Затем: `/setgroup <chat_id>`",
+            parse_mode="Markdown"
+        )
+        return
+    try:
+        chat_id = int(ctx.args[0])
+        cfg = load_config()
+        cfg["group_chat_id"] = chat_id
+        save_config(cfg)
+        await update.message.reply_text(f"✅ Канал/группа уведомлений задан: `{chat_id}`", parse_mode="Markdown")
+        # Тест — отправляем пробное сообщение
+        try:
+            await ctx.bot.send_message(
+                chat_id=chat_id,
+                text="✅ *PRIZMBET* — уведомления подключены!\n\nЯ буду сообщать сюда о новых транзакциях.",
+                parse_mode="Markdown"
+            )
+        except Exception as e:
+            await update.message.reply_text(f"⚠️ Не удалось отправить тест: {e}\nПроверь, добавлен ли бот в группу/канал.")
+    except ValueError:
+        await update.message.reply_text("❌ Неверный формат. Пример: `/setgroup -1001234567890`", parse_mode="Markdown")
+
+
+async def cmd_chatid(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
+    """Показать ID текущего чата (для настройки группы/канала)"""
+    chat = update.effective_chat
+    await update.message.reply_text(
+        f"💬 Chat ID: `{chat.id}`\n"
+        f"Тип: `{chat.type}`\n"
+        f"Название: `{chat.title or chat.username or '—'}`\n\n"
+        f"Скопируй этот ID и отправь боту: `/setgroup {chat.id}`",
+        parse_mode="Markdown"
+    )
+
+
 async def callback_handler(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
     q = update.callback_query
     await q.answer()
@@ -377,25 +445,22 @@ async def check_prizm_transactions(bot=None):
             # Транзакция без распознаваемой ставки
             has_enc = prizm_api.has_encrypted_message(tx)
             if has_enc and bot:
-                # Уведомляем админа — транзакция есть, но сообщение зашифровано
-                try:
-                    await bot.send_message(
-                        chat_id=ADMIN_ID,
-                        text=(
-                            f"💸 *Входящий перевод* (зашифровано)\n\n"
-                            f"От: `{sender}`\n"
-                            f"Сумма: `{amount:.2f} PRIZM`\n"
-                            f"TX: `{tx_id[:16]}...`\n\n"
-                            f"⚠️ Сообщение зашифровано — ставка не распознана.\n"
-                            f"Попросите игрока отправить *незашифрованный* (plain text) комментарий."
-                        ),
-                        parse_mode="Markdown"
-                    )
-                except Exception as e:
-                    log.error(f"Admin enc notify error: {e}")
+                enc_text = (
+                    f"💸 *Входящий перевод* (сообщение зашифровано)\n\n"
+                    f"От: `{sender}`\n"
+                    f"Сумма: `{amount:.2f} PRIZM`\n"
+                    f"TX: `{tx_id[:16]}...`\n\n"
+                    f"⚠️ Ставка не распознана — сообщение зашифровано.\n"
+                    f"Попросите игрока прислать *незашифрованный* комментарий."
+                )
+                for cid in get_notify_ids():
+                    try:
+                        await bot.send_message(chat_id=cid, text=enc_text, parse_mode="Markdown")
+                    except Exception as e:
+                        log.error(f"Notify {cid} error: {e}")
             else:
                 log.info(f"TX {tx_id[:12]}: no bet comment '{comment}'")
-            bet_ids.add(tx_id)  # помечаем как обработанный, не добавляем как ставку
+            bet_ids.add(tx_id)
             continue
 
         match_id = parsed["match_id"]
@@ -429,21 +494,19 @@ async def check_prizm_transactions(bot=None):
         added += 1
         log.info(f"New bet: {bet['id']} — {match.get('team1','?')} {bet_type} {amount} PRIZM")
 
-        # Уведомить админа о новой ставке
+        # Уведомить всех (админ + группа/канал)
         if bot:
-            try:
-                await bot.send_message(
-                    chat_id=ADMIN_ID,
-                    text=(
-                        f"🎰 *Новая ставка!*\n\n"
-                        f"{fmt_bet(bet)}\n\n"
-                        f"✅ `/win {bet['id']}`\n"
-                        f"❌ `/loss {bet['id']}`"
-                    ),
-                    parse_mode="Markdown"
-                )
-            except Exception as e:
-                log.error(f"Admin notify error: {e}")
+            bet_text = (
+                f"🎰 *Новая ставка!*\n\n"
+                f"{fmt_bet(bet)}\n\n"
+                f"✅ `/win {bet['id']}`\n"
+                f"❌ `/loss {bet['id']}`"
+            )
+            for cid in get_notify_ids():
+                try:
+                    await bot.send_message(chat_id=cid, text=bet_text, parse_mode="Markdown")
+                except Exception as e:
+                    log.error(f"Notify {cid} error: {e}")
 
     if added:
         save_bets(bets)
@@ -464,40 +527,15 @@ def main():
     app.add_handler(CommandHandler("win",        cmd_win))
     app.add_handler(CommandHandler("loss",       cmd_loss))
     app.add_handler(CommandHandler("balance",    cmd_balance))
+    app.add_handler(CommandHandler("setgroup",   cmd_setgroup))
+    app.add_handler(CommandHandler("chatid",     cmd_chatid))
     app.add_handler(CallbackQueryHandler(callback_handler))
 
-    # ── job_queue требует async-функцию ──
+    # Проверка PRIZM транзакций каждые 5 минут
     async def _check_tx_job(ctx: ContextTypes.DEFAULT_TYPE):
         await check_prizm_transactions(ctx.bot)
 
-    async def _balance_report_job(ctx: ContextTypes.DEFAULT_TYPE):
-        """Отправлять баланс кошелька админу каждый час"""
-        try:
-            info = prizm_api.get_balance()
-            if info["balance"] is None:
-                return  # нода недоступна — молча пропускаем
-            bets = load_bets()
-            pending_count = sum(1 for b in bets if b.get("status") == "pending")
-            pending_sum   = sum(b.get("amount", 0) for b in bets if b.get("status") == "pending")
-            await ctx.bot.send_message(
-                chat_id=ADMIN_ID,
-                text=(
-                    f"📊 *Ежечасный отчёт PRIZMBET*\n\n"
-                    f"💰 Баланс: `{info['balance']:.2f} PRIZM`\n"
-                    f"⏳ Ожидают: `{info['unconfirmed']:.2f} PRIZM`\n\n"
-                    f"🎰 Активных ставок: `{pending_count}`\n"
-                    f"💵 Сумма в игре: `{pending_sum:.2f} PRIZM`\n\n"
-                    f"Нода: `{info['node']}`"
-                ),
-                parse_mode="Markdown"
-            )
-        except Exception as e:
-            log.error(f"Balance report error: {e}")
-
-    # Проверка транзакций каждые 5 минут
     app.job_queue.run_repeating(_check_tx_job, interval=300, first=30)
-    # Отчёт о балансе каждый час (first=60 — через минуту после старта)
-    app.job_queue.run_repeating(_balance_report_job, interval=3600, first=60)
 
     log.info(f"Bot started | Admin: {ADMIN_ID} | Wallet: {WALLET}")
     app.run_polling(drop_pending_updates=True)
