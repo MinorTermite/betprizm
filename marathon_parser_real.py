@@ -11,7 +11,6 @@ import json
 import os
 import re
 import time
-from dataclasses import dataclass
 from typing import List, Optional
 from urllib.parse import urljoin
 from concurrent.futures import ThreadPoolExecutor, as_completed
@@ -37,8 +36,8 @@ POPULAR_FALLBACK = [
     ("football", "Италия. Серия B", f"{BASE}/su/betting/Football/Italy/Serie%2BB%2B-%2B22435"),
     ("football", "Германия. 2. Бундеслига", f"{BASE}/su/betting/Football/Germany/2.%2BBundesliga%2B-%2B22437"),
     ("football", "Франция. Лига 2", f"{BASE}/su/betting/Football/France/Ligue%2B2%2B-%2B21534"),
-    ("hockey", "КХЛ", f"{BASE}/su/popular/Ice%2BHockey/KHL%2B-%2B52309?lid=15577535"),
-    ("hockey", "НХЛ", f"{BASE}/su/popular/Ice%2BHockey/NHL%2B-%2B52310"),
+    ("hockey", "КХЛ", f"{BASE}/su/betting/Ice%2BHockey/KHL%2B-%2B52309"),
+    ("hockey", "НХЛ", f"{BASE}/su/betting/Ice%2BHockey/NHL%2B-%2B52310"),
     ("basket", "NBA", f"{BASE}/su/popular/Basketball/NBA%2B-%2B69367?lid=15577646"),
     ("basket", "Евролига", f"{BASE}/su/betting/Basketball/Europe/EuroLeague%2B-%2B69368"),
     ("tennis", "Теннис (ATP/WTA/ITF)", f"{BASE}/su/betting/Tennis/"),
@@ -96,6 +95,14 @@ def as_float(s: str) -> Optional[float]:
     try: return float(s)
     except: return None
 
+def fmt_odd(v) -> str:
+    """Форматирует коэффициент без научной нотации (:.3g даёт '1e+03' для >1000)."""
+    if not v: return "0.00"
+    s = f"{v:.3g}"
+    if 'e' in s:
+        return str(round(float(v), 2))
+    return s
+
 def parse_football_table(html: str) -> List[dict]:
     soup = BeautifulSoup(html, "lxml")
     out = []
@@ -128,8 +135,8 @@ def parse_football_table(html: str) -> List[dict]:
             sel_key = btn.get("data-selection-key", "")
             for suffix, field in key_map.items():
                 if sel_key.endswith(suffix):
-                    val = btn.get_text().strip()
-                    odds_dict[field] = f"{as_float(val):.3g}" if as_float(val) else "0.00"
+                    val = as_float(btn.get_text().strip())
+                    odds_dict[field] = fmt_odd(val) if val else "0.00"
                     break
 
         out.append({
@@ -142,12 +149,31 @@ def parse_football_table(html: str) -> List[dict]:
     return out
 
 def parse_2way_winner(html: str, sport: str) -> List[dict]:
+    """
+    Парсит матчи для не-футбольных видов спорта.
+    Использует data-selection-key для точного определения П1/X/П2
+    (аналогично parse_football_table), чтобы не перепутать коэффициенты
+    из разных рынков одной строки (гандикап, тотал, etc.).
+    """
     soup = BeautifulSoup(html, "lxml")
     out = []
+
+    # Ключи основного рынка результата матча (одинаковы для всех видов спорта)
+    KEY_MAP = {
+        "Match_Result.1":    "p1",
+        "Match_Result.draw": "x",
+        "Match_Result.3":    "p2",
+    }
+
+    # Виды спорта без ничьей: x всегда "—"
+    # Баскетбол/теннис — Marathon показывает Match_Result.draw для рынка
+    # "основное время" (regulation time), что даёт margin ~158% (мусорные данные)
+    NO_DRAW_SPORTS = {"basket", "tennis", "mma", "esports", "volleyball"}
+
     for row in soup.select("div.coupon-row"):
         event_id = row.get("data-event-treeid") or row.get("data-event-treeId") or row.get("data-event-id")
         if not event_id: continue
-            
+
         member_links = row.select("a.member-link")
         m_link, t1, t2 = "", "", ""
         if len(member_links) >= 2:
@@ -156,14 +182,20 @@ def parse_2way_winner(html: str, sport: str) -> List[dict]:
             m_link = member_links[0].get("href")
         else:
             event_name = row.get("data-event-name", "")
-            if " - " in event_name: t1, t2 = [clean_name(x) for x in event_name.split(" - ", 1)]
-            elif " vs " in event_name: t1, t2 = [clean_name(x) for x in event_name.split(" vs ", 1)]
-            
+            if " - " in event_name:
+                t1, t2 = [clean_name(x) for x in event_name.split(" - ", 1)]
+            elif " vs " in event_name:
+                t1, t2 = [clean_name(x) for x in event_name.split(" vs ", 1)]
             m_link_el = row.select_one("a[href*='/betting/']")
             if m_link_el: m_link = m_link_el.get("href")
 
         if not t1 or not t2: continue
         match_url = urljoin(BASE, m_link) if m_link else ""
+
+        # Пропускаем матчи без ссылки — это LIVE-матчи других видов спорта,
+        # которые MarathonBet показывает вверху популярных страниц
+        if not match_url:
+            continue
 
         time_el = row.select_one(".date-wrapper") or row.select_one(".date")
         time_txt = norm_space(time_el.get_text()) if time_el else ""
@@ -174,29 +206,50 @@ def parse_2way_winner(html: str, sport: str) -> List[dict]:
         else:
             time_str = time_txt if ":" in time_txt else ""
 
-        odds_btns = row.select(".selection-link")
-        if len(odds_btns) < 2: odds_btns = row.select(".price")
-        p1_val = x_val = p2_val = 0.0
-        if len(odds_btns) >= 3:
-            p1_val = as_float(odds_btns[0].get_text())
-            x_val  = as_float(odds_btns[1].get_text())
-            p2_val = as_float(odds_btns[2].get_text())
-        elif len(odds_btns) == 2:
-            p1_val = as_float(odds_btns[0].get_text())
-            p2_val = as_float(odds_btns[1].get_text())
+        # === КЛЮЧ-ОРИЕНТИРОВАННОЕ ИЗВЛЕЧЕНИЕ КОЭФФИЦИЕНТОВ ===
+        # Берём только кнопки основного рынка (Match_Result.*),
+        # игнорируем гандикап, тотал и другие рынки в той же строке
+        odds_dict: dict = {}
+        for btn in row.select(".selection-link"):
+            sel_key = btn.get("data-selection-key", "")
+            for suffix, field in KEY_MAP.items():
+                if sel_key.endswith(suffix):
+                    val = as_float(btn.get_text().strip())
+                    if val:
+                        odds_dict[field] = val
+                    break
 
-        # Пропускаем матчи без ссылки — это LIVE-матчи других видов спорта,
-        # которые MarathonBet показывает вверху популярных страниц
-        if not match_url:
-            continue
+        p1_val = odds_dict.get("p1") or 0.0
+        x_val  = odds_dict.get("x")  or 0.0   # 0 = нет ничьи (теннис, баскет, МMA)
+        p2_val = odds_dict.get("p2") or 0.0
+
+        # Fallback: позиционное извлечение если ключи не найдены
+        # (резервный вариант для нестандартных страниц)
+        if not p1_val and not p2_val:
+            odds_btns = row.select(".selection-link")
+            if len(odds_btns) < 2:
+                odds_btns = row.select(".price")
+            if len(odds_btns) >= 3:
+                p1_val = as_float(odds_btns[0].get_text().strip()) or 0.0
+                x_val  = as_float(odds_btns[1].get_text().strip()) or 0.0
+                p2_val = as_float(odds_btns[2].get_text().strip()) or 0.0
+            elif len(odds_btns) >= 2:
+                p1_val = as_float(odds_btns[0].get_text().strip()) or 0.0
+                p2_val = as_float(odds_btns[1].get_text().strip()) or 0.0
+
+        # Для видов без ничьей — принудительно убираем X.
+        # Marathon показывает Match_Result.draw для "основного времени"
+        # в баскете/теннисе/etc., что даёт margin ~158% (мусорные данные).
+        if sport in NO_DRAW_SPORTS:
+            x_val = 0.0
 
         out.append({
             "sport": sport, "league": "", "id": event_id,
             "date": date_str, "time": time_str, "team1": t1, "team2": t2,
             "match_url": match_url,
-            "p1": f"{p1_val:.3g}" if p1_val else "0.00",
-            "x": f"{x_val:.3g}" if x_val else "—",
-            "p2": f"{p2_val:.3g}" if p2_val else "0.00",
+            "p1":  fmt_odd(p1_val),
+            "x":   fmt_odd(x_val) if x_val else "—",
+            "p2":  fmt_odd(p2_val),
             "p1x": "—", "p12": "—", "px2": "—",
         })
     return out
