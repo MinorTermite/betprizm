@@ -35,7 +35,7 @@ POPULAR_FALLBACK = [
     ("football", "Франция. Лига 1",     f"{BASE}/su/betting/Football/France/Ligue%2B1%2B-%2B21533"),
     ("football", "Россия. Премьер-лига", f"{BASE}/su/betting/Football/Russia/Premier%2BLeague%2B-%2B22433"),
     ("hockey",   "КХЛ",                 f"{BASE}/su/betting/Ice-Hockey/Russia/KHL+-+52309"),
-    ("hockey",   "НХЛ",                 f"{BASE}/su/betting/Ice-Hockey/NHL+-+52310"),
+    ("hockey",   "НХЛ",                 f"{BASE}/su/popular/Ice+Hockey/NHL+-+1917?lid=15577605"),
     ("basket",   "NBA",                 f"{BASE}/su/popular/Basketball/USA/NBA%2B-%2B69367?lid=15577646"),
     # Евролига убрана — Marathon popular/Basketball возвращает те же NBA-матчи
     ("tennis",   "ATP. Тур",            f"{BASE}/su/betting/Tennis/ATP/"),
