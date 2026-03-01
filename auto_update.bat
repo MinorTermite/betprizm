@@ -39,10 +39,10 @@ if %errorlevel% neq 0 (
 )
 echo [%DT%] Bets OK >> "%LOG%"
 
-:: Git push через PowerShell с использованием полного пути к GIT
+:: Git push — добавляем только matches.json и bets.json (игнорируем другие файлы)
 echo [%DT%] Pushing to GitHub... >> "%LOG%"
 powershell.exe -NoProfile -NonInteractive -Command ^
-    "Set-Location '%DIR%'; & '%GIT%' add .; if ((& '%GIT%' status --porcelain) -ne $null) { & '%GIT%' commit -m 'auto: %DT%' } else { Write-Host 'nothing to commit' }; & '%GIT%' -c credential.helper=manager push origin main" >> "%LOG%" 2>&1
+    "Set-Location '%DIR%'; & '%GIT%' add matches.json bets.json; if ((& '%GIT%' status --porcelain) -ne $null) { & '%GIT%' commit -m 'auto: %DT%' } else { Write-Host 'nothing to commit' }; & '%GIT%' push origin main" >> "%LOG%" 2>&1
 
 if %errorlevel% equ 0 (
     echo [%DT%] OK: Pushed to GitHub >> "%LOG%"

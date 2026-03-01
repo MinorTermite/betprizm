@@ -55,5 +55,20 @@ matches_*.json
 
 # ─── Временный файл Marathon (промежуточный) ──────────────
 matches_marathon.json
-"credentials.json"  
-"github_secret.json"  
+"credentials.json"
+"github_secret.json"
+
+# ─── Отладка и временные скрипты ──────────────────────────
+debug_*.py
+diag_*.py
+tmp_*.py
+*.json~
+nul
+prizm_last_tx.json
+.claude/
+.antigravity_rules.md
+SENIOR_ORCHESTRATOR_PROTOCOL.md
+_disable_old_task.ps1
+_register_task.ps1
+bot_config.json
+live_index.html
