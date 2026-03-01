@@ -22,29 +22,36 @@ from bs4 import BeautifulSoup
 BASE = "https://www.marathonbet.ru"
 
 POPULAR_FALLBACK = [
-    # UEFA — одна страница со всеми матчами UEFA (CL+EL+ECL перемешаны на popular-странице)
+    # UEFA — одна страница показывает все матчи CL+EL+ECL, h2-заголовки расставляют правильные лиги
     ("football", "Лига чемпионов УЕФА", f"{BASE}/su/betting/Football/UEFA/Champions%2BLeague%2B-%2B26493"),
-    ("football", "Лига Европы УЕФА",    f"{BASE}/su/betting/Football/UEFA/Europa%2BLeague%2B-%2B26494"),
-    ("football", "Лига конференций УЕФА", f"{BASE}/su/betting/Football/UEFA/Conference%2BLeague%2B-%2B26495"),
-    ("football", "Англия. Премьер-лига", f"{BASE}/su/popular/Football/England/Premier%2BLeague%2B-%2B21520?lid=15600999"),
-    ("football", "Испания. Ла Лига",    f"{BASE}/su/popular/Football/Spain/Primera%2BDivision%2B-%2B8736?lid=26570477"),
-    ("football", "Италия. Серия A",     f"{BASE}/su/popular/Football/Italy/Serie%2BA%2B-%2B22434?lid=15601013"),
-    ("football", "Германия. Бундеслига", f"{BASE}/su/popular/Football/Germany/Bundesliga%2B-%2B22436"),
-    ("football", "Франция. Лига 1",     f"{BASE}/su/popular/Football/France/Ligue%2B1%2B-%2B21533?interval=ALL_TIME"),
+    # EL и ECL URL убраны: Marathon отдаёт те же 75 матчей для всех 3 UEFA-URL — дубли
+    # Один URL на страну — Marathon bundlirует все лиги страны в одну /betting/-страницу.
+    # h2-заголовки расставляют правильные лейблы (Серия A, Серия B, Кубок и т.д.).
+    # Отдельные URL для вторых дивизионов убраны — они дубли этих же страниц!
+    ("football", "Англия. Премьер-лига", f"{BASE}/su/betting/Football/England/Premier%2BLeague%2B-%2B21520"),
+    ("football", "Испания. Ла Лига",    f"{BASE}/su/betting/Football/Spain/Primera%2BDivision%2B-%2B8736"),
+    ("football", "Италия. Серия A",     f"{BASE}/su/betting/Football/Italy/Serie%2BA%2B-%2B22434"),
+    ("football", "Германия. Бундеслига", f"{BASE}/su/betting/Football/Germany/Bundesliga%2B-%2B22436"),
+    ("football", "Франция. Лига 1",     f"{BASE}/su/betting/Football/France/Ligue%2B1%2B-%2B21533"),
     ("football", "Россия. Премьер-лига", f"{BASE}/su/betting/Football/Russia/Premier%2BLeague%2B-%2B22433"),
-    ("football", "Россия. 1-я лига",    f"{BASE}/su/betting/Football/Russia/1st%2BLeague%2B-%2B45766"),
-    ("football", "Англия. Чемпионшип",  f"{BASE}/su/betting/Football/England/Championship%2B-%2B21521"),
-    ("football", "Испания. Сегунда",    f"{BASE}/su/betting/Football/Spain/Segunda%2BDivision%2B-%2B8737"),
-    ("football", "Италия. Серия B",     f"{BASE}/su/betting/Football/Italy/Serie%2BB%2B-%2B22435"),
-    ("football", "Германия. 2. Бундеслига", f"{BASE}/su/betting/Football/Germany/2.%2BBundesliga%2B-%2B22437"),
-    ("football", "Франция. Лига 2",     f"{BASE}/su/betting/Football/France/Ligue%2B2%2B-%2B21534"),
     ("hockey",   "КХЛ",                 f"{BASE}/su/betting/Ice-Hockey/Russia/KHL+-+52309"),
     ("hockey",   "НХЛ",                 f"{BASE}/su/betting/Ice-Hockey/NHL+-+52310"),
     ("basket",   "NBA",                 f"{BASE}/su/popular/Basketball/USA/NBA%2B-%2B69367?lid=15577646"),
     # Евролига убрана — Marathon popular/Basketball возвращает те же NBA-матчи
     ("tennis",   "ATP. Тур",            f"{BASE}/su/betting/Tennis/ATP/"),
-    ("tennis",   "WTA. Тур",            f"{BASE}/su/betting/Tennis/WTA/"),
+    # WTA убрана: Marathon возвращает те же ATP-матчи по WTA-URL (одинаковые event ID)
 ]
+
+# Разрешённые футбольные лиги — всё остальное (серия D, региональные, кубки) отфильтруется
+ALLOWED_FOOTBALL_LEAGUES = {
+    "Лига чемпионов УЕФА", "Лига Европы УЕФА", "Лига конференций УЕФА",
+    "Англия. Премьер-лига", "Англия. Чемпионшип",
+    "Испания. Ла Лига", "Испания. Сегунда",
+    "Италия. Серия A", "Италия. Серия B",
+    "Германия. Бундеслига", "Германия. 2-я бундеслига",
+    "Франция. Лига 1", "Франция. Лига 2",
+    "Россия. Премьер-лига", "Россия. 1-я лига",
+}
 
 LIVE_URLS = []
 OUT_JSON = "matches.json"
@@ -118,6 +125,78 @@ def fmt_odd(v) -> str:
         return str(round(float(v), 2))
     return s
 
+# ─── Дата-хелперы ──────────────────────────────────────────────────────────────
+MONTH_RU = {
+    "янв": 1, "фев": 2, "мар": 3, "апр": 4, "май": 5, "июн": 6,
+    "июл": 7, "авг": 8, "сен": 9, "окт": 10, "ноя": 11, "дек": 12,
+}
+
+def parse_ru_date(date_str: str) -> Optional[_dt.date]:
+    """Парсит '28 мар' → date(2026, 3, 28)."""
+    m = re.match(r"(\d{1,2})\s+([а-яё]+)", (date_str or "").strip(), re.I)
+    if not m:
+        return None
+    day = int(m.group(1))
+    mon = MONTH_RU.get(m.group(2)[:3].lower())
+    if not mon:
+        return None
+    today = _dt.date.today()
+    d = _dt.date(today.year, mon, day)
+    # Дата ушла в прошлое более чем на полгода — значит следующий год
+    if (today - d).days > 180:
+        d = _dt.date(today.year + 1, mon, day)
+    return d
+
+_STAGE_PAT = re.compile(
+    r'^\d+/\d+|'                                  # "1/8", "1/4" и т.п.
+    r'\bраунд\b|\bфинал\b|\bматч(и|е|ей|ах|ам)?\b|\bтур\b|\bгруппа\b|'
+    r'лондон|мадрид|берлин|париж|монако|'         # города-площадки кубков
+    r'северо|запад\b|восток\b|юг\b|бавари|'       # региональные лиги
+    r'первые|вторые|ответн|стыков',
+    re.I
+)
+
+def normalize_h2_league(text: str) -> str:
+    """
+    Нормализует Marathon h2 вида "Страна.Лига.Стадия" → "Страна. Лига".
+    Возвращает "" для секций "Итоги" (завершённые матчи).
+    """
+    if not text:
+        return ""
+    if text.lower().startswith('итоги'):
+        return ""   # Пропускаем секции результатов
+    # "Страна.Лига" → "Страна. Лига" (Marathon не ставит пробел после точки)
+    text = re.sub(r'\.(?=[^\s\d])', '. ', text)
+    parts = [p.strip() for p in text.split('. ') if p.strip()]
+    if not parts:
+        return ""
+    result = []
+    for part in parts:
+        if _STAGE_PAT.search(part):
+            break  # Всё после стадии — лишнее
+        result.append(part)
+        if len(result) >= 3:
+            break
+    return '. '.join(result)
+
+def get_row_h2(row) -> str:
+    """
+    Возвращает нормализованное название лиги для coupon-row.
+    Marathon: каждый category-container = одна лига, внутри него
+    <a class="category-label-link"><h2>Страна.Лига</h2></a> + все coupon-rows.
+    Поднимаемся до category-container, берём его h2.
+    """
+    el = row
+    for _ in range(8):
+        el = el.parent
+        if not el or not hasattr(el, "get"):
+            break
+        if "category-container" in (el.get("class") or []):
+            h2 = el.select_one("a.category-label-link h2") or el.find("h2")
+            if h2:
+                return normalize_h2_league(norm_space(h2.get_text()))
+    return ""
+
 def parse_football_table(html: str) -> List[dict]:
     soup = BeautifulSoup(html, "lxml")
     out = []
@@ -155,7 +234,7 @@ def parse_football_table(html: str) -> List[dict]:
                     break
 
         out.append({
-            "sport": "football", "league": "", "id": event_id,
+            "sport": "football", "league": get_row_h2(row), "id": event_id,
             "date": date_str, "time": time_str, "team1": t1, "team2": t2,
             "match_url": match_url,
             "p1": odds_dict.get("p1", "0.00"), "x": odds_dict.get("x", "0.00"), "p2": odds_dict.get("p2", "0.00"),
@@ -290,9 +369,10 @@ def fetch_and_parse(sport: str, title: str, url: str) -> tuple:
         html = http_get(url)
         if sport == "football":
             items = parse_football_table(html)
-            for it in items: it["league"] = title
-            # Фильтруем матчи по URL только если он содержит явный путь лиги
-            # Убираем слишком агрессивный фильтр, который отбрасывал нормальные матчи
+            # Используем лигу из h2-заголовка (если найдена), иначе — title из URL
+            for it in items:
+                if not it.get("league"):
+                    it["league"] = title
             return (title, items, None)
         elif sport == "esports":
             items = parse_2way_winner(html, "esports")
@@ -334,7 +414,26 @@ def main() -> None:
         if m_id and m_id not in uniq:
             uniq[m_id] = m
 
-    all_items = list(uniq.values())
+    # Фильтр по лигам: для футбола оставляем только разрешённые лиги (без любительских, кубков, 3-4 дивизионов)
+    all_items_filtered = []
+    for m in uniq.values():
+        if m.get("sport") == "football" and m.get("league") not in ALLOWED_FOOTBALL_LEAGUES:
+            continue
+        all_items_filtered.append(m)
+
+    # Фильтр по дате: футбол — только ближайшие 14 дней (убирает целый сезон Серии A и т.д.)
+    today_d = _dt.date.today()
+    cutoff = today_d + _dt.timedelta(days=14)
+    filtered = []
+    for m in all_items_filtered:
+        if m.get("sport") != "football" or not m.get("date"):
+            filtered.append(m)
+            continue
+        d = parse_ru_date(m["date"])
+        if d is None or d <= cutoff:
+            filtered.append(m)
+    all_items = filtered
+
     payload = {
         "last_update": _dt.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
         "matches": all_items,
