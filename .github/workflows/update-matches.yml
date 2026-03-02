@@ -3,7 +3,7 @@ name: Auto-update matches
 on:
   schedule:
     # Каждые 30 минут
-    - cron: '*/30 * * * *'
+    - cron: "*/30 * * * *"
   workflow_dispatch:
 
 permissions:
@@ -23,7 +23,7 @@ jobs:
       - name: Setup Python 3.11
         uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: "3.11"
 
       - name: Install Python dependencies
         run: |
@@ -38,31 +38,15 @@ jobs:
         run: |
           python marathon_parser_real.py
 
-      # ── Шаг 2: загружаем в Google Sheets (обратно) ───────────────────
-      - name: Upload to Google Sheets
-        if: success()
-        env:
-          GOOGLE_CREDENTIALS_JSON: ${{ secrets.GOOGLE_CREDENTIALS_JSON }}
-        run: |
-          echo "$GOOGLE_CREDENTIALS_JSON" > credentials.json
-          python upload_to_sheets.py
-          rm -f credentials.json
-        continue-on-error: true
+      # ── Шаг 2: генерируем JSON файлы по БК (только Marathon) ───────
+      # (marathon_parser_real.py уже обновляет marathon.json и matches.json)
 
-      # ── Шаг 3: генерируем JSON файлы по БК ─────────────────────────
-      - name: Generate bookmaker JSON files
-        run: |
-          python generate_bookmaker_json.py
-
-      # ── Шаг 4: коммитим matches.json и JSON файлы если изменились ────
+      # ── Шаг 3: коммитим matches.json и JSON файлы если изменились ────
       - name: Check for changes
         id: check
         run: |
           CHANGED=false
           if ! git diff --quiet matches.json 2>/dev/null; then
-            CHANGED=true
-          fi
-          if ! git diff --quiet winline.json 2>/dev/null; then
             CHANGED=true
           fi
           if ! git diff --quiet marathon.json 2>/dev/null; then
@@ -76,6 +60,6 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add matches.json winline.json marathon.json
+          git add matches.json marathon.json
           git commit -m "chore: auto-update matches [$(date -u +'%Y-%m-%d %H:%M UTC')]"
           git push
