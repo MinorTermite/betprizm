@@ -22,13 +22,13 @@ class TestPrizmBet(unittest.TestCase):
         self.assertEqual(get_coef(match, "П1"), 1.70)
 
     def test_prizm_amount(self):
-        # 1 PRIZM = 100,000,000 NQT
-        tx = {"amountNQT": "100000000"}
-        self.assertEqual(prizm_amount(tx), 1.0)
-        tx = {"amountNQT": "550000000"}
-        self.assertEqual(prizm_amount(tx), 5.5)
+        # 1 PRIZM = 100 NQT (2 decimal places)
         tx = {"amountNQT": "100"}
-        self.assertEqual(prizm_amount(tx), 0.000001)
+        self.assertEqual(prizm_amount(tx), 1.0)
+        tx = {"amountNQT": "550"}
+        self.assertEqual(prizm_amount(tx), 5.50)
+        tx = {"amountNQT": "1"}
+        self.assertEqual(prizm_amount(tx), 0.01)
 
     def test_parse_2way_winner_regression(self):
         # Simple regression test for the parser logic (mocking HTML would be better but this is a start)

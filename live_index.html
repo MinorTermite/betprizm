@@ -1735,6 +1735,7 @@
                 <button class="tab" data-sport="volleyball">🏐 Волейбол</button>
                 <button class="tab" data-sport="mma">🥊 MMA</button>
                 <button class="tab" data-sport="esports">🎮 Киберспорт</button>
+                <button class="tab" data-sport="favs">⭐ Избранное</button>
             </div>
             <div class="filters">
                 <select id="gameFilter" class="select">
@@ -2140,7 +2141,9 @@
                         if (/(dota|cs2|valorant)/.test(combined)) return false;
                     }
                 }
-                if (filters.favOnly && !filters.favs.includes(m.id)) return false;
+                if (filters.favOnly || filters.sport === 'favs') {
+                    if (!filters.favs.includes(m.id)) return false;
+                }
                 if (filters.q) {
                     const blob = ((m.id || '') + ' ' + (m.league || '') + ' ' + (m.team1 || '') + ' ' + (m.team2 || '') + ' ' + game).toLowerCase();
                     if (!blob.includes(filters.q)) return false;
@@ -2466,8 +2469,8 @@
 
         function copyBetSlipData() {
             if (!currentBet) return;
-            const amt = document.getElementById('bsInput').value.trim();
-            const msg = `${currentBet.teams} ${currentBet.datetime} ${currentBet.betType} ${currentBet.coef}`;
+            const amt = document.getElementById('bsInput').value.trim() || '0';
+            const msg = `${currentBet.teams}, ${currentBet.betType} @ ${currentBet.coef}\nСтавка: ${amt} PRIZM\nID: ${currentBet.id}`;
 
             navigator.clipboard.writeText(msg).then(() => {
                 // Сохраняем в локальную историю

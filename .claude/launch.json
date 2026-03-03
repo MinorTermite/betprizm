@@ -2,22 +2,10 @@
   "version": "0.0.1",
   "configurations": [
     {
-      "name": "PRIZMBET Site",
+      "name": "prizmbet-static",
       "runtimeExecutable": "python",
-      "runtimeArgs": ["-m", "http.server", "8000"],
+      "runtimeArgs": ["-m", "http.server", "8000", "--directory", "."],
       "port": 8000
-    },
-    {
-      "name": "Marathon Parser",
-      "runtimeExecutable": "python",
-      "runtimeArgs": ["marathon_parser_real.py"],
-      "port": 0
-    },
-    {
-      "name": "Bet Parser",
-      "runtimeExecutable": "python",
-      "runtimeArgs": ["bet_parser.py"],
-      "port": 0
     }
   ]
 }

@@ -13,7 +13,7 @@ PRIZM_NODES = [
 ]
 WALLET = "PRIZM-4N7T-L2A7-RQZA-5BETW"
 CACHE_FILE = "prizm_last_tx.json"
-NQT = 100_000_000  # 1 PRIZM = 100,000,000 NQT
+NQT = 100  # 1 PRIZM = 100 NQT (2 decimal places)
 
 
 def _get(params: dict, timeout=12) -> dict | None:
@@ -53,9 +53,8 @@ def get_new_transactions() -> list[dict]:
         pass
 
     txs = get_transactions()
-    # Фильтруем только входящие на наш кошелёк (senderRS != WALLET)
-    incoming = [t for t in txs if t.get("recipientRS") == WALLET or t.get("senderRS") != WALLET]
-    new_txs = [t for t in incoming if t.get("timestamp", 0) > last_ts]
+    # Возвращаем все транзакции, чтобы телеграм бот мог обрабатывать выплаты (исходящие)
+    new_txs = [t for t in txs if t.get("timestamp", 0) > last_ts]
 
     if new_txs:
         new_last = max(t.get("timestamp", 0) for t in new_txs)
@@ -92,37 +91,59 @@ def has_encrypted_message(tx: dict) -> bool:
 def parse_bet_comment(comment: str) -> dict | None:
     """
     Разобрать комментарий ставки.
-    Формат: "27080379 П1 10" или "27080379 п2 5.5"
-    Возвращает: {"match_id": "27080379", "bet_type": "П1", "amount": 10.0}
+    Поддерживает как короткий формат "ID ТИП СУММА", 
+    так и длинный дескриптивный "Матч..., ID П1 СУММА".
     """
     if not comment:
         return None
-    parts = comment.strip().split()
-    if len(parts) < 2:
+    
+    import re
+    # Ищем ID (число от 6 до 12 цифр)
+    id_match = re.search(r'\b(\d{6,12})\b', comment)
+    if not id_match:
         return None
+    match_id = id_match.group(1)
 
-    match_id = parts[0]
-    if not match_id.isdigit():
+    # Ищем тип ставки (П1, П2, X, 1X, X2, 12)
+    # Используем word boundaries для точности
+    type_match = re.search(r'\b(П1|П2|X|1X|X2|12|P1|P2)\b', comment, re.IGNORECASE)
+    if not type_match:
         return None
+    bet_type = type_match.group(1).upper().replace("P1", "П1").replace("P2", "П2")
 
-    bet_type = parts[1].upper()
-    valid_types = {"П1", "П2", "X", "1X", "X2", "12", "P1", "P2"}
-    bet_type = bet_type.replace("P1", "П1").replace("P2", "П2")
-    if bet_type not in valid_types:
-        return None
-
+    # Ищем сумму (число после 'Ставка:' или просто число после типа ставки)
+    # Сначала пробуем найти число после "Ставка:"
     amount = 0.0
-    if len(parts) >= 3:
+    amt_match = re.search(r'Ставка:\s*([\d\s,.]+)', comment, re.IGNORECASE)
+    if amt_match:
+        amt_str = amt_match.group(1).replace(" ", "").replace(",", ".")
         try:
-            amount = float(parts[2].replace(",", "."))
+            amount = float(amt_str)
         except ValueError:
             pass
+    
+    # Если не нашли через 'Ставка:', берем первое число после типа ставки или ID
+    if amount <= 0:
+        # Ищем все числа и берем то, которое не ID и не коэффициент (обычно оно больше 100)
+        all_nums = re.findall(r'\b(\d+[\s,.]?\d*)\b', comment)
+        for val in all_nums:
+            clean_val = val.replace(" ", "").replace(",", ".")
+            try:
+                num = float(clean_val)
+                if num != float(match_id) and num >= 1.0: # Сумма ставки обычно >= 1
+                    amount = num
+                    # Если это похоже на коэффициент (мелкое число), продолжаем поиск
+                    if num < 10 and '.' in clean_val:
+                        continue
+                    break
+            except ValueError:
+                continue
 
     return {"match_id": match_id, "bet_type": bet_type, "amount": amount}
 
 
 def prizm_amount(tx: dict) -> float:
-    """Перевести внутренние единицы PRIZM → реальные монеты (1 PRIZM = 100,000,000 NQT)"""
+    """Перевести внутренние единицы PRIZM → реальные монеты (1 PRIZM = 100 NQT)"""
     raw = tx.get("amountNQT", 0)
     try:
         return int(raw) / NQT
